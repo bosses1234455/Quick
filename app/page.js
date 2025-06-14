@@ -19,8 +19,8 @@ function Home() {
             <div className="space-y-4">
               {[1, 2, 3].map((item) => (
                 <div key={item} className="bg-white p-4 rounded-lg flex justify-between">
-                  <div className="w-24 h-6 bg-gray-200 rounded"></div>
-                  <div className="w-24 h-6 bg-gray-200 rounded"></div>
+                  {/* <div className="w-24 h-6 bg-gray-200 rounded"></div>
+                  <div className="w-24 h-6 bg-gray-200 rounded"></div> */}
                 </div>
               ))}
             </div>
