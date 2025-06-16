@@ -11,7 +11,7 @@ const laptopSchema = new mongoose.Schema({
   title: { type: String, required: true },
   location: { type: String, required: true },
   description: { type: String },
-  image: { type: String },
+  images: [{ type: String }], // Changed from single image to array
   date: { type: Date, default: Date.now }
 });
 

@@ -1,0 +1,309 @@
+'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
+import {locations} from '../../data/data'
+import { brands } from '../../data/data';
+import {models} from '../../data/data'
+
+export default function CarForm() {
+
+  const [formData, setFormData] = useState({
+    brand: '',
+    model: '',
+    year: '',
+    milage: '',
+    type: '',
+    color: '',
+    doors: '',
+    seat_number: '',
+    outer_condition: '',
+    inner_condition: '',
+    description: '',
+    images: [],
+    location: '',
+    price: '',
+    title: ''
+  });
+
+  const [imageFiles, setImageFiles] = useState([]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+      // Reset model when brand changes
+      ...(name === 'brand' ? { model: '' } : {})
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImageFiles(files);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+  // Add new constants for dropdown options
+  const years = Array.from({ length: 2024 - 1900 + 1 }, (_, i) => 2024 - i);
+  const types = ['Sedan', 'SUV', 'Coupe', 'Hatchback', 'Wagon', 'Van', 'Truck', 'Convertible', 'Sports Car', 'Luxury'];
+  const colors = ['Black', 'White', 'Silver', 'Gray', 'Red', 'Blue', 'Green', 'Yellow', 'Brown', 'Gold', 'Orange', 'Purple', 'Beige', 'Bronze', 'Burgundy', 'Navy'];
+  const doorOptions = [2, 4];
+  const seatOptions = [2, 4, 5, 7, 8, 9];
+  const conditions = ['Excellent', 'Very Good', 'Good', 'Fair', 'Poor'];
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-4">
+      <div className="max-w-6xl mx-auto">
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Column 1 */}
+            <div className="space-y-4 border-r border-gray-200 pr-6">
+              <div>
+                <select
+                  name="brand"
+                  value={formData.brand}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select Brand</option>
+                  {brands.map(brand => (
+                    <option key={brand} value={brand}>{brand}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <select
+                  name="model"
+                  value={formData.model}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                  disabled={!formData.brand}
+                >
+                  <option value="">Select Model</option>
+                  {formData.brand && models[formData.brand].map(model => (
+                    <option key={model} value={model}>{model}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <select
+                  name="year"
+                  value={formData.year}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select Year</option>
+                  {years.map(year => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <input
+                  type="number"
+                  name="milage"
+                  value={formData.milage}
+                  onChange={handleInputChange}
+                  placeholder="Mileage in KM"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Type</option>
+                  {types.map(type => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <select
+                  name="color"
+                  value={formData.color}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Color</option>
+                  {colors.map(color => (
+                    <option key={color} value={color}>{color}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Column 2 */}
+            <div className="space-y-4 border-r border-gray-200 px-6">
+              <div>
+                <select
+                  name="doors"
+                  value={formData.doors}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Number of Doors</option>
+                  {doorOptions.map(num => (
+                    <option key={num} value={num}>{num} Doors</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <select
+                  name="seat_number"
+                  value={formData.seat_number}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Number of Seats</option>
+                  {seatOptions.map(num => (
+                    <option key={num} value={num}>{num} Seats</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <select
+                  name="outer_condition"
+                  value={formData.outer_condition}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Outer Condition</option>
+                  {conditions.map(condition => (
+                    <option key={condition} value={condition}>{condition}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <select
+                  name="inner_condition"
+                  value={formData.inner_condition}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Inner Condition</option>
+                  {conditions.map(condition => (
+                    <option key={condition} value={condition}>{condition}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  placeholder="Description"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+                />
+              </div>
+            </div>
+
+            {/* Column 3 */}
+            <div className="space-y-4 pl-6">
+              <div>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="mt-2 grid grid-cols-5 gap-2">
+                  {imageFiles.map((file, index) => (
+                    <div key={index} className="relative w-12 h-12 bg-gray-200">
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt={`Preview ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <select
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select Location</option>
+                  {locations.map(location => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <input
+                  type="tel"
+                  name="phone_number"
+                  placeholder="Phone Number"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  placeholder="Price in USD"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="Title"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-center">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
