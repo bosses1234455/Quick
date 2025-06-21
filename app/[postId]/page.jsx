@@ -20,7 +20,7 @@ export default function PostPage() {
     // Here you would typically fetch the post data using the id
     // For now, we'll use the mock data from the image
     setPost({
-      title: 'Title',
+      title: 'Title jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj',
       category: 'cars',
       location: 'hama',
       date: '1 day ago',

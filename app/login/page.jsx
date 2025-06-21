@@ -1,6 +1,5 @@
 
 'use client'
-import Image from 'next/image'
 import { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
@@ -9,9 +8,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    console.log('Login attempt with:', email, password)
+    try {
+      // await axios.post()
+    }catch(error) {
+      console.error('Login failed:', error)
+    }
   }
 
   const handleGoogleLogin = () => {
