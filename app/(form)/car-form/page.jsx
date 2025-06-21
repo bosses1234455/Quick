@@ -2,9 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import {locations} from '../../data/data'
-import { brands } from '../../data/data';
-import {models} from '../../data/data'
+import {locations, brands, models, types, years, colors, doorOptions,seatOptions, conditions} from '../../data/data'
 
 export default function CarForm() {
 
@@ -48,13 +46,6 @@ export default function CarForm() {
     console.log(formData);
   };
 
-  // Add new constants for dropdown options
-  const years = Array.from({ length: 2024 - 1900 + 1 }, (_, i) => 2024 - i);
-  const types = ['Sedan', 'SUV', 'Coupe', 'Hatchback', 'Wagon', 'Van', 'Truck', 'Convertible', 'Sports Car', 'Luxury'];
-  const colors = ['Black', 'White', 'Silver', 'Gray', 'Red', 'Blue', 'Green', 'Yellow', 'Brown', 'Gold', 'Orange', 'Purple', 'Beige', 'Bronze', 'Burgundy', 'Navy'];
-  const doorOptions = [2, 4];
-  const seatOptions = [2, 4, 5, 7, 8, 9];
-  const conditions = ['Excellent', 'Very Good', 'Good', 'Fair', 'Poor'];
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -64,7 +55,9 @@ export default function CarForm() {
             {/* Column 1 */}
             <div className="space-y-4 border-r border-gray-200 pr-6">
               <div>
+                <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">Car Brand</label>
                 <select
+                  id="brand"
                   name="brand"
                   value={formData.brand}
                   onChange={handleInputChange}
@@ -79,7 +72,9 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-1">Car Model</label>
                 <select
+                  id="model"
                   name="model"
                   value={formData.model}
                   onChange={handleInputChange}
@@ -95,7 +90,9 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-1">Manufacturing Year</label>
                 <select
+                  id="year"
                   name="year"
                   value={formData.year}
                   onChange={handleInputChange}
@@ -110,19 +107,23 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="milage" className="block text-sm font-medium text-gray-700 mb-1">Mileage (KM)</label>
                 <input
+                  id="milage"
                   type="number"
                   name="milage"
                   value={formData.milage}
                   onChange={handleInputChange}
-                  placeholder="Mileage in KM"
+                  placeholder="Enter mileage in kilometers"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
               <div>
+                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Car Type</label>
                 <select
+                  id="type"
                   name="type"
                   value={formData.type}
                   onChange={handleInputChange}
@@ -136,7 +137,9 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-1">Car Color</label>
                 <select
+                  id="color"
                   name="color"
                   value={formData.color}
                   onChange={handleInputChange}
@@ -153,7 +156,9 @@ export default function CarForm() {
             {/* Column 2 */}
             <div className="space-y-4 border-r border-gray-200 px-6">
               <div>
+                <label htmlFor="doors" className="block text-sm font-medium text-gray-700 mb-1">Number of Doors</label>
                 <select
+                  id="doors"
                   name="doors"
                   value={formData.doors}
                   onChange={handleInputChange}
@@ -167,7 +172,9 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="seat_number" className="block text-sm font-medium text-gray-700 mb-1">Number of Seats</label>
                 <select
+                  id="seat_number"
                   name="seat_number"
                   value={formData.seat_number}
                   onChange={handleInputChange}
@@ -181,7 +188,9 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="outer_condition" className="block text-sm font-medium text-gray-700 mb-1">Exterior Condition</label>
                 <select
+                  id="outer_condition"
                   name="outer_condition"
                   value={formData.outer_condition}
                   onChange={handleInputChange}
@@ -195,7 +204,9 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="inner_condition" className="block text-sm font-medium text-gray-700 mb-1">Interior Condition</label>
                 <select
+                  id="inner_condition"
                   name="inner_condition"
                   value={formData.inner_condition}
                   onChange={handleInputChange}
@@ -209,12 +220,14 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Car Description</label>
                 <textarea
+                  id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  placeholder="Description"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+                  placeholder="Enter detailed description of the car"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-25"
                 />
               </div>
             </div>
@@ -222,12 +235,16 @@ export default function CarForm() {
             {/* Column 3 */}
             <div className="space-y-4 pl-6">
               <div>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>
                 <input
+                  id="images"
                   type="file"
                   multiple
                   accept="image/*"
                   onChange={handleImageChange}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                  max="8"
                 />
                 <div className="mt-2 grid grid-cols-5 gap-2">
                   {imageFiles.map((file, index) => (
@@ -244,7 +261,9 @@ export default function CarForm() {
               </div>
 
               <div>
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                 <select
+                  id="location"
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
@@ -258,7 +277,7 @@ export default function CarForm() {
                 </select>
               </div>
 
-              <div>
+              {/* <div>
                 <input
                   type="tel"
                   name="phone_number"
@@ -266,22 +285,26 @@ export default function CarForm() {
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
-              </div>
+              </div> */}
 
               <div>
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price (USD)</label>
                 <input
+                  id="price"
                   type="number"
                   name="price"
                   value={formData.price}
                   onChange={handleInputChange}
-                  placeholder="Price in USD"
+                  placeholder="Enter price in USD"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
               <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Post Title</label>
                 <input
+                  id="title"
                   type="text"
                   name="title"
                   value={formData.title}

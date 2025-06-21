@@ -2,21 +2,19 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { locations } from '../../data/data'
-import { lbrands } from '../../data/data';
+import {locations, bookTypes, bookStates} from '../../data/data'
 
-export default function LaptopForm() {
+export default function BookForm() {
   const [formData, setFormData] = useState({
     title: '',
-    brand: '',
-    price: '',
-    processor: '',
-    ram: '',
-    storage: '',
-    gpu: '',
-    location: '',
+    book_title:'',
+    name: '',
+    type: '',
     description: '',
-    image: null
+    price: '',
+    location: '',
+    image: null,
+    state: ''
   });
 
   const [imageFile, setImageFile] = useState(null);
@@ -54,96 +52,67 @@ export default function LaptopForm() {
             {/* Column 1 */}
             <div className="space-y-4">
               <div>
+                <label htmlFor="book_title" className="block text-sm font-medium text-gray-700 mb-1">Book Title</label>
                 <input
+                  id="book_title"
                   type="text"
-                  name="title"
-                  value={formData.title}
+                  name="book_title"
+                  value={formData.book_title}
                   onChange={handleInputChange}
-                  placeholder="Title"
+                  placeholder="Enter the title of the book"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
               <div>
-                <select
-                  name="brand"
-                  value={formData.brand}
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Author Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
+                  placeholder="Enter the author's name"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Book Category</label>
+                <select
+                  id="type"
+                  name="type"
+                  value={formData.type}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Select Brand</option>
-                  {lbrands.map(brand => (
-                    <option key={brand} value={brand}>{brand}</option>
+                  <option value="">Select Book Type</option>
+                  {bookTypes.map(type => (
+                    <option key={type} value={type}>{type}</option>
                   ))}
                 </select>
               </div>
 
               <div>
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price (USD)</label>
                 <input
+                  id="price"
                   type="number"
                   name="price"
                   value={formData.price}
                   onChange={handleInputChange}
-                  placeholder="Price in USD"
+                  placeholder="Enter price in USD"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
               <div>
-                <input
-                  type="text"
-                  name="processor"
-                  value={formData.processor}
-                  onChange={handleInputChange}
-                  placeholder="Processor (e.g., Intel Core i7)"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  name="ram"
-                  value={formData.ram}
-                  onChange={handleInputChange}
-                  placeholder="RAM (e.g., 16GB)"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Column 2 */}
-            <div className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  name="storage"
-                  value={formData.storage}
-                  onChange={handleInputChange}
-                  placeholder="Storage (e.g., 512GB SSD)"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  name="gpu"
-                  value={formData.gpu}
-                  onChange={handleInputChange}
-                  placeholder="GPU (Optional)"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                 <select
+                  id="location"
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
@@ -156,26 +125,64 @@ export default function LaptopForm() {
                   ))}
                 </select>
               </div>
+            </div>
 
+            {/* Column 2 */}
+            <div className="space-y-4">
               <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Book Description</label>
                 <textarea
+                  id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  placeholder="Description (Optional)"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"
+                  placeholder="Enter a detailed description of the book"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-29"
                 />
               </div>
 
               <div>
+                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">Book Condition</label>
+                <select
+                  id="state"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Book Condition</option>
+                  {bookStates.map(state => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Post Title</label>
                 <input
+                  id="title"
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="Enter a title for your post"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Book Image</label>
+                <input
+                  id="image"
                   type="file"
                   onChange={handleImageChange}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   accept="image/*"
+                  required
                 />
                 {imageFile && (
-                  <div className="mt-2 relative h-32 w-full border rounded">
+                  <div className="mt-2 relative h-48 w-full border rounded">
                     <Image
                       src={formData.image}
                       alt="Preview"

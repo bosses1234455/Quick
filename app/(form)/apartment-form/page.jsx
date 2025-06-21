@@ -54,25 +54,29 @@ export default function ApartmentForm() {
             {/* Column 1 */}
             <div className="space-y-4">
               <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Apartment Title</label>
                 <input
+                  id="title"
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
-                  placeholder="Title"
+                  placeholder="Enter a descriptive title"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
               <div>
+                <label htmlFor="floor" className="block text-sm font-medium text-gray-700 mb-1">Floor Number</label>
                 <select
+                  id="floor"
                   name="floor"
                   value={formData.floor}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Floor Number</option>
+                  <option value="">Select Floor</option>
                   {floorOptions.map(num => (
                     <option key={num} value={num}>{num}{num === 1 ? 'st' : num === 2 ? 'nd' : num === 3 ? 'rd' : 'th'} Floor</option>
                   ))}
@@ -80,7 +84,9 @@ export default function ApartmentForm() {
               </div>
 
               <div>
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                 <select
+                  id="location"
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
@@ -95,7 +101,9 @@ export default function ApartmentForm() {
               </div>
 
               <div>
+                <label htmlFor="room_count" className="block text-sm font-medium text-gray-700 mb-1">Number of Rooms</label>
                 <select
+                  id="room_count"
                   name="room_count"
                   value={formData.room_count}
                   onChange={handleInputChange}
@@ -110,14 +118,16 @@ export default function ApartmentForm() {
               </div>
 
               <div>
+                <label htmlFor="bathroom_count" className="block text-sm font-medium text-gray-700 mb-1">Number of Bathrooms</label>
                 <select
+                  id="bathroom_count"
                   name="bathroom_count"
                   value={formData.bathroom_count}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
-                  <option value="">Number of Bathrooms</option>
+                  <option value="">Select Number of Bathrooms</option>
                   {bathroomOptions.map(num => (
                     <option key={num} value={num}>{num} Bathroom{num !== 1 ? 's' : ''}</option>
                   ))}
@@ -125,12 +135,14 @@ export default function ApartmentForm() {
               </div>
 
               <div>
+                <label htmlFor="space" className="block text-sm font-medium text-gray-700 mb-1">Apartment Space</label>
                 <input
+                  id="space"
                   type="number"
                   name="space"
                   value={formData.space}
                   onChange={handleInputChange}
-                  placeholder="Space in m²"
+                  placeholder="Enter space in square meters"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -140,23 +152,28 @@ export default function ApartmentForm() {
             {/* Column 2 */}
             <div className="space-y-4">
               <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Apartment Description</label>
                 <textarea
+                  id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  placeholder="Description"
+                  placeholder="Enter detailed description of the apartment"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-26"
                 />
               </div>
 
               <div>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Apartment Images</label>
                 <input
+                  id="images"
                   type="file"
                   multiple
                   onChange={handleImageChange}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   accept="image/*"
                   max="8"
+                  required
                 />
                 <p className="text-sm text-gray-500 mt-1">Upload up to 8 images</p>
                 <div className="mt-2 grid grid-cols-4 gap-4">
@@ -188,7 +205,9 @@ export default function ApartmentForm() {
               </div>
 
               <div>
+                <label htmlFor="inner_condition" className="block text-sm font-medium text-gray-700 mb-1">Interior Condition</label>
                 <select
+                  id="inner_condition"
                   name="inner_condition"
                   value={formData.inner_condition}
                   onChange={handleInputChange}
@@ -202,12 +221,14 @@ export default function ApartmentForm() {
               </div>
 
               <div>
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price (USD)</label>
                 <input
+                  id="price"
                   type="number"
                   name="price"
                   value={formData.price}
                   onChange={handleInputChange}
-                  placeholder="Price in USD"
+                  placeholder="Enter price in USD"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -215,13 +236,14 @@ export default function ApartmentForm() {
 
               <div className="flex items-center space-x-2">
                 <input
+                  id="furnished"
                   type="checkbox"
                   name="furnished"
                   checked={formData.furnished}
                   onChange={handleInputChange}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label>Furnished</label>
+                <label htmlFor="furnished" className="text-sm font-medium text-gray-700">Furnished</label>
               </div>
             </div>
           </div>
