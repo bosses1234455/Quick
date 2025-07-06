@@ -1,4 +1,5 @@
 import { mongooseConnect } from './mongoose';
+import { NextResponse } from 'next/server';
 
 export function withDB(handler) {
   return async (req, res) => {
@@ -7,7 +8,10 @@ export function withDB(handler) {
       return await handler(req, res);
     } catch (error) {
       console.error('Database error:', error);
-      return res.status(500).json({ error: 'Database connection failed' });
+      return NextResponse.json(
+        { error: 'Database connection failed' },
+        { status: 500 }
+      );
     }
   };
 }

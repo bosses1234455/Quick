@@ -1,86 +1,128 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const withDB = require('../middleware/withDB');
+import User from '@/models/User'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import { NextResponse } from 'next/server';
+import { OAuth2Client } from 'google-auth-library';
 
-const login =withDB(async (req, res) => {
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const login = async (req) => {
   try {
-    const { email, password } = req.body;
+    const body = await req.json();
+    const { mail, password, googleToken } = body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+    let user;
+
+    if (googleToken) {
+      // ----- Google login flow -----
+      const ticket = await client.verifyIdToken({
+        idToken: googleToken,
+        audience: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+      const { email } = payload;
+
+      user = await User.findOne({ mail: email });
+
+      if (!user) {
+        return NextResponse.json({ error: 'No such email registered' }, { status: 401 });
+      }
+
+    } else {
+      
+      if (!mail || !password) {
+        return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
+      }
+
+      user = await User.findOne({ mail });
+      if (!user) {
+        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      }
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
+    
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
-    // Set the JWT token in an HTTP-only cookie
-    res.cookie('token', token, {
-      httpOnly: true, // Prevents JavaScript access to the cookie
-      secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-      sameSite: 'strict', // Protects against CSRF
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours in milliseconds
-    });
-
-    res.status(200).json({
+    
+    const response = NextResponse.json({
       user: {
         id: user._id,
-        name: user.name,
-        mail: user.mail
+        name: user.username,
+        mail: user.mail,
       }
+    }, { status: 200 });
+
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60, // 24 hours
     });
+
+    return response;
 
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Server error' });
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
-});
+};
 
-const register = withDB(async (req,res) => {
+const register = async (req) => {
     try {
-        const {username,mail,password} = req.body;
+        const {username,mail,password,phone_num} = await req.json(); 
 
-        const existingUser = await User.findOne({mail});
+        const existingUser = await  User.findOne({ mail }).exec();
         if(existingUser){
-            return res.status(400).json({error:'User already exists'});
+          return NextResponse.json(
+            { error: 'User already exists' },
+            { status: 400 }
+        );
         }
         const hashedPassword = await bcrypt.hash(password,10);
         const user = await User.create({
             username,
             mail,
+            phone_num,
             hashed_password: hashedPassword
         })
         const token = jwt.sign(
             { userId: user._id },
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET || "my-big-secret",
             { expiresIn: '24h' }
           );
-          res.cookie('token', token, {
-            httpOnly: true, // Prevents JavaScript access to the cookie
-            secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-            sameSite: 'strict', // Protects against CSRF
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours in milliseconds
-          });
-          res.status(201).json({
+          const response = NextResponse.json({
             user: {
-              id: user._id,
-              name: user.name,
-              mail: user.mail
+                id: user._id,
+                name: user.username,
+                mail: user.mail
             }
-          });
+        }, { status: 201 });
+        response.cookies.set('token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          maxAge: 24 * 60 * 60 // 24 hours in seconds
+      });
+
+      return response;
     } catch (error) {
-        console.error('Registration error:', error);
+      console.error('Registration error:', error);
+      return NextResponse.json(
+          { msg: "server error" },
+          { status: 500 }
+      );
     }
-});
+};
 
 module.exports = {
   login,

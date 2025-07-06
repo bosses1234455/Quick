@@ -1,27 +1,57 @@
 'use client'
-import Image from 'next/image'
 import { useState } from 'react'
-import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function RegisterPage() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
 
-  const handleRegister = (e) => {
-    e.preventDefault()
-    console.log('Register attempt with:', name, email, password)
-  }
+  const {resError,setResError} = useState('');
+  const schema = Yup.object().shape({
+    name: Yup.string().required(),
+    mail: Yup.string().required().email(),
+    password: Yup.string().required().min(7),
+    phone_num: Yup.string().required(),
+  });
 
-  const handleGoogleRegister = () => {
-    console.log('Google register attempt')
-  }
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      mail: "",
+      password: "",
+      phone_num: ""
+    },
+
+    validationSchema: schema,
+
+    onSubmit: async ({ name, mail, password,phone_num }) => {
+      const res = await fetch('/api/auth/register',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: name,mail, password,phone_num }),
+      })
+      if(res.ok) {
+        console.log('registered');
+      }
+      else {
+        console.log(res);
+      }
+    },
+  });
+
+
+  const { errors, touched, values, handleChange, handleSubmit,setFieldValue } = formik;
+
 
   return (
     <div className="min-h-screen flex flex-col items-center p-4">
       <div className="bg-gray-200 p-8 rounded-lg w-full max-w-md">
-        <form onSubmit={handleRegister} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-2">
               Name
@@ -29,12 +59,14 @@ export default function RegisterPage() {
             <input
               type="text"
               id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={values.name}
+              onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
+              name='name'
               placeholder='John Doe'
             />
+            {errors.name && touched.name && <span className='text-red-600'>{errors.name}</span>}
           </div>
 
           <div>
@@ -43,13 +75,15 @@ export default function RegisterPage() {
             </label>
             <input
               type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="mail"
+              name='mail'
+              value={values.mail}
+              onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
               placeholder='example@gmail.com'
             />
+            {errors.mail && touched.mail && <span className='text-red-600'>{errors.mail}</span>}
           </div>
 
           <div>
@@ -59,12 +93,28 @@ export default function RegisterPage() {
             <input
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name='password'
+              value={values.password}
+              onChange={handleChange}
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
               placeholder='e.g: 12@jawad*yegbdjash'
             />
+            {errors.password && touched.password && <span className='text-red-600'>{errors.password}</span>}
+          </div>
+          <div>
+            <label htmlFor="phone_num" className="block text-sm font-medium mb-2">
+              Phone number
+            </label>
+            <PhoneInput
+                    country={'sy'}
+                    onlyCountries={['sy']}
+                    value={values.phone_num}
+                    name="phone_num"
+                    id="phone_num"
+                    onChange={phone => setFieldValue('phone_num',phone)}
+              />
+              {errors.phone_num && touched.phone_num && <span className='text-red-600'>{errors.phone_num}</span>}
           </div>
 
           <button
@@ -75,24 +125,6 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gray-200 text-gray-500">or</span>
-            </div>
-          </div>
-        </div>
-
-        <button
-          onClick={handleGoogleRegister}
-          className="mt-6 w-full cursor-pointer bg-white text-gray-700 py-2 px-4 rounded-full border border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2"
-        >
-          <FcGoogle size={20} />
-          continue with google
-        </button>
         <Link href={'/login'}
          className="block text-center mt-4 text-sm text-gray-600 hover:text-indigo-600 transition-colors"
         >

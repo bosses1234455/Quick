@@ -1,8 +1,14 @@
 
 'use client'
 import { useState } from 'react'
-import { FcGoogle } from 'react-icons/fc'
+// import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
+// import GoogleLoginButton from '../components/GoogleLoginButton'
+import dynamic from 'next/dynamic';
+
+const GoogleLoginButton = dynamic(() => import('../components/GoogleLoginButton'), {
+  ssr: false,
+});
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -15,10 +21,6 @@ export default function LoginPage() {
     }catch(error) {
       console.error('Login failed:', error)
     }
-  }
-
-  const handleGoogleLogin = () => {
-    console.log('Google login attempt')
   }
 
   return (
@@ -74,13 +76,10 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <button
-          onClick={handleGoogleLogin}
-          className="mt-6 w-full cursor-pointer bg-white text-gray-700 py-2 px-4 rounded-full border border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2"
-        >
-          <FcGoogle size={20} />
-          continue with google
-        </button>
+          <div className='pt-6'>
+            <GoogleLoginButton />
+          </div>
+
         <Link 
           href={'/register'} 
           className="block text-center mt-4 text-sm text-gray-600 hover:text-indigo-600 transition-colors"

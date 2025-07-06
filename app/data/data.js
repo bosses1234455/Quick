@@ -100,7 +100,10 @@ export const brands = [
   'GAC', 'Mahindra', 'Maruti Suzuki', 'Mitsuoka', 'Roewe', 'Seres', 'Troller',
   'Venturi', 'Wuling', 'Zhongtong', 'GR', 'Nismo', 'STI', 'Aion', 'Hongqi',
   'IM Motors', 'Other'
-];
+].map(brand => ({
+  value: brand.toLowerCase().replace(/\s+/g, '-'), // Convert to URL-friendly format
+  label: brand
+}));;
 
 // export const models = {
 //     Toyota: ['Camry', 'Corolla', 'RAV4', 'Highlander'],
