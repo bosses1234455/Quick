@@ -15,4 +15,11 @@ const laptopSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Laptop', laptopSchema);
+let Laptop;
+try {
+  Laptop = mongoose.model('Laptop');
+} catch {
+  Laptop = mongoose.model('Laptop', laptopSchema);
+}
+
+export default Laptop;

@@ -14,4 +14,11 @@ const bookSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Book', bookSchema);
+let Book;
+try {
+  Book = mongoose.model('Book');
+} catch {
+  Book = mongoose.model('Book', bookSchema);
+}
+
+export default Book;

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import {locations} from '../data/data'
+import axios from 'axios';
 
 
 export default function ApartmentForm() {
@@ -14,7 +15,6 @@ export default function ApartmentForm() {
     images: [],
     room_count: '',
     bathroom_count: '',
-    level: '',
     space: '',
     inner_condition: '',
     floor: '',
@@ -43,8 +43,20 @@ export default function ApartmentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-  };
+    const res = await fetch('/api/apartments',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+    if(res.ok) {
+      console.log('success')
+    }
+    else {
+      console.log(res);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">

@@ -20,4 +20,11 @@ const carSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Car', carSchema);
+let Car;
+try {
+  Car = mongoose.model('Car');
+} catch {
+  Car = mongoose.model('Car', carSchema);
+}
+
+export default Car;

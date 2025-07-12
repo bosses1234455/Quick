@@ -9,7 +9,7 @@ const apartmentSchema = new mongoose.Schema({
   images: [{ type: String }],
   room_count: { type: Number, required: true },
   bathroom_count: { type: Number, required: true },
-  level: { type: Number },
+  // level: { type: Number },
   space: { type: Number, required: true },
   inner_condition: { type: String },
   floor: { type: Number },
@@ -18,4 +18,11 @@ const apartmentSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Apartment', apartmentSchema);
+let Apartment;
+try {
+  Apartment = mongoose.model('Apartment');
+} catch {
+  Apartment = mongoose.model('Apartment', apartmentSchema);
+}
+
+export default Apartment;
