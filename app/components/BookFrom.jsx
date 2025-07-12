@@ -137,7 +137,7 @@ export default function BookForm() {
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Enter a detailed description of the book"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-29"
+                  className="w-full h-28 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 />
               </div>
 

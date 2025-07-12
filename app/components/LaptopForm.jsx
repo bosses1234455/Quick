@@ -182,7 +182,7 @@ export default function LaptopForm() {
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Enter a detailed description of the laptop"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-25"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-25 resize-none"
                 />
               </div>
 

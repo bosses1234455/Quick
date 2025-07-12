@@ -159,7 +159,7 @@ export default function ApartmentForm() {
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Enter detailed description of the apartment"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-26"
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-26 resize-none"
                 />
               </div>
 

@@ -3,27 +3,28 @@ import ApartmentForm from "../../components/ApartmentForm";
 import BookForm from "../../components/BookFrom";
 import CarForm from "../../components/CarForm"
 import LaptopForm from "../../components/LaptopForm";
+import React from "react";
 
 
 function page({params}) {
     
-    const {cat_name} = params;
-    const adType = cat_name.replace(/-/g, ' ');
+    const {cat_name} = React.use(params);
+    const adType = cat_name.replace(/-/g, ' ').toLowerCase();
     console.log(adType);
     
+    
   switch(adType) {
-    case "car": 
+    case "cars": 
         return <CarForm />
         
-    case "laptop":
+    case "laptops":
         return <LaptopForm />
         
-    case "book":
+    case "books":
         return <BookForm />
         
-    case "apartment_sell":
+    case "apartment":
         return <ApartmentForm />
-        
   }
 }
 
