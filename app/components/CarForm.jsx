@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Select from 'react-select';
-import {locations, brands, models, types, years, colors, doorOptions,seatOptions, conditions} from '../data/data'
+import { locations, brands as brandOptions, models, types, years, colors, doorOptions, seatOptions, conditions } from '../data/data'
+
 
 export default function CarForm() {
 
@@ -37,6 +38,21 @@ export default function CarForm() {
     }));
   };
 
+  const handleBrandChange = (selectedOption) => {
+    setFormData(prev => ({
+      ...prev,
+      brand: selectedOption?.value || '', // Store URL-friendly value
+      model: '' // Reset model when brand changes
+    }));
+  };
+
+  const handleModelChange = (selectedOption) => {
+    setFormData(prev => ({
+      ...prev,
+      model: selectedOption?.value || '' // Store URL-friendly model value
+    }));
+  };
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImageFiles(files);
@@ -56,46 +72,38 @@ export default function CarForm() {
             {/* Column 1 */}
             <div className="space-y-4 border-r border-gray-200 pr-6">
               <div>
-                <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">Car Brand</label>
-                {/* <select
-                  id="brand"
-                  name="brand"
-                  value={formData.brand}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select Brand</option> */}
-                  
-                  {/* {brands.map(brand => (
-                    <option key={brand} value={brand}>{brand}</option>
-                  ))}
-                </select> */}
-                <Select 
-                  options={brands}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Car Brand</label>
+                  <Select
+                    options={brandOptions}
+                    value={brandOptions.find(option => option.value === formData.brand)}
+                    onChange={handleBrandChange}
+                    isSearchable
+                    placeholder="Search brand..."
+                    className="basic-single"
+                    classNamePrefix="select"
+                  />
+                </div>
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Car Model</label>
+                <Select
+                  options={formData.brand ?
+                    models[brandOptions.find(b => b.value === formData.brand)?.label]?.map(model => ({
+                      value: model.toLowerCase().replace(/\s+/g, '-'),
+                      label: model
+                    }))
+                    : []}
+                  value={formData.brand && formData.model ?
+                    { value: formData.model, label: formData.model.replace(/-/g, ' ') }
+                    : null}
+                  onChange={handleModelChange}
                   isSearchable
-                  placeholder="search brand"
+                  placeholder={formData.brand ? "Select model..." : "First select a brand"}
+                  isDisabled={!formData.brand}
                   className="basic-single"
                   classNamePrefix="select"
                 />
-              </div>
-
-              <div>
-                <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-1">Car Model</label>
-                <select
-                  id="model"
-                  name="model"
-                  value={formData.model}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                  disabled={!formData.brand}
-                >
-                  <option value="">Select Model</option>
-                  {formData.brand && models[formData.brand].map(model => (
-                    <option key={model} value={model}>{model}</option>
-                  ))}
-                </select>
               </div>
 
               <div>
@@ -285,16 +293,6 @@ export default function CarForm() {
                   ))}
                 </select>
               </div>
-
-              {/* <div>
-                <input
-                  type="tel"
-                  name="phone_number"
-                  placeholder="Phone Number"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div> */}
 
               <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price (USD)</label>

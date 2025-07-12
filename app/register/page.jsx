@@ -45,7 +45,7 @@ export default function RegisterPage() {
   });
 
 
-  const { errors, touched, values, handleChange, handleSubmit,setFieldValue } = formik;
+  const { errors, touched, values, handleChange,handleBlur, handleSubmit,setFieldValue } = formik;
 
 
   return (
@@ -61,6 +61,7 @@ export default function RegisterPage() {
               id="name"
               value={values.name}
               onChange={handleChange}
+              onBlur={handleBlur}
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
               name='name'
@@ -79,6 +80,7 @@ export default function RegisterPage() {
               name='mail'
               value={values.mail}
               onChange={handleChange}
+              onBlur={handleBlur}
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
               placeholder='example@gmail.com'
@@ -96,6 +98,7 @@ export default function RegisterPage() {
               name='password'
               value={values.password}
               onChange={handleChange}
+              onBlur={handleBlur}
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
               placeholder='e.g: 12@jawad*yegbdjash'

@@ -1,7 +1,9 @@
 'use client';
 import { useEffect } from 'react';
+import {useRouter} from "next/navigation"
 
 export default function GoogleLoginButton() {
+  const router = useRouter();
   useEffect(() => {
     
     const initializeGoogle = () => {
@@ -23,7 +25,7 @@ export default function GoogleLoginButton() {
 
     const handleGoogleLogin = async (response) => {
       try {
-        const res = await fetch('/api/login', {
+        const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -34,7 +36,7 @@ export default function GoogleLoginButton() {
         const data = await res.json();
         if (res.ok) {
           console.log('Google login successful:', data);
-          // redirect or store user info
+          router.push('/')
         } else {
           alert(data.error);
         }

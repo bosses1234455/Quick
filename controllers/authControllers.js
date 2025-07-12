@@ -15,6 +15,7 @@ export const login = async (req) => {
 
     if (googleToken) {
       // ----- Google login flow -----
+      
       const ticket = await client.verifyIdToken({
         idToken: googleToken,
         audience: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
@@ -36,11 +37,12 @@ export const login = async (req) => {
       }
 
       user = await User.findOne({ mail });
+      
       if (!user) {
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       }
 
-      const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, user.hashed_password);
       if (!isMatch) {
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       }
@@ -49,7 +51,7 @@ export const login = async (req) => {
     
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || "my-big-secret",
       { expiresIn: '24h' }
     );
 
@@ -77,7 +79,7 @@ export const login = async (req) => {
   }
 };
 
-const register = async (req) => {
+export const register = async (req) => {
     try {
         const {username,mail,password,phone_num} = await req.json(); 
 
@@ -122,9 +124,4 @@ const register = async (req) => {
           { status: 500 }
       );
     }
-};
-
-module.exports = {
-  login,
-  register
 };

@@ -1,45 +1,72 @@
 
 'use client'
 import { useState } from 'react'
-// import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-// import GoogleLoginButton from '../components/GoogleLoginButton'
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
 const GoogleLoginButton = dynamic(() => import('../components/GoogleLoginButton'), {
   ssr: false,
 });
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const router = useRouter();
 
-  const handleLogin = async (e) => {
-    e.preventDefault()
-    try {
-      // await axios.post()
-    }catch(error) {
-      console.error('Login failed:', error)
-    }
-  }
+  const schema = Yup.object().shape({
+    mail: Yup.string().required().email(),
+    password: Yup.string().required().min(7),
+  });
+  const formik = useFormik({
+    initialValues: {
+      mail: "",
+      password: "",
+    },
 
+    validationSchema: schema,
+
+    onSubmit: async ({  mail, password }) => {
+
+      const res = await fetch('/api/auth/login',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mail, password }),
+      })
+      if(res.ok) {
+        router.push('/');
+      }
+      else {
+        console.log(res);
+      }
+    },
+  });
+
+
+  const { errors, touched, values, handleChange,handleBlur, handleSubmit } = formik;
+  
   return (
     <div className="min-h-screen flex flex-col items-center p-4">
       <div className="bg-gray-200 p-8 rounded-lg w-full max-w-md">
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-2">
               Email
             </label>
             <input
               type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="mail"
+              value={values.mail}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name='mail'
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
               placeholder='example@gmail.com'
             />
+            {errors.mail && touched.mail && <span className='text-red-600'>{errors.mail}</span>}
           </div>
 
           <div>
@@ -49,12 +76,15 @@ export default function LoginPage() {
             <input
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
+              name='password'
               placeholder='e.g: 12@jawad*yegbdjash'
             />
+            {errors.password && touched.password && <span className='text-red-600'>{errors.password}</span>}
           </div>
 
           <button
