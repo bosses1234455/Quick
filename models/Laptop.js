@@ -11,7 +11,7 @@ const laptopSchema = new mongoose.Schema({
   title: { type: String, required: true },
   location: { type: String, required: true },
   description: { type: String },
-  images: [{ type: String }],
+  images: [{ type: String, required: true }],
   date: { type: Date, default: Date.now }
 });
 

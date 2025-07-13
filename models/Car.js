@@ -13,7 +13,7 @@ const carSchema = new mongoose.Schema({
   outer_condition: { type: String },
   inner_condition: { type: String },
   description: { type: String },
-  images: [{ type: String }],
+  images: [{ type: String ,required: true}],
   location: { type: String, required: true },
   price: { type: Number, required: true },
   title: { type: String, required: true },

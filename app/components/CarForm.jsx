@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Select from 'react-select';
 import { locations, brands as brandOptions, models, types, years, colors, doorOptions, seatOptions, conditions } from '../data/data'
-
+import {jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 export default function CarForm() {
 
@@ -26,7 +27,12 @@ export default function CarForm() {
     title: ''
   });
 
-  const [imageFiles, setImageFiles] = useState([]);
+  
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, images: e.target.files });
+    setImageFiles([...e.target.files]);
+  };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +43,7 @@ export default function CarForm() {
       ...(name === 'brand' ? { model: '' } : {})
     }));
   };
+  const [imageFiles,setImageFiles] = useState([]);
 
   const handleBrandChange = (selectedOption) => {
     setFormData(prev => ({
@@ -53,14 +60,39 @@ export default function CarForm() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImageFiles(files);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      const formDataToSend = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'images') {
+          formDataToSend.append(key, value);
+        }
+      });
+
+      if (formData.images) {
+        for (let i = 0; i < formData.images.length; i++) {
+          formDataToSend.append('images', formData.images[i]);
+        }
+      }
+      const cookie = Cookies.get('token');
+      
+      const seller_id = jwtDecode(cookie);
+      
+      formDataToSend.set('seller_id', seller_id.userId);
+
+      const res = await fetch('/api/cars',{
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      if(!res.ok) {
+        console.log("failed");  
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
@@ -258,7 +290,7 @@ export default function CarForm() {
                   type="file"
                   multiple
                   accept="image/*"
-                  onChange={handleImageChange}
+                  onChange={handleFileChange}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                   max="8"

@@ -3,11 +3,51 @@ import Car from '@/models/Car'
 import Laptop from '@/models/Laptop'
 import Apartment from '@/models/Apartment'
 import { NextResponse } from 'next/server'
+import { writeFile } from 'fs/promises';
+import path from 'path';
 
 export const postCar = async (req) => {
     try {
-        const data = await req.json()
+        const formData = await req.formData();
+        const files = formData.getAll('images');
         
+        const uploadDir = path.join(process.cwd(), 'public/uploads');
+        const imageUrls = [];
+
+        for (const file of files) {
+            const bytes = await file.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+            
+            // Create a unique filename
+            const filename = `${Date.now()}-${file.name}`;
+            const filepath = path.join(uploadDir, filename);
+            
+            // Save the file
+            await writeFile(filepath, buffer);
+            imageUrls.push(`/uploads/${filename}`);
+        }
+
+        // Get other form data
+        const data = {
+            seller_id: formData.get('seller_id'),
+            brand: formData.get('brand'),
+            model: formData.get('model'),
+            year: formData.get('year'),
+            milage: formData.get('milage'),
+            type: formData.get('type'),
+            color: formData.get('color'),
+            doors: formData.get('doors'),
+            seat_number: formData.get('seat_number'),
+            outer_condition: formData.get('outer_condition'),
+            inner_condition: formData.get('inner_condition'),
+            description: formData.get('description'),
+            location: formData.get('location'),
+            price: formData.get('price'),
+            title: formData.get('title'),
+            images: imageUrls
+        };
+
+        // Validate required fields
         const requiredFields = ['seller_id', 'brand', 'model', 'year', 'milage', 'type', 'color', 'doors', 'seat_number', 'outer_condition', 'inner_condition', 'description', 'images', 'location', 'price', 'title'];
         const missingFields = requiredFields.filter(field => !data[field]);
 
@@ -15,22 +55,22 @@ export const postCar = async (req) => {
             return NextResponse.json(
                 { error: `Missing fields: ${missingFields.join(', ')}` },
                 { status: 400 }
-            )
+            );
         }
 
         const car = await Car.create(data);
         return NextResponse.json(
             { success: true, message: 'Data saved successfully!', car },
             { status: 201 }
-        )
+        );
     } catch (err) {
         console.error('Car creation error:', err);
         return NextResponse.json(
             { error: 'Failed to save data', details: err.message },
             { status: 500 }
-        )
+        );
     }
-}
+};
 
 export const postLaptop = async (req) => {
     try {

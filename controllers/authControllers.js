@@ -65,7 +65,7 @@ export const login = async (req) => {
     }, { status: 200 });
 
     response.cookies.set('token', token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 24 * 60 * 60, // 24 hours
@@ -110,7 +110,7 @@ export const register = async (req) => {
             }
         }, { status: 201 });
         response.cookies.set('token', token, {
-          httpOnly: true,
+          httpOnly: false,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
           maxAge: 24 * 60 * 60 // 24 hours in seconds

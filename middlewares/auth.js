@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import User from '@/models/User';
-import { withDB } from './withDB';
 
-export const auth = withDB(async (req) => {
+export const auth = (handler) => async (req) => {
   try {
     // Get token from cookies
     const token = req.cookies.get('token')?.value;
@@ -30,7 +29,7 @@ export const auth = withDB(async (req) => {
     // Store user in the request
     req.user = user;
 
-    return NextResponse.next();
+    return handler(req);
   } catch (error) {
     console.error('Auth middleware error:', error);
     return NextResponse.json(
@@ -38,4 +37,4 @@ export const auth = withDB(async (req) => {
       { status: 401 }
     );
   }
-});
+};
