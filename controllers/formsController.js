@@ -5,29 +5,32 @@ import Apartment from '@/models/Apartment'
 import { NextResponse } from 'next/server'
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import { processUploads } from '@/middlewares/upload'
 
 export const postCar = async (req) => {
     try {
-        const formData = await req.formData();
-        const files = formData.getAll('images');
+        // const formData = await req.formData();
+        // const files = formData.getAll('images');
         
-        const uploadDir = path.join(process.cwd(), 'public/uploads');
-        const imageUrls = [];
+        // const uploadDir = path.join(process.cwd(), 'public/uploads');
+        // const imageUrls = [];
 
-        for (const file of files) {
-            const bytes = await file.arrayBuffer();
-            const buffer = Buffer.from(bytes);
+        // for (const file of files) {
+        //     const bytes = await file.arrayBuffer();
+        //     const buffer = Buffer.from(bytes);
             
-            // Create a unique filename
-            const filename = `${Date.now()}-${file.name}`;
-            const filepath = path.join(uploadDir, filename);
+        //     // Create a unique filename
+        //     const filename = `${Date.now()}-${file.name}`;
+        //     const filepath = path.join(uploadDir, filename);
             
-            // Save the file
-            await writeFile(filepath, buffer);
-            imageUrls.push(`/uploads/${filename}`);
-        }
+        //     // Save the file
+        //     await writeFile(filepath, buffer);
+        //     imageUrls.push(`/uploads/${filename}`);
+        // }
 
         // Get other form data
+        const formData = await req.formData()
+        const imageUrls = await processUploads(formData);
         const data = {
             seller_id: formData.get('seller_id'),
             brand: formData.get('brand'),
@@ -74,7 +77,22 @@ export const postCar = async (req) => {
 
 export const postLaptop = async (req) => {
     try {
-        const data = await req.json()
+        const formData = await req.formData();
+        const imageUrls = await processUploads(formData);
+
+        const data = {
+            seller_id: formData.get('seller_id'),
+            brand: formData.get('brand'),
+            price: formData.get('price'),
+            processor: formData.get('processor'),
+            ram: formData.get('ram'),
+            storage: formData.get('storage'),
+            gpu: formData.get('gpu'),
+            title: formData.get('title'),
+            location: formData.get('location'),
+            description: formData.get('description'),
+            images: imageUrls
+        }
         
         const requiredFields = ['seller_id', 'brand', 'price', 'processor', 'ram', 'storage', 'gpu', 'title', 'location', 'description', 'images'];
         const missingFields = requiredFields.filter(field => !data[field]);
@@ -102,10 +120,27 @@ export const postLaptop = async (req) => {
 
 export const postApartment = async (req) => {
     try {
-        const data = await req.json()
-        console.log(data);
+        const formData = await req.formData();
+
+        const imageUrls = await processUploads(formData);
+
+        const data = {
+            seller_id: formData.get('seller_id'),
+            title: formData.get('title'),
+            description: formData.get('description'),
+            price: formData.get('price'),
+            location: formData.get('location'),
+            images: imageUrls,
+            room_count: formData.get('room_count'),
+            bathroom_count: formData.get('bathroom_count'),
+            space: formData.get('space'),
+            inner_condition: formData.get('inner_condition'),
+            floor: formData.get('floor'),
+            furnished: formData.get('furnished'),
+            sell: formData.get('sell')
+        }
         
-        const requiredFields = ['seller_id', 'title', 'description', 'price', 'location', 'images', 'room_count', 'bathroom_count', 'level', 'space', 'inner_condition', 'floor', 'furnished', 'sell'];
+        const requiredFields = ['seller_id', 'title', 'description', 'price', 'location', 'images', 'room_count', 'bathroom_count', 'space', 'inner_condition', 'floor', 'furnished', 'sell'];
         const missingFields = requiredFields.filter(field => !data[field]);
 
         if (missingFields.length > 0) {
@@ -131,9 +166,22 @@ export const postApartment = async (req) => {
 
 export const postBook = async (req) => {
     try {
-        const data = await req.json()
-        
-        const requiredFields = ['title', 'book_title', 'name', 'type', 'description', 'price', 'location', 'state'];
+        const formData = await req.formData();
+        const imageUrls = await processUploads(formData);
+
+        const data = {
+            seller_id: formData.get('seller_id'),
+            title: formData.get('title'),
+            book_title: formData.get('book_title'),
+            name: formData.get('name'),
+            type: formData.get('type'),
+            description: formData.get('description'),
+            price: formData.get('price'),
+            location: formData.get('location'),
+            state: formData.get('state')
+        }
+
+        const requiredFields = ['seller_id','title', 'book_title', 'name', 'type', 'description', 'price', 'location', 'state'];
         const missingFields = requiredFields.filter(field => !data[field]);
 
         if (missingFields.length > 0) {
