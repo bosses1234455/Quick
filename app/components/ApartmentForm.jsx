@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import {locations} from '../data/data'
-import axios from 'axios';
+import axios from 'axios'; 
+import {jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 
 export default function ApartmentForm() {
@@ -18,7 +20,8 @@ export default function ApartmentForm() {
     space: '',
     inner_condition: '',
     floor: '',
-    furnished: false
+    furnished: false,
+    sell: false
   });
 
   const [imageFiles, setImageFiles] = useState([]);
@@ -36,27 +39,79 @@ export default function ApartmentForm() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImageFiles(files);
+  
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, images: e.target.files });
+    setImageFiles([...e.target.files]);
   };
+  
+
+
+    // const handleImageChange = (e) => {
+    //   const files = Array.from(e.target.files);
+    //   setImageFiles(files);
+    // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const res = await fetch('/api/apartments',{
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(formData),
+  //   })
+  //   if(res.ok) {
+  //     console.log('success')
+  //   }
+  //   else {
+  //     console.log(res);
+  //   }
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/apartments',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-    if(res.ok) {
-      console.log('success')
-    }
-    else {
+    try {
+      const formDataToSend = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'images') {
+          formDataToSend.append(key, value);
+        }
+      });
+
+      if (formData.images) {
+        for (let i = 0; i < formData.images.length; i++) {
+          formDataToSend.append('images', formData.images[i]);
+        }
+      }
+      console.log(formData);
+      
+      const cookie = Cookies.get('token');
+      console.log(cookie);
+      
+
+      const seller_id = jwtDecode(cookie);
+      
+      formDataToSend.set('seller_id', seller_id.userId);
+      console.log(seller_id.userId);
+      
+
+      const res = await fetch('/api/apartments',{
+        method: 'POST',
+        body: formDataToSend
+      });
       console.log(res);
+      
+
+      if(!res.ok) {
+        console.log("failed");  
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -66,7 +121,7 @@ export default function ApartmentForm() {
             {/* Column 1 */}
             <div className="space-y-4">
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Apartment Title</label>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Ad Title</label>
                 <input
                   id="title"
                   type="text"
@@ -175,13 +230,13 @@ export default function ApartmentForm() {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Apartment Images</label>
                 <input
                   id="images"
                   type="file"
                   multiple
-                  onChange={handleImageChange}
+                  onChange={handleFileChange}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   accept="image/*"
                   max="8"
@@ -214,6 +269,32 @@ export default function ApartmentForm() {
                 {imageFiles.length > 8 && (
                   <p className="text-red-500 text-sm mt-1">Only the first 8 images will be used</p>
                 )}
+              </div> */}
+
+              <div>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>
+                <input
+                  id="images"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                  max="8"
+                />
+                <div className="mt-2 grid grid-cols-5 gap-2">
+                  {imageFiles.map((file, index) => (
+                    <div key={index} className="relative w-12 h-12 bg-gray-200">
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt={`Preview ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div>

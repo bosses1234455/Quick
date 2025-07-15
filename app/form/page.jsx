@@ -16,7 +16,7 @@ function page() {
     case "book":
         return <BookForm />
         
-    case "apartment":
+    case "apartments":
         return <ApartmentForm />
         
   }

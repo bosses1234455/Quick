@@ -14,15 +14,22 @@ const apartmentSchema = new mongoose.Schema({
   inner_condition: { type: String },
   floor: { type: Number },
   furnished: { type: Boolean, default: false },
-  sell: { type: Boolean, required: true },
+  sell: { type: Boolean, default: false },
   date: { type: Date, default: Date.now }
 });
 
-let Apartment;
-try {
-  Apartment = mongoose.model('Apartment');
-} catch {
-  Apartment = mongoose.model('Apartment', apartmentSchema);
-}
+// let Apartment;
+// try {
+//   Apartment = mongoose.model('Apartment');
+// } catch {
+//   Apartment = mongoose.model('Apartment', apartmentSchema);
+// }
 
-export default Apartment;
+// if (mongoose.models.Apartment) {
+//   delete mongoose.models.Apartment;
+// }
+// export default mongoose.model('Apartment', apartmentSchema);
+
+// export default Apartment;
+
+export default mongoose.models.Apartment || mongoose.model('Apartment', apartmentSchema);

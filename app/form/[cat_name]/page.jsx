@@ -22,7 +22,7 @@ function page({params}) {
     case "books":
         return <BookForm />
         
-    case "apartment":
+    case "apartments":
         return <ApartmentForm />
   }
 }

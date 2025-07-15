@@ -19,8 +19,8 @@ export default function LaptopForm() {
     image: null
   });
 
-  const [imageFile, setImageFile] = useState(null);
-
+  // const [imageFile, setImageFile] = useState(null);
+  const [imageFiles,setImageFiles] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,22 +28,57 @@ export default function LaptopForm() {
       ...prev,
       [name]: value
     }));
+  }; 
+
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, images: e.target.files });
+    setImageFiles([...e.target.files]);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setFormData(prev => ({
-        ...prev,
-        image: URL.createObjectURL(file)
-      }));
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setImageFile(file);
+  //     setFormData(prev => ({
+  //       ...prev,
+  //       image: URL.createObjectURL(file)
+  //     }));
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      const formDataToSend = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'images') {
+          formDataToSend.append(key, value);
+        }
+      });
+
+      if (formData.images) {
+        for (let i = 0; i < formData.images.length; i++) {
+          formDataToSend.append('images', formData.images[i]);
+        }
+      }
+      const cookie = Cookies.get('token');
+      
+      const seller_id = jwtDecode(cookie);
+      
+      formDataToSend.set('seller_id', seller_id.userId);
+
+      const res = await fetch('/api/cars',{
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      if(!res.ok) {
+        console.log("failed");  
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -54,7 +89,7 @@ export default function LaptopForm() {
             {/* Column 1 */}
             <div className="space-y-4">
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Laptop Title</label>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Ad Title</label>
                 <input
                   id="title"
                   type="text"
@@ -187,25 +222,29 @@ export default function LaptopForm() {
               </div>
 
               <div>
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Laptop Image</label>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>
                 <input
-                  id="image"
+                  id="images"
                   type="file"
-                  onChange={handleImageChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  multiple
                   accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  max="8"
                 />
-                {imageFile && (
-                  <div className="mt-2 relative h-32 w-full border rounded">
-                    <Image
-                      src={formData.image}
-                      alt="Preview"
-                      fill
-                      className="object-contain rounded"
-                    />
-                  </div>
-                )}
+                <div className="mt-2 grid grid-cols-5 gap-2">
+                  {imageFiles.map((file, index) => (
+                    <div key={index} className="relative w-12 h-12 bg-gray-200">
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt={`Preview ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -79,6 +79,8 @@ export default function CarForm() {
       const cookie = Cookies.get('token');
       
       const seller_id = jwtDecode(cookie);
+      console.log();
+      
       
       formDataToSend.set('seller_id', seller_id.userId);
 
@@ -86,7 +88,8 @@ export default function CarForm() {
         method: 'POST',
         body: formDataToSend
       });
-
+      console.log(res);
+      
       if(!res.ok) {
         console.log("failed");  
       }
