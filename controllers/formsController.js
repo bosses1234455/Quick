@@ -53,7 +53,7 @@ export const postCar = async (req) => {
         // Validate required fields
         const requiredFields = ['seller_id', 'brand', 'model', 'year', 'milage', 'type', 'color', 'doors', 'seat_number', 'outer_condition', 'inner_condition', 'description', 'images', 'location', 'price', 'title'];
         const missingFields = requiredFields.filter(field => !data[field]);
-
+        
         if (missingFields.length > 0) {
             return NextResponse.json(
                 { error: `Missing fields: ${missingFields.join(', ')}` },
@@ -178,7 +178,8 @@ export const postBook = async (req) => {
             description: formData.get('description'),
             price: formData.get('price'),
             location: formData.get('location'),
-            state: formData.get('state')
+            state: formData.get('state'),
+            images: imageUrls
         }
 
         const requiredFields = ['seller_id','title', 'book_title', 'name', 'type', 'description', 'price', 'location', 'state'];

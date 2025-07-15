@@ -18,18 +18,11 @@ const apartmentSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
-// let Apartment;
-// try {
-//   Apartment = mongoose.model('Apartment');
-// } catch {
-//   Apartment = mongoose.model('Apartment', apartmentSchema);
-// }
+let Apartment;
+try {
+  Apartment = mongoose.model('Apartment');
+} catch {
+  Apartment = mongoose.model('Apartment', apartmentSchema);
+}
 
-// if (mongoose.models.Apartment) {
-//   delete mongoose.models.Apartment;
-// }
-// export default mongoose.model('Apartment', apartmentSchema);
-
-// export default Apartment;
-
-export default mongoose.models.Apartment || mongoose.model('Apartment', apartmentSchema);
+export default Apartment;

@@ -1,7 +1,7 @@
 import Car from '@/models/Car'
-import Apartment from '@/app/models/Apartment';
-import Laptop from '@/app/models/Laptop';
-import Book from '@/app/models/Book';
+import Apartment from '@/models/Apartment';
+import Laptop from '@/models/Laptop';
+import Book from '@/models/Book';
 import { NextResponse } from 'next/server'
 
 

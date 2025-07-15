@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { locations } from '../data/data'
+import { locations } from '../data/data';
 import { lbrands } from '../data/data';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 export default function LaptopForm() {
   const [formData, setFormData] = useState({
@@ -68,7 +70,7 @@ export default function LaptopForm() {
       
       formDataToSend.set('seller_id', seller_id.userId);
 
-      const res = await fetch('/api/cars',{
+      const res = await fetch('/api/laptops',{
         method: 'POST',
         body: formDataToSend
       });
@@ -222,7 +224,7 @@ export default function LaptopForm() {
               </div>
 
               <div>
-                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Laptop Images (Max 8)</label>
                 <input
                   id="images"
                   type="file"

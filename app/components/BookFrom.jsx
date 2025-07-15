@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import {locations, bookTypes, bookStates} from '../data/data'
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 export default function BookForm() {
   const [formData, setFormData] = useState({
@@ -62,10 +64,8 @@ export default function BookForm() {
           formDataToSend.append('images', formData.images[i]);
         }
       }
-      console.log(formData);
       
       const cookie = Cookies.get('token');
-      console.log(cookie);
       
 
       const seller_id = jwtDecode(cookie);
@@ -74,7 +74,7 @@ export default function BookForm() {
       console.log(seller_id.userId);
       
 
-      const res = await fetch('/api/apartments',{
+      const res = await fetch('/api/books',{
         method: 'POST',
         body: formDataToSend
       });
@@ -219,7 +219,7 @@ export default function BookForm() {
 
 
               <div>
-                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Book Images (Max 8)</label>
                 <input
                   id="images"
                   type="file"

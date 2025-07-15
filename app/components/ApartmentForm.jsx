@@ -84,9 +84,7 @@ export default function ApartmentForm() {
         for (let i = 0; i < formData.images.length; i++) {
           formDataToSend.append('images', formData.images[i]);
         }
-      }
-      console.log(formData);
-      
+      }      
       const cookie = Cookies.get('token');
       console.log(cookie);
       
@@ -272,7 +270,7 @@ export default function ApartmentForm() {
               </div> */}
 
               <div>
-                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>
+                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Apartment Images (Max 8)</label>
                 <input
                   id="images"
                   type="file"
