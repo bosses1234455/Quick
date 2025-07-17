@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import {locations} from '../data/data'
-import axios from 'axios'; 
 import {jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 
