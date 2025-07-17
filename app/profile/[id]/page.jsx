@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Modal from '../../components/Modal'; // Assume you have a Modal component
 import Tabs from '@/app/components/Tabs';
+import PostsFetch from '@/app/components/PostsFetch';
 
 export default function UserProfile() {
   const { id } = useParams();
@@ -206,6 +207,7 @@ export default function UserProfile() {
         </div>
       </div>
       <Tabs setListType={setListType} />
+      <PostsFetch listType={listType} id={id} />
     </div>
   );
 }
