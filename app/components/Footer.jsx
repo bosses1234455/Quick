@@ -3,7 +3,7 @@ import { FaXTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa6
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 py-4 text-sm text-gray-600">
+    <footer className="bg-gray-100 border-t border-gray-200 py-4 text-sm text-gray-600 mt-auto z-10">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-4">
           <div className="flex gap-6">

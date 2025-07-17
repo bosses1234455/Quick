@@ -18,7 +18,7 @@ export default function LaptopForm() {
     gpu: '',
     location: '',
     description: '',
-    image: null
+    images: null
   });
 
   // const [imageFile, setImageFile] = useState(null);
@@ -58,11 +58,10 @@ export default function LaptopForm() {
           formDataToSend.append(key, value);
         }
       });
-
       if (formData.images) {
-        for (let i = 0; i < formData.images.length; i++) {
-          formDataToSend.append('images', formData.images[i]);
-        }
+        // for (let i = 0; i < formData.images.length; i++) {
+          formDataToSend.append('images', Array.from(formData.images));
+        // }
       }
       const cookie = Cookies.get('token');
       

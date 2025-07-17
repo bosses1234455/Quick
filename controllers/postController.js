@@ -17,7 +17,7 @@ export const getCars = async (req) => {
         const cars = await Car.find({})
             .limit(limit)
             .skip(skip)
-            .sort({ createdAt: -1 }); // Newest first
+            .sort({ date: -1 }); // Newest first
 
         if (!cars || cars.length === 0) {
             return NextResponse.json(
@@ -51,7 +51,7 @@ export const getCars = async (req) => {
                     location: car.location,
                     price: car.price,
                     title: car.title,
-                    createdAt: car.createdAt
+                    date: car.date
                 }))
             },
             { status: 200 }

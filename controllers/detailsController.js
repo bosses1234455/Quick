@@ -3,22 +3,16 @@ import Car from '@/models/Car'
 import Laptop from '@/models/Laptop'
 import Apartment from '@/models/Apartment'
 import { NextResponse } from 'next/server'
-import { processUploads } from '@/middlewares/upload'
 
-import Car from '@/models/Car';
-import { NextResponse } from 'next/server';
-
-export const getCarDetails = async (req) => {
+export const getCarDetails = async (req, { params }) => {
   try {
-    const { searchParams } = new URL(req.url);
-    const carId = searchParams.get('id'); // or use params.id if using [id] dynamic route
-
+    const {id:carId} = await params;
+    
     if (!carId) {
       return NextResponse.json(
         { error: 'Car ID is required' },
         { status: 400 }
-      );
-    }
+      );}
 
     const car = await Car.findById(carId)
       .populate('seller_id', 'name email')
@@ -44,7 +38,7 @@ export const getCarDetails = async (req) => {
       location: car.location,
       description: car.description,
       seller: car.seller_id,
-      createdAt: car.createdAt
+      date: car.date
     };
 
     return NextResponse.json(
@@ -60,3 +54,162 @@ export const getCarDetails = async (req) => {
     );
   }
 };
+
+
+
+export const getAparmentDetails = async (req, { params }) => {
+  try {
+    const {id:apartmentId} = await params;
+    
+    if (!apartmentId) {
+      return NextResponse.json(
+        { error: 'apartment ID is required' },
+        { status: 400 }
+      );}
+
+    const apartment = await Apartment.findById(apartmentId)
+      .populate('seller_id', 'name email')
+      .lean();
+
+    if (!apartment) {
+      return NextResponse.json(
+        { error: 'apartment not found' },
+        { status: 404 }
+      );
+    }
+
+    const response = {
+      id: apartment._id,
+      title: apartment.title,
+      description: apartment.description,
+      price: apartment.price,
+      location: apartment.location,
+      images: apartment.images,
+      seller: apartment.seller_id,
+      date: apartment.date,
+      roomCount: apartment.room_count,
+      bathroomCount: apartment.bathroom_count,
+      space: apartment.space,
+      innerCondition: apartment.inner_condition,
+      floor: apartment.floor,
+      furnished: apartment.furnished,
+      forSale: apartment.sell,
+    };
+
+    return NextResponse.json(
+      { success: true, data: response },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('[GET_APARTMNET_DETAILS_ERROR]', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+};
+
+
+export const getLaptopDetails = async (req, { params }) => {
+  try {
+    const {id:LaptopId} = await params;
+    
+    if (!LaptopId) {
+      return NextResponse.json(
+        { error: 'laptop ID is required' },
+        { status: 400 }
+      );}
+
+    const laptop = await Laptop.findById(LaptopId)
+      .populate('seller_id', 'name email')
+      .lean();
+
+    if (!laptop) {
+      return NextResponse.json(
+        { error: 'laptop not found' },
+        { status: 404 }
+      );
+    }
+
+    const response = {
+      id: laptop._id,
+      title: laptop.title,
+      brand: laptop.brand,
+      price: laptop.price,
+      location: laptop.location,
+      description: laptop.description,
+      images: laptop.images,
+      seller: laptop.seller_id,
+      date: laptop.date,
+      processor: laptop.processor,
+      ram: laptop.ram,
+      storage: laptop.storage,
+      gpu: laptop.gpu || 'Integrated'
+    };
+
+    return NextResponse.json(
+      { success: true, data: response },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('[GET_LAPTOP_DETAILS_ERROR]', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+};
+
+
+export const getBookDetails = async (req, { params }) => {
+  try {
+    const {id:BookId} = await params;
+    console.log(BookId);
+    
+    if (!BookId) {
+      return NextResponse.json(
+        { error: 'book ID is required' },
+        { status: 400 }
+      );}
+
+    const book = await Book.findById(BookId)
+      .populate('seller_id', 'name email')
+      .lean();
+
+    if (!book) {
+      return NextResponse.json(
+        { error: 'book not found' },
+        { status: 404 }
+      );
+
+    }
+    const response = {
+      id: book._id,
+      title: book.title,          
+      bookTitle: book.book_title,
+      name: book.name,
+      type: book.type,
+      price: book.price,
+      location: book.location,
+      description: book.description,
+      images: book.images,
+      state: book.state,
+      seller: book.seller_id,
+      date: book.date
+    };
+
+    return NextResponse.json(
+      { success: true, data: response },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('[GET_BOOK_DETAILS_ERROR]', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

@@ -15,18 +15,17 @@ function page({params}) {
     const adType = cat_name.replace(/-/g, ' ').toLowerCase();
     const [loggedIn,setLoggedIn] = useState(false);
   useEffect(() => {
-    const checkCookie = () => {
-      setLoggedIn(!!Cookies.get('token'));
-    };
-    
-    // Initial check
-    checkCookie();
+        const token = Cookies.get('token');
+        setLoggedIn(!!token);
+        
+        if (!token) {
+            router.push('/login');
+        }
+    }, [router]); // Add router to dependencies
 
-    // Optional: Polling (check every 1s) for external changes
-    const interval = setInterval(checkCookie, 1000);
-    !loggedIn ? router.push('/login') : null;
-    return () => clearInterval(interval);
-  }, []);
+    if (!loggedIn) {
+        return null; // or a loading spinner while checking auth
+    }
 
     switch(adType) {
         case "cars": 

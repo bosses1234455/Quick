@@ -3,8 +3,6 @@ import Car from '@/models/Car'
 import Laptop from '@/models/Laptop'
 import Apartment from '@/models/Apartment'
 import { NextResponse } from 'next/server'
-import { writeFile } from 'fs/promises';
-import path from 'path';
 import { processUploads } from '@/middlewares/upload'
 
 export const postCar = async (req) => {

@@ -33,7 +33,7 @@ const CategoryPage = () => {
           <Link key={category.id} href={`/form/${category.name.toLowerCase().replace(/\s+/g, '-')}`}>
             <div className={`flex rounded-lg overflow-hidden cursor-pointer hover:scale-105 hover:shadow-md shadow-gray-300 transition-transform duration-500`}>
               <div className={`${category.color} w-1/2 h-48 flex items-center justify-center text-white`}>
-              <Image src={category.img} width={200} height={192}/>
+              <Image src={category.img} width={200} height={192} alt='categoyImage'/>
               </div>
               <div className="bg-gray-200 w-1/2 h-48 font-bold text-3xl pl-2.5 pt-2.5">{category.name}</div>
             </div>
