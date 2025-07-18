@@ -10,7 +10,7 @@ import PostsFetch from '@/app/components/PostsFetch';
 export default function UserProfile() {
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
-  const [listType,setListType] = useState('apartment');
+  const [listType,setListType] = useState('apartments');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
