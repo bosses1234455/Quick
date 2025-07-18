@@ -17,7 +17,7 @@ export default function UserProfile() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    phone: '',
+    phone_num: '',
     password: ''
   });
 
@@ -31,7 +31,7 @@ export default function UserProfile() {
         setFormData({
           username: data.username || '',
           email: data.email || '',
-          phone: data.phone || '',
+          phone_num: data.phone_num || '',
           password: ''
         });
       } catch (err) {
@@ -59,6 +59,9 @@ export default function UserProfile() {
         },
         body: JSON.stringify(formData),
       });
+      console.log("form data is",formData);
+      
+      console.log("response is",response);
 
       if (!response.ok) throw new Error('Update failed');
       
@@ -112,10 +115,10 @@ export default function UserProfile() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <h2 className="text-lg font-semibold text-gray-900">Contact Information</h2>
-                {userData.phone && (
+                {userData.phone_num && (
                   <div>
-                    <p className="text-sm text-gray-500">Phone</p>
-                    <p className="text-gray-900">{userData.phone}</p>
+                    <p className="text-sm text-gray-500">phone_num</p>
+                    <p className="text-gray-900">{userData.phone_num}</p>
                   </div>
                 )}
               </div>
@@ -163,12 +166,12 @@ export default function UserProfile() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone Number
+                  phone_num Number
                 </label>
                 <input
                   type="tel"
-                  name="phone"
-                  value={formData.phone}
+                  name="phone_num"
+                  value={formData.phone_num}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
                 />
