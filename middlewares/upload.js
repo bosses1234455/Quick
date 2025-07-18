@@ -8,7 +8,6 @@ import path from 'path';
 export async function processUploads(formData) {
         
          const files = formData.getAll('images');
-         console.log(files)
          if(files.length > 8) {
             return NextResponse.json({
                 error: 'thats a lot of images'
@@ -29,7 +28,7 @@ export async function processUploads(formData) {
              // Save the file
              await writeFile(filepath, buffer);
              imageUrls.push(`/uploads/${filename}`);
-             return imageUrls;
-         }
+            }
+            return imageUrls;
 }
 

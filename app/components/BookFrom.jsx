@@ -15,7 +15,7 @@ export default function BookForm() {
     description: '',
     price: '',
     location: '',
-    image: null,
+    images: [],
     state: ''
   });
 

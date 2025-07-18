@@ -4,16 +4,39 @@ import { LoadingSkeleton } from './LoadingSkeleton';
 import Post from './Post';
 import { useState, useEffect } from 'react';
 
-const PostsFetch = ({ listType }) => {
+const PostsFetch = ({ listType, id, filters, sortOption }) => {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageNum, setPageNum] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
+    const buildQueryString = (page, limit) => {
+        const queryParams = new URLSearchParams({
+            page: page,
+            limit: limit,
+            sort: sortOption || 'date_desc'
+        });
+
+        // Add ID if it exists
+        if (id) queryParams.append('id', id);
+
+        // Add filters if they exist
+        if (filters) {
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value !== '' && value !== null && value !== undefined) {
+                    queryParams.append(key, value);
+                }
+            });
+        }
+
+        return queryParams.toString();
+    };
+
     const fetchPosts = async (page = 1, limit = 20) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/${listType}?page=${page}&limit=${limit}`, {
+            const queryString = buildQueryString(page, limit);
+            const res = await fetch(`/api/${listType}?${queryString}`, {
                 method: 'GET'
             });
             const arr = await res.json();
@@ -24,18 +47,18 @@ const PostsFetch = ({ listType }) => {
                 setPosts(prev => page === 1 ? arr[listType] : [...prev, ...arr[listType]]);
             }
         } catch (error) {
-            console.log(error);
+            console.error('Error fetching posts:', error);
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         setPosts([]);
         setPageNum(1);
         setHasMore(true);
         fetchPosts(1);
-    }, [listType]);
+    }, [listType, filters, sortOption]); // Add filters and sortOption to dependencies
 
     useEffect(() => {
         if (pageNum > 1) {

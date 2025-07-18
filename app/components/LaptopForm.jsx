@@ -59,9 +59,9 @@ export default function LaptopForm() {
         }
       });
       if (formData.images) {
-        // for (let i = 0; i < formData.images.length; i++) {
-          formDataToSend.append('images', Array.from(formData.images));
-        // }
+        for (let i = 0; i < formData.images.length; i++) {
+          formDataToSend.append('images', formData.images[i]);
+        }
       }
       const cookie = Cookies.get('token');
       

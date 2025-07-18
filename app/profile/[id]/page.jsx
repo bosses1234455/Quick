@@ -5,11 +5,12 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Modal from '../../components/Modal'; // Assume you have a Modal component
 import Tabs from '@/app/components/Tabs';
+import PostsFetch from '@/app/components/PostsFetch';
 
 export default function UserProfile() {
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
-  const [listType,setListType] = useState('apartment');
+  const [listType,setListType] = useState('apartments');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -206,6 +207,7 @@ export default function UserProfile() {
         </div>
       </div>
       <Tabs setListType={setListType} />
+      <PostsFetch listType={listType} id={id} />
     </div>
   );
 }
