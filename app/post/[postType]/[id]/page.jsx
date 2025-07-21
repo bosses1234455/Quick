@@ -5,29 +5,45 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 
-// Define type-specific fields mapping
-const TYPE_FIELDS = {
-  cars: [
-    { label: 'Brand', key: 'brand' },
-    { label: 'Model', key: 'model' },
-    { label: 'Year', key: 'year' },
-  ],
-  apartments: [
-    { label: 'Room Count', key: 'room_count' },
-    { label: 'Furnished', key: 'furnished', format: (value) => value ? 'Yes' : 'No' },
-    { label: 'Size (m²)', key: 'size' },
-  ],
-  laptops: [
-    { label: 'Brand', key: 'brand' },
-    { label: 'RAM', key: 'ram', format: (value) => `${value}GB` },
-    { label: 'Processor', key: 'processor' },
-  ],
-  books: [
-    { label: 'Author', key: 'author' },
-    { label: 'Type', key: 'type' },
-    { label: 'Condition', key: 'state' },
-  ],
-};
+const CarDetails = ({ post }) => (
+  <div className="space-y-2">
+    <p><strong>Location:</strong> {post.location}</p>
+    <p><strong>Price:</strong> ${post.price?.toLocaleString()}</p>
+    <p><strong>Brand:</strong> {post.brand}</p>
+    <p><strong>Model:</strong> {post.model}</p>
+    <p><strong>Year:</strong> {post.year}</p>
+  </div>
+);
+
+const ApartmentDetails = ({ post }) => (
+  <div className="space-y-2">
+    <p><strong>Location:</strong> {post.location}</p>
+    <p><strong>Price:</strong> ${post.price?.toLocaleString()}</p>
+    <p><strong>Room Count:</strong> {post.roomCount}</p>
+    <p><strong>Furnished:</strong> {post.furnished ? 'Yes' : 'No'}</p>
+    <p><strong>Size (m²):</strong> {post.space}</p>
+  </div>
+);
+
+const LaptopDetails = ({ post }) => (
+  <div className="space-y-2">
+    <p><strong>Location:</strong> {post.location}</p>
+    <p><strong>Price:</strong> ${post.price?.toLocaleString()}</p>
+    <p><strong>Brand:</strong> {post.brand}</p>
+    <p><strong>RAM:</strong> {post.ram}GB</p>
+    <p><strong>Processor:</strong> {post.processor}</p>
+  </div>
+);
+
+const BookDetails = ({ post }) => (
+  <div className="space-y-2">
+    <p><strong>Location:</strong> {post.location}</p>
+    <p><strong>Price:</strong> ${post.price?.toLocaleString()}</p>
+    <p><strong>Book Title:</strong> {post.bookTitle}</p>
+    <p><strong>Type:</strong> {post.type}</p>
+    <p><strong>Condition:</strong> {post.state}</p>
+  </div>
+);
 
 export default function PostDetail() {
   const { id } = useParams();
@@ -63,6 +79,21 @@ export default function PostDetail() {
     fetchPost();
   }, [id, postType]);
 
+  const renderDetails = () => {
+    switch(postType) {
+      case 'cars':
+        return <CarDetails post={post} />;
+      case 'apartments':
+        return <ApartmentDetails post={post} />;
+      case 'laptops':
+        return <LaptopDetails post={post} />;
+      case 'books':
+        return <BookDetails post={post} />;
+      default:
+        return null;
+    }
+  };
+
   if (loading) return <div className="text-center p-8">Loading...</div>;
   if (error) return <div className="text-center p-8 text-red-500">Error: {error}</div>;
   if (!post) return <div className="text-center p-8">No {postType} data found</div>;
@@ -77,14 +108,13 @@ export default function PostDetail() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
-          {/* Image Gallery */}
           <div className="relative w-full h-96 bg-gray-200 rounded-lg mb-4">
             {post.images?.[currentImage] && (
               <Image
                 src={post.images[currentImage]}
                 alt={post.title}
                 fill
-                className="object-cover"
+                className="md:object-cover sm:object-fill"
                 priority
               />
             )}
@@ -108,29 +138,16 @@ export default function PostDetail() {
             </button>
           </div>
           
-          {/* Description */}
           <div className="bg-gray-100 p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-2">Description</h2>
             <p>{post.description || "No description provided"}</p>
           </div>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-4">
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-2">Details</h2>
-            <div className="space-y-2">
-              {/* Common fields */}
-              <p><strong>Location:</strong> {post.location}</p>
-              <p><strong>Price:</strong> ${post.price?.toLocaleString()}</p>
-              
-              {/* Type-specific fields */}
-              {TYPE_FIELDS[postType]?.map(({ label, key, format }) => (
-                <p key={key}>
-                  <strong>{label}:</strong> {format ? format(post[key]) : post[key]}
-                </p>
-              ))}
-            </div>
+            {renderDetails()}
           </div>
         </div>
       </div>

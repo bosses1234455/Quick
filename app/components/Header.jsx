@@ -25,15 +25,25 @@ export default function Header() {
 
   useEffect(() => {
       const token = Cookies.get('token');
-      const c = jwtDecode(token);
+      const c = token ? jwtDecode(token) : '';
       setId(c.userId);
   },[])
+  const handleLogout = () => {
+    Cookies.remove('token');
+    window.location.reload();
+  };
   
   return (
     <header className="flex h-20 justify-between items-center p-4 bg-gray-100 mb-8">
       <Image src="/Logo.png" width={65} height={65} alt="Logo" className="rounded-full"/>
       {!isCookie && <Link href={'/login'} className="px-6 py-2 bg-gray-200 rounded-full cursor-pointer">Login</Link>}
-      {isCookie && <Link href={`/profile/${id}`} className="px-6 py-2 bg-gray-200 rounded-full cursor-pointer">profile</Link>}
+      {isCookie && <div>
+        <Link href={`/profile/${id}`} className="px-6 mr-3 py-2 bg-gray-200 rounded-full cursor-pointer">profile</Link>
+        <button className="px-6 py-2 bg-gray-200 rounded-full cursor-pointer"
+         onClick={handleLogout}
+        >Logout</button>
+      </div>
+      }
   </header>
   )
 }

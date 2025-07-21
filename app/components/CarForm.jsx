@@ -6,9 +6,12 @@ import Select from 'react-select';
 import { locations, brands as brandOptions, models, types, years, colors, doorOptions, seatOptions, conditions } from '../data/data'
 import {jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import Notification from './Notification';
 
 export default function CarForm() {
-
+  const [showNotification, setShowNotification] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     brand: '',
     model: '',
@@ -89,6 +92,13 @@ export default function CarForm() {
 
       if(!res.ok) {
         console.log("failed");  
+      }
+      if(res.ok) {
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          router.push('/');
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
@@ -365,6 +375,7 @@ export default function CarForm() {
             </button>
           </div>
         </form>
+        <Notification postType={'Car'} showNotification={showNotification} />
       </div>
     </div>
   );

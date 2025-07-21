@@ -14,7 +14,7 @@ function page({params}) {
     const router = useRouter();
     const adType = cat_name.replace(/-/g, ' ').toLowerCase();
     const [loggedIn,setLoggedIn] = useState(false);
-  useEffect(() => {
+    useEffect(() => {
         const token = Cookies.get('token');
         setLoggedIn(!!token);
         

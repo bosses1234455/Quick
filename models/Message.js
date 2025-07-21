@@ -13,4 +13,11 @@ const messageSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Message', messageSchema);
+let Message;
+try {
+  Message = mongoose.model('Message');
+} catch {
+  Message = mongoose.model('Message', messageSchema);
+}
+
+export default Message;

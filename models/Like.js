@@ -10,4 +10,11 @@ const likeSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Like', likeSchema);
+let Like;
+try {
+  Like = mongoose.model('Like');
+} catch {
+  Like = mongoose.model('Like', likeSchema);
+}
+
+export default Like;

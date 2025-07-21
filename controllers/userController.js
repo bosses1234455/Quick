@@ -64,7 +64,7 @@ export const updateUser = async (userId, updateData, user) => {
     }
 
     // 3. Validate update data
-    if (!updateData || Object.keys(updateData).length === 0) {
+    if (!updateData) {
       return NextResponse.json(
         { error: 'No update data provided' },
         { status: 400 }
@@ -73,7 +73,7 @@ export const updateUser = async (userId, updateData, user) => {
  
     // 4. Allowed fields check
     const allowedUpdates = ['email', 'username', 'phone_num', 'password'];
-    const updates = Object.keys(updateData);
+    const updates = Object.keys(updateData).filter(key => updateData[key] ? updateData[key] : null);
     const isValidOperation = updates.every(update =>
       allowedUpdates.includes(update)
     );
@@ -87,7 +87,7 @@ export const updateUser = async (userId, updateData, user) => {
  
     // 5. Email uniqueness check
     if (updateData.email) {
-      const existingUser = await User.findOne({ email: updateData.email });
+      const existingUser = await User.findOne({ mail: updateData.email });
       if (existingUser && existingUser._id.toString() !== userId) {
         return NextResponse.json(
           { error: 'Email already in use' },
@@ -101,10 +101,16 @@ export const updateUser = async (userId, updateData, user) => {
       updateData.password = await bcrypt.hash(updateData.password, 10);
     }
 
-    // 7. Perform update
+    // 7. Create update object with only defined fields
+    const finalUpdateData = {};
+    updates.forEach(field => {
+      finalUpdateData[field] = updateData[field];
+    });
+
+    // 8. Perform update
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      updateData,
+      finalUpdateData,
       { new: true, runValidators: true }
     );
 
@@ -115,7 +121,7 @@ export const updateUser = async (userId, updateData, user) => {
       );
     }
 
-    // 8. Return response without sensitive data
+    // 9. Return response without sensitive data
     const responseData = {
       id: updatedUser._id,
       email: updatedUser.email,

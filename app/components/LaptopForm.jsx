@@ -6,8 +6,12 @@ import { locations } from '../data/data';
 import { lbrands } from '../data/data';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'next/navigation';
+import Notification from './Notification';
 
 export default function LaptopForm() {
+  const [showNotification, setShowNotification] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
     brand: '',
@@ -76,6 +80,13 @@ export default function LaptopForm() {
 
       if(!res.ok) {
         console.log("failed");  
+      }
+      if(res.ok) {
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          router.push('/');
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
@@ -259,6 +270,7 @@ export default function LaptopForm() {
             </button>
           </div>
         </form>
+        <Notification showNotification={showNotification} postType={'Laptop'} />
       </div>
     </div>
   );

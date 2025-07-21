@@ -3,12 +3,16 @@ import Link from 'next/link';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import Post from './Post';
 import { useState, useEffect } from 'react';
+import { FaTrash } from "react-icons/fa";
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const PostsFetch = ({ listType, id, filters, sortOption }) => {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageNum, setPageNum] = useState(1);
     const [hasMore, setHasMore] = useState(true);
+    const [tokenId,setTokenId] = useState('');
 
     const buildQueryString = (page, limit) => {
         const queryParams = new URLSearchParams({
@@ -40,7 +44,6 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
                 method: 'GET'
             });
             const arr = await res.json();
-            
             if (arr[listType].length === 0) {
                 setHasMore(false);
             } else {
@@ -50,6 +53,34 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
             console.error('Error fetching posts:', error);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handlePostDel = async (postId) => {
+        try {
+            // const token = Cookies.get('token');
+            if (!tokenId) {
+                console.error('No token found');
+                return;
+            }
+
+            const response = await fetch(`/api/${listType}/${postId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include' // This will send cookies with the request
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to delete post');
+            }
+
+            // Remove the deleted post from the state
+            setPosts(posts.filter(post => post.id !== postId));
+        } catch (error) {
+            console.error('Error deleting post:', error);
         }
     };
 
@@ -65,6 +96,11 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
             fetchPosts(pageNum);
         }
     }, [pageNum]);
+    useEffect(() => {
+         const token = Cookies.get('token');
+         const c = token ? jwtDecode(token) : '';
+         setTokenId(c.userId);
+    },[])
 
     if (isLoading && posts.length === 0) {
         return <LoadingSkeleton />;
@@ -83,19 +119,31 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
         <div className="container mx-auto px-4 py-6 max-w-2xl" data-testid="car-list">
             <div className="flex flex-col space-y-6">
                 {posts?.map(e => (
-                    <Link 
-                        href={`/post/${listType}/${e.id}`} 
-                        key={e.id}
-                        className="transform transition-all duration-300 hover:scale-[1.01] hover:shadow-lg"
-                    >
-                        <Post 
-                            img={e.images[0]} 
-                            title={e.title} 
-                            cat={listType} 
-                            date={e.date} 
-                            location={e.location} 
-                        />
-                    </Link>
+                    <div key={e.id}>
+                        <Link 
+                            href={`/post/${listType}/${e.id}`}        
+                            className="transform transition-all duration-300 hover:scale-[1.01] hover:shadow-lg"
+                        >
+                            <Post 
+                                img={e.images[0]} 
+                                title={e.title} 
+                                cat={listType} 
+                                date={e.date} 
+                                location={e.location} 
+                            />
+                        </Link>
+                        {(tokenId == e.seller_id) && 
+                            <FaTrash 
+                                size={24} 
+                                color='black' 
+                                className="cursor-pointer hover:text-red-600 transition-colors duration-200"
+                                onClick={() => {
+                                    // e.preventDefault(); // Prevent Link navigation
+                                    handlePostDel(e.id);
+                                }}
+                            />
+                        }
+                    </div>
                 ))}
             </div>
             

@@ -102,15 +102,14 @@ export const getCars = async (req) => {
             .skip(skip)
             .sort(sortConfig);
 
-        if (!cars || cars.length === 0) {
-            return NextResponse.json(
-                { error: 'No cars found' },
-                { status: 404 }
-            );
-        }
+        // if (!cars || cars.length === 0) {
+        //     return NextResponse.json(
+        //         { error: 'No cars found' },
+        //         { status: 404 }
+        //     );
+        // }
 
         const totalCount = await Car.countDocuments(query);
-
         return NextResponse.json({
             success: true,
             count: cars.length,
@@ -118,7 +117,7 @@ export const getCars = async (req) => {
             totalPages: Math.ceil(totalCount / limit),
             cars: cars.map(car => ({
                 id: car._id,
-                seller_id: car.seller_id,
+                seller_id: car.seller_id._id,
                 brand: car.brand,
                 model: car.model,
                 year: car.year,
@@ -166,7 +165,6 @@ export const getApartments = async (req) => {
             .populate('seller_id', 'name email');
 
         const totalCount = await Apartment.countDocuments(query);
-
         return NextResponse.json({
             success: true,
             count: apartments.length,
@@ -181,7 +179,7 @@ export const getApartments = async (req) => {
                 bathrooms: apt.bathroom_count,
                 space: apt.space,
                 images: apt.images,
-                seller: apt.seller_id,
+                seller_id: apt.seller_id._id,
                 date: apt.date,
                 furnished: apt.furnished
             }))
@@ -233,7 +231,7 @@ export const getLaptops = async (req) => {
                 title: laptop.title,
                 location: laptop.location,
                 images: laptop.images,
-                seller: laptop.seller_id,
+                seller_id: laptop.seller_id._id,
                 date: laptop.date
             }))
         });
@@ -283,7 +281,7 @@ export const getBooks = async (req) => {
                 location: book.location,
                 state: book.state,
                 images: book.images,
-                seller: book.seller_id,
+                seller_id: book.seller_id._id,
                 date: book.date,
                 description: book.description
             }))

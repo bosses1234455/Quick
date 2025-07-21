@@ -5,9 +5,13 @@ import Image from 'next/image';
 import {locations} from '../data/data'
 import {jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import Notification from './Notification';
 
 
 export default function ApartmentForm() {
+  const [showNotification, setShowNotification] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -68,6 +72,7 @@ export default function ApartmentForm() {
   //   }
   // }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -97,13 +102,19 @@ export default function ApartmentForm() {
       const res = await fetch('/api/apartments',{
         method: 'POST',
         body: formDataToSend
-      });
-      console.log(res);
-      
+      });      
 
       if(!res.ok) {
         console.log("failed");  
       }
+      if(res.ok) {
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          router.push('/');
+        }, 2000);
+      }
+      
     } catch (error) {
       console.log(error);
     }
@@ -347,6 +358,7 @@ export default function ApartmentForm() {
             </button>
           </div>
         </form>
+        <Notification postType={'Apartment'} showNotification={showNotification}/>
       </div>
     </div>
   );
