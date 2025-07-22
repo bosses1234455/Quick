@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import Post from './Post';
 import { useState, useEffect } from 'react';
-import { FaTrash } from "react-icons/fa";
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 
@@ -13,6 +12,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
     const [pageNum, setPageNum] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [tokenId,setTokenId] = useState('');
+    const [deleteConfirmation, setDeleteConfirmation] = useState({ show: false, postId: null });
 
     const buildQueryString = (page, limit) => {
         const queryParams = new URLSearchParams({
@@ -57,30 +57,37 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
     };
 
     const handlePostDel = async (postId) => {
+        // Show confirmation dialog instead of deleting immediately
+        setDeleteConfirmation({ show: true, postId });
+    };
+
+    const confirmDelete = async () => {
         try {
-            // const token = Cookies.get('token');
             if (!tokenId) {
                 console.error('No token found');
                 return;
             }
 
-            const response = await fetch(`/api/${listType}/${postId}`, {
+            const response = await fetch(`/api/${listType}/${deleteConfirmation.postId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                credentials: 'include' // This will send cookies with the request
+                credentials: 'include'
             });
 
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Failed to delete post');
+                console.error('Failed to delete post');
+                return;
             }
 
             // Remove the deleted post from the state
-            setPosts(posts.filter(post => post.id !== postId));
+            setPosts(posts.filter(post => post.id !== deleteConfirmation.postId));
         } catch (error) {
             console.error('Error deleting post:', error);
+        } finally {
+            // Hide confirmation dialog
+            setDeleteConfirmation({ show: false, postId: null });
         }
     };
 
@@ -119,7 +126,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
         <div className="container mx-auto px-4 py-6 max-w-2xl" data-testid="car-list">
             <div className="flex flex-col space-y-6">
                 {posts?.map(e => (
-                    <div key={e.id}>
+                    <div key={e.id} className="relative group">
                         <Link 
                             href={`/post/${listType}/${e.id}`}        
                             className="transform transition-all duration-300 hover:scale-[1.01] hover:shadow-lg"
@@ -132,20 +139,43 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
                                 location={e.location} 
                             />
                         </Link>
-                        {(tokenId == e.seller_id) && 
-                            <FaTrash 
-                                size={24} 
-                                color='black' 
-                                className="cursor-pointer hover:text-red-600 transition-colors duration-200"
-                                onClick={() => {
-                                    // e.preventDefault(); // Prevent Link navigation
-                                    handlePostDel(e.id);
-                                }}
-                            />
-                        }
+                        {(tokenId == e.seller_id) && (
+                            <button 
+                                className="absolute bottom-4 right-4 p-2 text-gray-500 hover:text-red-600 transition-colors duration-200"
+                                onClick={() => handlePostDel(e.id)}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        )}
                     </div>
                 ))}
             </div>
+
+            {/* Confirmation Dialog */}
+            {deleteConfirmation.show && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
+                        <h3 className="text-lg font-semibold mb-4">Delete Post</h3>
+                        <p className="text-gray-600 mb-6">Are you sure you want to delete this post? This action cannot be undone.</p>
+                        <div className="flex justify-end space-x-3">
+                            <button
+                                className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
+                                onClick={() => setDeleteConfirmation({ show: false, postId: null })}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-medium"
+                                onClick={confirmDelete}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             
             {hasMore && (
                 <div className="flex justify-center mt-12 mb-6">

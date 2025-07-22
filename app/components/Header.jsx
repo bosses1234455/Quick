@@ -5,14 +5,20 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
-
 export default function Header() {
-
   const [isCookie,setIsCookie] = useState(false);
   const [id,setId] = useState('');
+  
   useEffect(() => {
     const checkCookie = () => {
-      setIsCookie(!!Cookies.get('token'));
+      const token = Cookies.get('token');
+      setIsCookie(!!token);
+      if (token) {
+        const decoded = jwtDecode(token);
+        setId(decoded.userId);
+      } else {
+        setId('');
+      }
     };
     
     // Initial check
@@ -23,27 +29,54 @@ export default function Header() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-      const token = Cookies.get('token');
-      const c = token ? jwtDecode(token) : '';
-      setId(c.userId);
-  },[])
   const handleLogout = () => {
     Cookies.remove('token');
     window.location.reload();
   };
   
   return (
-    <header className="flex h-20 justify-between items-center p-4 bg-gray-100 mb-8">
-      <Image src="/Logo.png" width={65} height={65} alt="Logo" className="rounded-full"/>
-      {!isCookie && <Link href={'/login'} className="px-6 py-2 bg-gray-200 rounded-full cursor-pointer">Login</Link>}
-      {isCookie && <div>
-        <Link href={`/profile/${id}`} className="px-6 mr-3 py-2 bg-gray-200 rounded-full cursor-pointer">profile</Link>
-        <button className="px-6 py-2 bg-gray-200 rounded-full cursor-pointer"
-         onClick={handleLogout}
-        >Logout</button>
-      </div>
+    <header className="flex h-16 justify-between items-center p-4 bg-[#090BA1] relative overflow-hidden">
+      {/* Brightness effect using pseudo-elements */}
+      <style jsx>{`
+        header::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.1) 50%, transparent 55%);
+          background-size: 200% 200%;
+          animation: shine 3s infinite;
+        }
+        @keyframes shine {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
+      
+      <Image src="/Lo.png" width={50} height={50} alt="Logo" className="rounded-full relative z-10"/>
+      {!isCookie && 
+        <Link href={'/login'} className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 relative z-10 text-white font-medium shadow-sm hover:shadow-md">
+          Login
+        </Link>
       }
-  </header>
+      {isCookie && 
+        <div className="relative z-10 flex gap-3">
+          <Link 
+            href={`/profile/${id}`} 
+            className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+          >
+            Profile
+          </Link>
+          <button 
+            className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
+      }
+    </header>
   )
 }

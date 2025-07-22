@@ -16,9 +16,9 @@ const Post = ({img,title,cat,location,date}) => {
         <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm">{location}</span>
       </div>
       <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">{moment(date).fromNow()}</span>
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <span className="text-purple-600 text-xl">★</span>
-      </div>
+      </div> */}
     </div>
   </div>
   )
