@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import {locations} from '../data/data'
+import {locationOptions, conditions} from '../data/data'
 import {jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Notification from './Notification';
+import Select from 'react-select';
 
 
 export default function ApartmentForm() {
@@ -29,10 +30,22 @@ export default function ApartmentForm() {
 
   const [imageFiles, setImageFiles] = useState([]);
 
-  const conditions = ['Excellent', 'Very Good', 'Good', 'Fair', 'Poor'];
-  const roomOptions = [1, 2, 3, 4, 5, 6, 7, 8];
-  const bathroomOptions = [1, 2, 3, 4, 5];
-  const floorOptions = Array.from({ length: 35 }, (_, i) => i + 1);
+  // const conditions = ['Excellent', 'Very Good', 'Good', 'Fair', 'Poor'];
+  const roomOptions = [1, 2, 3, 4, 5, 6, 7, 8].map(num => ({
+    value: num,
+    label: `${num} Room${num !== 1 ? 's' : ''}`
+  }));
+  
+  const bathroomOptions = [1, 2, 3, 4, 5].map(num => ({
+    value: num,
+    label: `${num} Bathroom${num !== 1 ? 's' : ''}`
+  }));
+  
+  const floorOptions = Array.from({ length: 36 }, (_, i) => {
+    const floor = i + 1;
+    return { value: floor, label: floor.toString() };
+  });
+  
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -47,30 +60,6 @@ export default function ApartmentForm() {
     setFormData({ ...formData, images: e.target.files });
     setImageFiles([...e.target.files]);
   };
-  
-
-
-    // const handleImageChange = (e) => {
-    //   const files = Array.from(e.target.files);
-    //   setImageFiles(files);
-    // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const res = await fetch('/api/apartments',{
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(formData),
-  //   })
-  //   if(res.ok) {
-  //     console.log('success')
-  //   }
-  //   else {
-  //     console.log(res);
-  //   }
-  // }
 
 
   const handleSubmit = async (e) => {
@@ -143,73 +132,109 @@ export default function ApartmentForm() {
               </div>
 
               <div>
-                <label htmlFor="floor" className="block text-sm font-medium text-gray-700 mb-1">Floor Number</label>
-                <select
-                  id="floor"
+                <label htmlFor="floor" className="block text-sm font-medium text-gray-700 mb-1">
+                  Floor Number
+                </label>
+                <Select
+                  inputId="floor"
                   name="floor"
-                  value={formData.floor}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Floor</option>
-                  {floorOptions.map(num => (
-                    <option key={num} value={num}>{num}{num === 1 ? 'st' : num === 2 ? 'nd' : num === 3 ? 'rd' : 'th'} Floor</option>
-                  ))}
-                </select>
+                  value={floorOptions.find(option => option.value === formData.floor) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'floor', value: selected?.value } })
+                  }
+                  options={floorOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Floor"
+                />
               </div>
 
+
               <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                <select
-                  id="location"
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+                  Location
+                </label>
+                <Select
+                  inputId="location"
                   name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={locationOptions.find(option => option.value === formData.location) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'location', value: selected?.value } })
+                  }
+                  options={locationOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Location"
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                  }}
                   required
-                >
-                  <option value="">Select Location</option>
-                  {locations.map(location => (
-                    <option key={location} value={location}>{location}</option>
-                  ))}
-                </select>
+                />
               </div>
 
               <div>
-                <label htmlFor="room_count" className="block text-sm font-medium text-gray-700 mb-1">Number of Rooms</label>
-                <select
-                  id="room_count"
+                <label htmlFor="room_count" className="block text-sm font-medium text-gray-700 mb-1">
+                  Number of Rooms
+                </label>
+                <Select
+                  inputId="room_count"
                   name="room_count"
-                  value={formData.room_count}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={roomOptions.find(option => option.value === formData.room_count) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'room_count', value: selected?.value } })
+                  }
+                  options={roomOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Number of Rooms"
                   required
-                >
-                  <option value="">Number of Rooms</option>
-                  {roomOptions.map(num => (
-                    <option key={num} value={num}>{num} Room{num !== 1 ? 's' : ''}</option>
-                  ))}
-                </select>
+                />
               </div>
 
+              
               <div>
-                <label htmlFor="bathroom_count" className="block text-sm font-medium text-gray-700 mb-1">Number of Bathrooms</label>
-                <select
-                  id="bathroom_count"
+                <label htmlFor="bathroom_count" className="block text-sm font-medium text-gray-700 mb-1">
+                  Number of Bathrooms
+                </label>
+                <Select
+                  inputId="bathroom_count"
                   name="bathroom_count"
-                  value={formData.bathroom_count}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={bathroomOptions.find(option => option.value === formData.bathroom_count) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'bathroom_count', value: selected?.value } })
+                  }
+                  options={bathroomOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Number of Bathrooms"
                   required
-                >
-                  <option value="">Select Number of Bathrooms</option>
-                  {bathroomOptions.map(num => (
-                    <option key={num} value={num}>{num} Bathroom{num !== 1 ? 's' : ''}</option>
-                  ))}
-                </select>
+                />
               </div>
 
               <div>
+                <label htmlFor="inner_condition" className="block text-sm font-medium text-gray-700 mb-1">
+                  Interior Condition
+                </label>
+                <Select
+                  inputId="inner_condition"
+                  name="inner_condition"
+                  value={conditions.find(option => option.value === formData.inner_condition) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'inner_condition', value: selected?.value } })
+                  }
+                  options={conditions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Condition"
+                />
+              </div>
+
+            </div>
+
+            {/* Column 2 */}
+            <div className="space-y-4">        
+            <div>
                 <label htmlFor="space" className="block text-sm font-medium text-gray-700 mb-1">Apartment Space</label>
                 <input
                   id="space"
@@ -222,10 +247,7 @@ export default function ApartmentForm() {
                   required
                 />
               </div>
-            </div>
 
-            {/* Column 2 */}
-            <div className="space-y-4">
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Apartment Description</label>
                 <textarea
@@ -237,48 +259,7 @@ export default function ApartmentForm() {
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-26 resize-none"
                 />
               </div>
-
-              {/* <div>
-                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Apartment Images</label>
-                <input
-                  id="images"
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  accept="image/*"
-                  max="8"
-                  required
-                />
-                <p className="text-sm text-gray-500 mt-1">Upload up to 8 images</p>
-                <div className="mt-2 grid grid-cols-4 gap-4">
-                  {imageFiles.slice(0, 8).map((file, index) => (
-                    <div key={index} className="relative h-32 w-full border rounded group">
-                      <Image
-                        src={URL.createObjectURL(file)}
-                        alt={`Preview ${index + 1}`}
-                        fill
-                        className="object-cover rounded"
-                      />
-                      <button
-                        onClick={() => {
-                          const newFiles = [...imageFiles];
-                          newFiles.splice(index, 1);
-                          setImageFiles(newFiles);
-                        }}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                        type="button"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                {imageFiles.length > 8 && (
-                  <p className="text-red-500 text-sm mt-1">Only the first 8 images will be used</p>
-                )}
-              </div> */}
-
+              
               <div>
                 <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Apartment Images (Max 8)</label>
                 <input
@@ -306,22 +287,6 @@ export default function ApartmentForm() {
               </div>
 
               <div>
-                <label htmlFor="inner_condition" className="block text-sm font-medium text-gray-700 mb-1">Interior Condition</label>
-                <select
-                  id="inner_condition"
-                  name="inner_condition"
-                  value={formData.inner_condition}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Condition</option>
-                  {conditions.map(condition => (
-                    <option key={condition} value={condition}>{condition}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price (USD)</label>
                 <input
                   id="price"
@@ -345,6 +310,18 @@ export default function ApartmentForm() {
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label htmlFor="furnished" className="text-sm font-medium text-gray-700">Furnished</label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <input
+                  id="sell"
+                  type="checkbox"
+                  name="sell"
+                  checked={formData.sell}
+                  onChange={handleInputChange}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label htmlFor="sell" className="text-sm font-medium text-gray-700">For Sale</label>
               </div>
             </div>
           </div>

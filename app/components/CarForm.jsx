@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Select from 'react-select';
-import { locations, brands as brandOptions, models, types, years, colors, doorOptions, seatOptions, conditions } from '../data/data'
+import { locationOptions, brands as brandOptions, models, types, yearOptions, colors, doorOptions, seatOptions, conditions } from '../data/data'
 import {jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -110,7 +110,9 @@ export default function CarForm() {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-6xl mx-auto">
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+        {/* <form onSubmit={handleSubmit}  className="bg-white rounded-lg shadow-md p-6 border-2 border-blue-800"> */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
             {/* Column 1 */}
             <div className="space-y-4 border-r border-gray-200 pr-6">
               <div>
@@ -148,22 +150,141 @@ export default function CarForm() {
                 />
               </div>
 
+
               <div>
-                <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-1">Manufacturing Year</label>
-                <select
-                  id="year"
+                <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-1">
+                  Manufacturing Year
+                </label>
+                <Select
+                  inputId="year"
                   name="year"
-                  value={formData.year}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select Year</option>
-                  {years.map(year => (
-                    <option key={year} value={year}>{year}</option>
-                  ))}
-                </select>
+                  value={yearOptions.find(option => option.value === formData.year) || null}
+                  onChange={selected => handleInputChange({ target: { name: 'year', value: selected?.value } })}
+                  options={yearOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Year"
+                />
               </div>
+
+
+
+              <div>
+                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
+                  Car Type
+                </label>
+                <Select
+                  inputId="type"
+                  name="type"
+                  value={types.find(option => option.value === formData.type) || null}
+                  onChange={selected => handleInputChange({ target: { name: 'type', value: selected?.value } })}
+                  options={types}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Type"
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                  }}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-1">
+                  Car Color
+                </label>
+                <Select
+                  inputId="color"
+                  name="color"
+                  value={colors.find(option => option.value === formData.color) || null}
+                  onChange={selected => handleInputChange({ target: { name: 'color', value: selected?.value } })}
+                  options={colors}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Color"
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                  }}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="doors" className="block text-sm font-medium text-gray-700 mb-1">
+                  Number of Doors
+                </label>
+                <Select
+                  inputId="doors"
+                  name="doors"
+                  value={doorOptions.find(option => option.value === formData.doors) || null}
+                  onChange={selected => handleInputChange({ target: { name: 'doors', value: selected?.value } })}
+                  options={doorOptions.map(opt => ({ ...opt, label: `${opt.label} Doors` }))}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Number of Doors"
+                />
+              </div>
+            </div>
+
+            {/* Column 2 */}
+            <div className="space-y-4 border-r border-gray-200 px-6">
+              <div>
+                <label htmlFor="seat_number" className="block text-sm font-medium text-gray-700 mb-1">
+                  Number of Seats
+                </label>
+                <Select
+                  inputId="seat_number"
+                  name="seat_number"
+                  value={seatOptions.find(option => option.value === formData.seat_number) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'seat_number', value: selected?.value } })
+                  }
+                  options={seatOptions.map(opt => ({ ...opt, label: `${opt.label} Seats` }))}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Number of Seats"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="outer_condition" className="block text-sm font-medium text-gray-700 mb-1">
+                  Exterior Condition
+                </label>
+                <Select
+                  inputId="outer_condition"
+                  name="outer_condition"
+                  value={conditions.find(option => option.value === formData.outer_condition) || null}
+                  onChange={selected =>
+                    handleInputChange({
+                      target: { name: 'outer_condition', value: selected?.value }
+                    })
+                  }
+                  options={conditions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Outer Condition"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="inner_condition" className="block text-sm font-medium text-gray-700 mb-1">
+                  Interior Condition
+                </label>
+                <Select
+                  inputId="inner_condition"
+                  name="inner_condition"
+                  value={conditions.find(option => option.value === formData.inner_condition) || null}
+                  onChange={selected =>
+                    handleInputChange({
+                      target: { name: 'inner_condition', value: selected?.value }
+                    })
+                  }
+                  options={conditions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select interior Condition"
+                />
+              </div>  
 
               <div>
                 <label htmlFor="milage" className="block text-sm font-medium text-gray-700 mb-1">Mileage (KM)</label>
@@ -177,105 +298,6 @@ export default function CarForm() {
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
-              </div>
-
-              <div>
-                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Car Type</label>
-                <select
-                  id="type"
-                  name="type"
-                  value={formData.type}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Type</option>
-                  {types.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-1">Car Color</label>
-                <select
-                  id="color"
-                  name="color"
-                  value={formData.color}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Color</option>
-                  {colors.map(color => (
-                    <option key={color} value={color}>{color}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Column 2 */}
-            <div className="space-y-4 border-r border-gray-200 px-6">
-              <div>
-                <label htmlFor="doors" className="block text-sm font-medium text-gray-700 mb-1">Number of Doors</label>
-                <select
-                  id="doors"
-                  name="doors"
-                  value={formData.doors}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Number of Doors</option>
-                  {doorOptions.map(num => (
-                    <option key={num} value={num}>{num} Doors</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="seat_number" className="block text-sm font-medium text-gray-700 mb-1">Number of Seats</label>
-                <select
-                  id="seat_number"
-                  name="seat_number"
-                  value={formData.seat_number}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Number of Seats</option>
-                  {seatOptions.map(num => (
-                    <option key={num} value={num}>{num} Seats</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="outer_condition" className="block text-sm font-medium text-gray-700 mb-1">Exterior Condition</label>
-                <select
-                  id="outer_condition"
-                  name="outer_condition"
-                  value={formData.outer_condition}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Outer Condition</option>
-                  {conditions.map(condition => (
-                    <option key={condition} value={condition}>{condition}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="inner_condition" className="block text-sm font-medium text-gray-700 mb-1">Interior Condition</label>
-                <select
-                  id="inner_condition"
-                  name="inner_condition"
-                  value={formData.inner_condition}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Inner Condition</option>
-                  {conditions.map(condition => (
-                    <option key={condition} value={condition}>{condition}</option>
-                  ))}
-                </select>
               </div>
 
               <div>
@@ -320,20 +342,26 @@ export default function CarForm() {
               </div>
 
               <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                <select
-                  id="location"
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+                  Location
+                </label>
+                <Select
+                  inputId="location"
                   name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={locationOptions.find(option => option.value === formData.location) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'location', value: selected?.value } })
+                  }
+                  options={locationOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Location"
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                  }}
                   required
-                >
-                  <option value="">Select Location</option>
-                  {locations.map(location => (
-                    <option key={location} value={location}>{location}</option>
-                  ))}
-                </select>
+                />
               </div>
 
               <div>

@@ -18,6 +18,7 @@ export const locations = [
     'Damascus - Yarmouk',
     'Rif Dimashq - Markaz Rif Dimashq',
     'Rif Dimashq - Qudsiya',
+    'Rif Dimashq - Al-kiswah',
     'Rif Dimashq - Yabroud',
     'Rif Dimashq - Douma',
     'Rif Dimashq - Al-qtaifa',
@@ -33,14 +34,12 @@ export const locations = [
     'Aleppo - Azaz',
     'Aleppo - Atarib',
     'Aleppo - Ayn al-arab',
-    'Aleppo - Dayr Hafir',
     'Aleppo - Jarabulus',
     'Aleppo - As-Safira',
     'Homs - Homs',
     'Homs - Palmyra',
     'Homs - Rastan',
     'Homs - Talkalkh',
-    'Homs - Taldo',
     'Homs - Al-Qusayr',
     'Homs - Almkharam',
     'Hama - Hama',
@@ -82,6 +81,12 @@ export const locations = [
     'Quneitra - Quneitra',
     'Quneitra - Fiq'
   ];
+
+  export const locationOptions = locations.map(loc => ({
+    value: loc,
+    label: loc
+  }));
+  
 
 
 export const brands = [
@@ -197,50 +202,105 @@ export const models = {
 
 
   export const years = Array.from({ length: 2025 - 1955 + 1 }, (_, i) => 2025 - i);
-  export const types = ['Sedan', 'SUV', 'Coupe', 'Hatchback', 'Wagon', 'Van', 'Truck', 'Convertible', 'Sports Car', 'Luxury'];
-  export const colors = ['Black', 'White', 'Silver', 'Gray', 'Red', 'Blue', 'Green', 'Yellow', 'Brown', 'Gold', 'Orange', 'Purple', 'Beige', 'Bronze', 'Burgundy', 'Navy'];
-  export const doorOptions = [2, 3, 4, 5];
-  export const seatOptions = [2, 4, 5, 6, 7, 8, 12, 13, 14, 15];
-  export const conditions = ['Excellent', 'Very Good', 'Good', 'Fair', 'Poor'];
 
-export const lbrands = [
-    'Acer',
-    'ASUS',
-    'Apple',
-    'Dell',
-    'Huawei',
-    'HP',
-    'Lenovo',
-    'LG',
-    'Microsoft',
-    'MSI',
-    'Razer',
-    'Samsung',
-    'Toshiba',
-    'Xiaomi',
-    'Other'
-  ];
+  export const yearOptions = years.map(year => ({
+      value: year,
+      label: year.toString()
+    }));
 
+    export const types = [
+      { value: 'Sedan', label: 'Sedan' },
+      { value: 'SUV', label: 'SUV' },
+      { value: 'Coupe', label: 'Coupe' },
+      { value: 'Hatchback', label: 'Hatchback' },
+      { value: 'Wagon', label: 'Wagon' },
+      { value: 'Van', label: 'Van' },
+      { value: 'Convertible', label: 'Convertible' },
+      { value: 'Sports Car', label: 'Sports Car' },
+      { value: 'Crossover', label: 'Crossover' },
+      { value: 'Minivan', label: 'Minivan' },
+      { value: 'Pickup', label: 'Pickup' },
+      { value: 'Staiton wagon', label: 'Staiton wagon' },
+    ];
+    
+    export const colors = [
+      { value: 'Black', label: 'Black' },
+      { value: 'White', label: 'White' },
+      { value: 'Silver', label: 'Silver' },
+      { value: 'Gray', label: 'Gray' },
+      { value: 'Red', label: 'Red' },
+      { value: 'Blue', label: 'Blue' },
+      { value: 'Green', label: 'Green' },
+      { value: 'Yellow', label: 'Yellow' },
+      { value: 'Brown', label: 'Brown' },
+      { value: 'Gold', label: 'Gold' },
+      { value: 'Orange', label: 'Orange' },
+      { value: 'Purple', label: 'Purple' },
+      { value: 'Beige', label: 'Beige' },
+      { value: 'Bronze', label: 'Bronze' },
+      { value: 'Burgundy', label: 'Burgundy' },
+      { value: 'Navy', label: 'Navy' }
+    ];
+    
+    export const doorOptions = [
+      { value: 2, label: '2' },
+      { value: 3, label: '3' },
+      { value: 4, label: '4' },
+      { value: 5, label: '5' }
+    ];
+    
+    export const seatOptions = [
+      { value: 2, label: '2' },
+      { value: 4, label: '4' },
+      { value: 5, label: '5' },
+      { value: 6, label: '6' },
+      { value: 7, label: '7' },
+      { value: 8, label: '8' },
+      { value: 12, label: '12' },
+      { value: 13, label: '13' },
+      { value: 14, label: '14' },
+      { value: 15, label: '15' }
+    ];
+    
+    export const conditions = [
+      { value: 'Excellent', label: 'Excellent' },
+      { value: 'Very Good', label: 'Very Good' },
+      { value: 'Good', label: 'Good' },
+      { value: 'Fair', label: 'Fair' },
+      { value: 'Poor', label: 'Poor' }
+    ];
+    
+
+    export const laptopBrandOptions = [
+      { value: 'Acer', label: 'Acer' },
+      { value: 'ASUS', label: 'ASUS' },
+      { value: 'Apple', label: 'Apple' },
+      { value: 'Dell', label: 'Dell' },
+      { value: 'Huawei', label: 'Huawei' },
+      { value: 'HP', label: 'HP' },
+      { value: 'Lenovo', label: 'Lenovo' },
+      { value: 'LG', label: 'LG' },
+      { value: 'Microsoft', label: 'Microsoft' },
+      { value: 'MSI', label: 'MSI' },
+      { value: 'Razer', label: 'Razer' },
+      { value: 'Samsung', label: 'Samsung' },
+      { value: 'Toshiba', label: 'Toshiba' },
+      { value: 'Xiaomi', label: 'Xiaomi' },
+      { value: 'Other', label: 'Other' }
+    ];
   
-export const bookTypes = [
-    'Fiction',
-    'Non-Fiction',
-    'Educational',
-    'Academic',
-    'Children',
-    'Science',
-    'History',
-    'Biography',
-    'Self-Help',
-    'Business',
-    'Literature',
-    'Other'
-  ];
-
-export const bookStates = [
-    'New',
-    'Like New',
-    'Very Good',
-    'Good',
-    'Acceptable'
+  
+  export const bookTypeOptions = [
+    { value: 'Fiction', label: 'Fiction' },
+    { value: 'Non-Fiction', label: 'Non-Fiction' },
+    { value: 'Educational', label: 'Educational' },
+    { value: 'Academic', label: 'Academic' },
+    { value: 'Children', label: 'Children' },
+    { value: 'Science', label: 'Science' },
+    { value: 'History', label: 'History' },
+    { value: 'Biography', label: 'Biography' },
+    { value: 'Self-Help', label: 'Self-Help' },
+    { value: 'Business', label: 'Business' },
+    { value: 'Literature', label: 'Literature' },
+    { value: 'Other', label: 'Other' }
   ];

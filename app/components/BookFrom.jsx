@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import {locations, bookTypes, bookStates} from '../data/data'
+import {locationOptions, bookTypeOptions, conditions} from '../data/data'
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Notification from './Notification';
+import Select from 'react-select';
 
 export default function BookForm() {
   const [showNotification, setShowNotification] = useState(false);
@@ -23,8 +24,6 @@ export default function BookForm() {
     state: ''
   });
 
-  // const [imageFile, setImageFile] = useState(null);
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,17 +32,6 @@ export default function BookForm() {
       [name]: value
     }));
   };
-
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setImageFile(file);
-  //     setFormData(prev => ({
-  //       ...prev,
-  //       image: URL.createObjectURL(file)
-  //     }));
-  //   }
-  // };
 
   const [imageFiles, setImageFiles] = useState([]);
 
@@ -148,56 +136,69 @@ export default function BookForm() {
               </div>
 
               <div>
-                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Book Category</label>
-                <select
-                  id="type"
+                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
+                  Book Category
+                </label>
+                <Select
+                  inputId="type"
                   name="type"
-                  value={formData.type}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Book Type</option>
-                  {bookTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price (USD)</label>
-                <input
-                  id="price"
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  placeholder="Enter price in USD"
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
+                  value={bookTypeOptions.find(option => option.value === formData.type) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'type', value: selected?.value } })
+                  }
+                  options={bookTypeOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Book Type"
                 />
               </div>
 
+              <div>
+                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+                  Book Condition
+                </label>
+                <Select
+                  inputId="state"
+                  name="state"
+                  value={conditions.find(option => option.value === formData.state) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'state', value: selected?.value } })
+                  }
+                  options={conditions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Book Condition"
+                />
+              </div>
              
             </div>
 
             {/* Column 2 */}
             <div className="space-y-4">
             <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                <select
-                  id="location"
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+                  Location
+                </label>
+                <Select
+                  inputId="location"
                   name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={locationOptions.find(option => option.value === formData.location) || null}
+                  onChange={selected =>
+                    handleInputChange({ target: { name: 'location', value: selected?.value } })
+                  }
+                  options={locationOptions}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  placeholder="Select Location"
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                  }}
                   required
-                >
-                  <option value="">Select Location</option>
-                  {locations.map(location => (
-                    <option key={location} value={location}>{location}</option>
-                  ))}
-                </select>
+                />
               </div>
+
+              
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Book Description</label>
                 <textarea
@@ -209,23 +210,6 @@ export default function BookForm() {
                   className="w-full h-30 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 />
               </div>
-
-              <div>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">Book Condition</label>
-                <select
-                  id="state"
-                  name="state"
-                  value={formData.state}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Book Condition</option>
-                  {bookStates.map(state => (
-                    <option key={state} value={state}>{state}</option>
-                  ))}
-                </select>
-              </div>
-
 
               <div>
                 <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Book Images (Max 8)</label>
@@ -253,27 +237,19 @@ export default function BookForm() {
                 </div>
               </div>
 
-              {/* <div>
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Book Image</label>
+              <div>
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Price (USD)</label>
                 <input
-                  id="image"
-                  type="file"
-                  onChange={handleImageChange}
+                  id="price"
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  placeholder="Enter price in USD"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  accept="image/*"
                   required
                 />
-                {imageFile && (
-                  <div className="mt-2 relative h-48 w-full border rounded">
-                    <Image
-                      src={formData.image}
-                      alt="Preview"
-                      fill
-                      className="object-contain rounded"
-                    />
-                  </div>
-                )}
-              </div> */}
+              </div>
             </div>
           </div>
 
