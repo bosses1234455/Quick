@@ -123,7 +123,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-6 max-w-2xl" data-testid="car-list">
+        <div className="container mx-auto px-4 py-6 max-w-2xl h-[100vh] overflow-y-scroll" data-testid="car-list">
             <div className="flex flex-col space-y-6">
                 {posts?.map(e => (
                     <div key={e.id} className="relative group">

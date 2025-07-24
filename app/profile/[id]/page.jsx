@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import Modal from '../../components/Modal'; // Assume you have a Modal component
 import Tabs from '@/app/components/Tabs';
 import PostsFetch from '@/app/components/PostsFetch';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 export default function UserProfile() {
   const { id } = useParams();
@@ -20,6 +22,7 @@ export default function UserProfile() {
     phone_num: '',
     password: ''
   });
+  const [tokenId,setTokenId] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,6 +46,12 @@ export default function UserProfile() {
 
     if (id) fetchUserData();
   }, [id]);
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    const decoded = jwtDecode(token);
+    decoded ? setTokenId(decoded.userId) : null
+  },[])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,17 +87,18 @@ export default function UserProfile() {
   if (!userData) return <NotFoundDisplay />;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-[#eeeeee] p-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-md p-6 relative">
           {/* Edit Button (Top Right) */}
+          {tokenId == userData.id && 
           <button 
             onClick={() => setIsEditing(true)}
             className="absolute top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
           >
             Edit Profile
           </button>
-
+          }
           {/* Profile Header */}
           <div className="flex items-center space-x-4 mb-6">
             <div className="w-24 h-24 bg-gray-300 rounded-full overflow-hidden">

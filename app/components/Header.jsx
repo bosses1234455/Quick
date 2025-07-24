@@ -54,8 +54,9 @@ export default function Header() {
           100% { background-position: 200% 0; }
         }
       `}</style>
-      
-      <Image src="/Lo.png" width={50} height={50} alt="Logo" className="rounded-full relative z-10"/>
+      <Link href={'/'} >
+        <Image src="/Lo.png" width={50} height={50} alt="Logo" className="rounded-full relative z-10"/>
+      </Link>
       {!isCookie && 
         <Link href={'/login'} className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 relative z-10 text-white font-medium shadow-sm hover:shadow-md">
           Login
@@ -63,14 +64,19 @@ export default function Header() {
       }
       {isCookie && 
         <div className="relative z-10 flex gap-3">
+          <Link href={'/category'}
+            className="md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+          >
+            Make a post
+          </Link>
           <Link 
             href={`/profile/${id}`} 
-            className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+            className="md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
           >
             Profile
           </Link>
           <button 
-            className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+            className="md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
             onClick={handleLogout}
           >
             Logout

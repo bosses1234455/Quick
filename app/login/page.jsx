@@ -48,7 +48,7 @@ export default function LoginPage() {
   const { errors, touched, values, handleChange,handleBlur, handleSubmit } = formik;
   
   return (
-    <div className="min-h-screen flex flex-col items-center p-4">
+    <div className="min-h-screen flex flex-col items-center p-4 mt-12">
       <div className="bg-gray-200 p-8 rounded-lg w-full max-w-md">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

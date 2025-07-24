@@ -4,6 +4,7 @@ import { useParams, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
+import { RxAvatar } from "react-icons/rx";
 
 const CarDetails = ({ post }) => (
   <div className="space-y-2">
@@ -103,7 +104,9 @@ export default function PostDetail() {
       <Link href="/" className="text-blue-500 hover:underline mb-4 inline-block">
         ← Back to all posts
       </Link>
-      
+      <Link className='flex items-center gap-2.5 my-2.5 flex-wrap' href={`/profile/${post.seller._id}`}>
+        <RxAvatar size={36} /> Owners profile
+      </Link>
       <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -143,13 +146,23 @@ export default function PostDetail() {
             <p>{post.description || "No description provided"}</p>
           </div>
         </div>
+        
 
         <div className="space-y-4">
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-2">Details</h2>
             {renderDetails()}
+            <div className='mt-7'>
+              <Link 
+                href={`/chat?postId=${post._id}&userId=${post.seller_id}&type=${postType}`}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Chat with Seller
+              </Link>
+            </div>
           </div>
         </div>
+        
       </div>
     </div>
   );

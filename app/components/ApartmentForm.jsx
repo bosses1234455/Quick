@@ -13,6 +13,7 @@ import Select from 'react-select';
 export default function ApartmentForm() {
   const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
+  const [error,setError] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -79,13 +80,11 @@ export default function ApartmentForm() {
         }
       }      
       const cookie = Cookies.get('token');
-      console.log(cookie);
       
 
       const seller_id = jwtDecode(cookie);
       
       formDataToSend.set('seller_id', seller_id.userId);
-      console.log(seller_id.userId);
       
 
       const res = await fetch('/api/apartments',{
@@ -94,7 +93,12 @@ export default function ApartmentForm() {
       });      
 
       if(!res.ok) {
-        console.log("failed");  
+        setError('check your inputs');
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          setError('');
+        }, 2000);
       }
       if(res.ok) {
         setShowNotification(true);
@@ -335,7 +339,7 @@ export default function ApartmentForm() {
             </button>
           </div>
         </form>
-        <Notification postType={'Apartment'} showNotification={showNotification}/>
+        <Notification postType={'Apartment'} showNotification={showNotification} error={error}/>
       </div>
     </div>
   );

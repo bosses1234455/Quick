@@ -27,7 +27,7 @@ export const getUser = async (req, {params}) => {
           id: user._id,
           email: user.mail,
           username: user.username,
-          phone: user.phone_num
+          phone_num: user.phone_num
         };
     
         return NextResponse.json(
