@@ -136,7 +136,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
                                 title={e.title} 
                                 cat={listType} 
                                 date={e.date} 
-                                location={e.location} 
+                                location={e.location}
                             />
                         </Link>
                         {(tokenId == e.seller_id) && (

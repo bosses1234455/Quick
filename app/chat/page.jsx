@@ -19,7 +19,9 @@ export default function ChatPage() {
   useEffect(() => {
     const initSocket = async () => {
       await fetch('/api/socket');
-      const newSocket = io();
+      const newSocket = io('http://localhost:3000', {
+        path: '/api/socket'
+      });
       setSocket(newSocket);
 
       // Join chat room

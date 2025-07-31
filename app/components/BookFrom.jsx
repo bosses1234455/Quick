@@ -63,7 +63,7 @@ export default function BookForm() {
       const seller_id = jwtDecode(cookie);
       
       formDataToSend.set('seller_id', seller_id.userId);
-      console.log(seller_id.userId);
+      // console.log(seller_id.userId);
       
 
       const res = await fetch('/api/books',{
