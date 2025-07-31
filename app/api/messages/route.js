@@ -1,7 +1,7 @@
 import { withDB } from '@/middlewares/withDB';
 import { auth } from '@/middlewares/auth';
 import { NextResponse } from 'next/server';
-import Message from '@/models/Message';
+import { getMessages, createMessage } from '@/controllers/messagesController';
 
 // Get all messages for a user
 export const GET = withDB(async (req) => {
@@ -13,14 +13,13 @@ export const GET = withDB(async (req) => {
   const postId = searchParams.get('postId');
   const otherUserId = searchParams.get('otherUserId');
 
-  const messages = await Message.find({
-    $or: [
-      { sender_id: user._id, receiver_id: otherUserId, post_id: postId },
-      { sender_id: otherUserId, receiver_id: user._id, post_id: postId }
-    ]
-  }).sort({ date: 1 });
+  const result = await getMessages(user, postId, otherUserId);
+  
+  if (!result.success) {
+    return NextResponse.json({ error: result.error }, { status: 500 });
+  }
 
-  return NextResponse.json(messages);
+  return NextResponse.json(result.data);
 });
 
 // Send a new message
@@ -29,15 +28,13 @@ export const POST = withDB(async (req) => {
   if (authResult instanceof NextResponse) return authResult;
   const { user } = authResult;
 
-  const { receiver_id, post_id, content, onModel } = await req.json();
+  const messageData = await req.json();
+  const result = await createMessage(user, messageData);
 
-  const message = await Message.create({
-    sender_id: user._id,
-    receiver_id,
-    post_id,
-    content,
-    onModel
-  });
+  if (!result.success) {
+    return NextResponse.json({ error: result.error }, { status: 500 });
+  }
 
-  return NextResponse.json(message);
+  // The socket.io event will handle real-time delivery
+  return NextResponse.json(result.data);
 });

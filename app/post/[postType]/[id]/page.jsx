@@ -154,7 +154,7 @@ export default function PostDetail() {
             {renderDetails()}
             <div className='mt-7'>
               <Link 
-                href={`/chat?postId=${post._id}&userId=${post.seller_id}&type=${postType}`}
+                href={`/chat?postId=${post.id}&userId=${post.seller._id}&type=${postType}`}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
                 Chat with Seller

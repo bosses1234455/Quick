@@ -4,27 +4,11 @@ import Laptop from '@/models/Laptop'
 import Apartment from '@/models/Apartment'
 import { NextResponse } from 'next/server'
 import { processUploads } from '@/middlewares/upload'
+import { postReview } from '@/middlewares/postReview'
 
 export const postCar = async (req) => {
     try {
-        // const formData = await req.formData();
-        // const files = formData.getAll('images');
-        
-        // const uploadDir = path.join(process.cwd(), 'public/uploads');
-        // const imageUrls = [];
 
-        // for (const file of files) {
-        //     const bytes = await file.arrayBuffer();
-        //     const buffer = Buffer.from(bytes);
-            
-        //     // Create a unique filename
-        //     const filename = `${Date.now()}-${file.name}`;
-        //     const filepath = path.join(uploadDir, filename);
-            
-        //     // Save the file
-        //     await writeFile(filepath, buffer);
-        //     imageUrls.push(`/uploads/${filename}`);
-        // }
 
         // Get other form data
         const formData = await req.formData()
@@ -57,6 +41,14 @@ export const postCar = async (req) => {
                 { error: `Missing fields: ${missingFields.join(', ')}` },
                 { status: 400 }
             );
+        }
+        const reviewResult = await postReview(data.title,data.description);
+        // console.log(reviewResult);
+        if(!reviewResult.approval_status) {
+            return NextResponse.json(
+        { error: reviewResult.issues_found },
+        { status: 400 }
+      );
         }
 
         const car = await Car.create(data);

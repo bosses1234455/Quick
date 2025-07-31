@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Image from 'next/image';
+import { io } from 'socket.io-client';
 
 export default function ChatPage() {
   const searchParams = useSearchParams();
@@ -10,9 +10,32 @@ export default function ChatPage() {
   const otherUserId = searchParams.get('userId');
   const postType = searchParams.get('type');
 
+  const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Initialize Socket.IO connection
+  useEffect(() => {
+    const initSocket = async () => {
+      await fetch('/api/socket');
+      const newSocket = io();
+      setSocket(newSocket);
+
+      // Join chat room
+      const chatRoom = `${postId}-${otherUserId}`;
+      newSocket.emit('join-chat', chatRoom);
+
+      // Listen for new messages
+      newSocket.on('receive-message', (newMessage) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
+
+      return () => newSocket.close();
+    };
+
+    initSocket();
+  }, [postId, otherUserId]);
 
   useEffect(() => {
     fetchMessages();
@@ -34,7 +57,16 @@ export default function ChatPage() {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!message.trim()) return;
+    if (!message.trim() || !socket) return;
+
+    const chatRoom = `${postId}-${otherUserId}`;
+    const messageData = {
+      receiver_id: otherUserId,
+      post_id: postId,
+      content: message,
+      onModel: postType,
+      chatRoom
+    };
 
     try {
       const res = await fetch('/api/messages', {
@@ -42,17 +74,12 @@ export default function ChatPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          receiver_id: otherUserId,
-          post_id: postId,
-          content: message,
-          onModel: postType
-        })
+        body: JSON.stringify(messageData)
       });
 
       if (res.ok) {
         const newMessage = await res.json();
-        setMessages([...messages, newMessage]);
+        socket.emit('send-message', { ...newMessage, chatRoom });
         setMessage('');
       }
     } catch (error) {

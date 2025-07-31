@@ -127,7 +127,7 @@ export default function UserProfile() {
                 <h2 className="text-lg font-semibold text-gray-900">Contact Information</h2>
                 {userData.phone_num && (
                   <div>
-                    <p className="text-sm text-gray-500">phone_num</p>
+                    <p className="text-sm text-gray-500">Contact number</p>
                     <p className="text-gray-900">{userData.phone_num}</p>
                   </div>
                 )}
