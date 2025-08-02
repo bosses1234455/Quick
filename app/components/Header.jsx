@@ -4,30 +4,32 @@ import Link from "next/link"
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
   const [isCookie,setIsCookie] = useState(false);
-  const [id,setId] = useState('');
+  // const [id,setId] = useState('');
+  const {loggedIn,id} = useAuth();
   
-  useEffect(() => {
-    const checkCookie = () => {
-      const token = Cookies.get('token');
-      setIsCookie(!!token);
-      if (token) {
-        const decoded = jwtDecode(token);
-        setId(decoded.userId);
-      } else {
-        setId('');
-      }
-    };
+  // useEffect(() => {
+    // const checkCookie = () => {
+    //   const token = Cookies.get('token');
+    //   setIsCookie(!!token);
+    //   if (token) {
+    //     const decoded = jwtDecode(token);
+    //     setId(decoded.userId);
+    //   } else {
+    //     setId('');
+    //   }
+    // };
     
     // Initial check
-    checkCookie();
+    // checkCookie();
 
     // Optional: Polling (check every 1s) for external changes
-    const interval = setInterval(checkCookie, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    // const interval = setInterval(checkCookie, 1000);
+    // return () => clearInterval(interval);
+  // }, []);
 
   const handleLogout = () => {
     Cookies.remove('token');
@@ -57,12 +59,12 @@ export default function Header() {
       <Link href={'/'} >
         <Image src="/Lo.png" width={50} height={50} alt="Logo" className="rounded-full relative z-10"/>
       </Link>
-      {!isCookie && 
+      {!loggedIn && 
         <Link href={'/login'} className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 relative z-10 text-white font-medium shadow-sm hover:shadow-md">
           Login
         </Link>
       }
-      {isCookie && 
+      {loggedIn && 
         <div className="relative z-10 flex gap-3">
           <Link href={'/category'}
             className="md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"

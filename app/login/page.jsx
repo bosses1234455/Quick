@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';
 
 const GoogleLoginButton = dynamic(() => import('../components/GoogleLoginButton'), {
   ssr: false,
@@ -13,7 +14,7 @@ const GoogleLoginButton = dynamic(() => import('../components/GoogleLoginButton'
 
 export default function LoginPage() {
   const router = useRouter();
-
+  const {setTryingToLog} = useAuth();
   const schema = Yup.object().shape({
     mail: Yup.string().required().email(),
     password: Yup.string().required().min(7),
@@ -36,6 +37,7 @@ export default function LoginPage() {
         body: JSON.stringify({ mail, password }),
       })
       if(res.ok) {
+        setTryingToLog(prev => !prev);
         router.push('/');
       }
       else {

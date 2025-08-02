@@ -94,11 +94,7 @@ export default function ApartmentForm() {
 
       if(!res.ok) {
         setError('check your inputs');
-        setShowNotification(true);
-        setTimeout(() => {
-          setShowNotification(false);
-          setError('');
-        }, 2000);
+        console.log(res);
       }
       if(res.ok) {
         setShowNotification(true);

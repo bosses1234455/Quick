@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import { RxAvatar } from "react-icons/rx";
+import { useAuth } from '@/app/context/AuthContext';
 
 const CarDetails = ({ post }) => (
   <div className="space-y-2">
@@ -53,6 +54,7 @@ export default function PostDetail() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {id:userId} = useAuth();
 
   const postType = pathname.split('/')[2];
 
@@ -152,6 +154,7 @@ export default function PostDetail() {
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-2">Details</h2>
             {renderDetails()}
+            {(userId != post.seller._id) && 
             <div className='mt-7'>
               <Link 
                 href={`/chat?postId=${post.id}&userId=${post.seller._id}&type=${postType}`}
@@ -160,6 +163,7 @@ export default function PostDetail() {
                 Chat with Seller
               </Link>
             </div>
+          } 
           </div>
         </div>
         

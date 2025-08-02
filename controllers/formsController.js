@@ -93,6 +93,14 @@ export const postLaptop = async (req) => {
                 { status: 400 }
             )
         }
+         const reviewResult = await postReview(data.title,data.description);
+        // console.log(reviewResult);
+        if(!reviewResult.approval_status) {
+            return NextResponse.json(
+        { error: reviewResult.issues_found },
+        { status: 400 }
+      );
+        }
 
         const laptop = await Laptop.create(data);
         return NextResponse.json(
@@ -139,6 +147,14 @@ export const postApartment = async (req) => {
                 { status: 400 }
             )
         }
+         const reviewResult = await postReview(data.title,data.description);
+        // console.log(reviewResult);
+        if(!reviewResult.approval_status) {
+            return NextResponse.json(
+        { error: reviewResult.issues_found },
+        { status: 400 }
+      );
+        }
 
         const apartment = await Apartment.create(data);
         return NextResponse.json(
@@ -180,6 +196,14 @@ export const postBook = async (req) => {
                 { error: `Missing fields: ${missingFields.join(', ')}` },
                 { status: 400 }
             )
+        }
+         const reviewResult = await postReview(data.title,data.description);
+        // console.log(reviewResult);
+        if(!reviewResult.approval_status) {
+            return NextResponse.json(
+        { error: reviewResult.issues_found },
+        { status: 400 }
+      );
         }
 
         const book = await Book.create(data);

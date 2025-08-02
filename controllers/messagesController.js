@@ -20,7 +20,8 @@ export async function getMessages(user, postId, otherUserId) {
 export async function createMessage(user, messageData) {
   try {
     const { receiver_id, post_id, content, onModel } = messageData;
-
+    // console.log(user._id);
+    
     const message = await Message.create({
       sender_id: user._id,
       receiver_id,
@@ -31,6 +32,6 @@ export async function createMessage(user, messageData) {
 
     return { success: true, data: message };
   } catch (error) {
-    return { success: false, error: 'Failed to create message' };
+    return { success: false, error: error };
   }
 }

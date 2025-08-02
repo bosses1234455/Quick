@@ -1,9 +1,11 @@
 'use client';
 import { useEffect } from 'react';
 import {useRouter} from "next/navigation"
+import { useAuth } from '../context/AuthContext';
 
 export default function GoogleLoginButton() {
   const router = useRouter();
+  const {setTryingToLog} = useAuth();
   useEffect(() => {
     
     const initializeGoogle = () => {
@@ -36,6 +38,7 @@ export default function GoogleLoginButton() {
         const data = await res.json();
         if (res.ok) {
           console.log('Google login successful:', data);
+          setTryingToLog(prev => !prev);
           router.push('/')
         } else {
           alert(data.error);

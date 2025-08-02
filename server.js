@@ -1,51 +1,50 @@
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
+const http = require('http');
 const { Server } = require('socket.io');
+const express = require('express');
+const cors = require('cors');
 
-const dev = process.env.NODE_ENV !== 'production';
-const hostname = 'localhost';
-const port = 3000;
+const app = express();
 
-// When using a custom server, you must manually create a Next.js app instance
-const app = next({ dev, hostname, port });
-const handle = app.getRequestHandler();
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
 
-app.prepare().then(() => {
-  const httpServer = createServer((req, res) => {
-    const parsedUrl = parse(req.url, true);
-    handle(req, res, parsedUrl);
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log(`✅ Socket connected: ${socket.id}`);
+
+  socket.on('joinConversation', (conversationId) => {
+    socket.join(conversationId);
+    console.log(`🟢 User joined conversation ${conversationId}`);
   });
 
-  const io = new Server(httpServer, {
-    path: '/api/socket',
-    addTrailingSlash: false,
-    cors: {
-      origin: '*',
-      methods: ['GET', 'POST']
-    }
+  socket.on('send message', (message) => {
+    const { post_id, receiver_id } = message;
+    const conversationRoom = `${post_id}_${receiver_id}`;
+    io.to(conversationRoom).emit('receiveMessage', message);
+    console.log('📩 Message sent to:', conversationRoom);
   });
 
-  io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
-
-    socket.on('join-chat', (data) => {
-      socket.join(data.chatId);
-      console.log(`User ${socket.id} joined chat ${data.chatId}`);
-    });
-
-    socket.on('send-message', (data) => {
-      io.to(data.chatId).emit('receive-message', data);
-      console.log(`Message sent to chat ${data.chatId}: ${data.content}`);
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Client disconnected:', socket.id);
+  socket.on('typing', (conversationId) => {
+    socket.to(conversationId).emit('userTyping', {
+      userId: socket.userId,
+      conversationId,
     });
   });
 
-  httpServer.listen(port, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on http://${hostname}:${port}`);
+  socket.on('disconnect', () => {
+    console.log(`❌ Socket disconnected: ${socket.id}`);
   });
+});
+
+const PORT = process.env.SOCKET_PORT || 3001;
+server.listen(PORT, () => {
+  console.log(`🚀 Socket.IO server running on http://localhost:${PORT}`);
 });

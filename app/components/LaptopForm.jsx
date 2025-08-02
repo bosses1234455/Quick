@@ -66,8 +66,9 @@ export default function LaptopForm() {
                 body: formDataToSend
             });
 
-            if (!res.ok) {
-                console.log("failed");
+            if(!res.ok) {
+                // setError('check your inputs');
+                console.log(res.error);
             }
             if (res.ok) {
                 setShowNotification(true);

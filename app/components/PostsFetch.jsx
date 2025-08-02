@@ -3,16 +3,18 @@ import Link from 'next/link';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import Post from './Post';
 import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+// import Cookies from 'js-cookie';
+// import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext';
 
 const PostsFetch = ({ listType, id, filters, sortOption }) => {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageNum, setPageNum] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    const [tokenId,setTokenId] = useState('');
+    // const [tokenId,setTokenId] = useState('');
     const [deleteConfirmation, setDeleteConfirmation] = useState({ show: false, postId: null });
+    const {id:userId} = useAuth();
 
     const buildQueryString = (page, limit) => {
         const queryParams = new URLSearchParams({
@@ -63,7 +65,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
 
     const confirmDelete = async () => {
         try {
-            if (!tokenId) {
+            if (!userId) {
                 console.error('No token found');
                 return;
             }
@@ -103,11 +105,11 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
             fetchPosts(pageNum);
         }
     }, [pageNum]);
-    useEffect(() => {
-         const token = Cookies.get('token');
-         const c = token ? jwtDecode(token) : '';
-         setTokenId(c.userId);
-    },[])
+    // useEffect(() => {
+    //     //  const token = Cookies.get('token');
+    //     //  const c = token ? jwtDecode(token) : '';
+    //      setTokenId(userId);
+    // },[])
 
     if (isLoading && posts.length === 0) {
         return <LoadingSkeleton />;
@@ -139,7 +141,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
                                 location={e.location}
                             />
                         </Link>
-                        {(tokenId == e.seller_id) && (
+                        {(userId == e.seller_id) && (
                             <button 
                                 className="absolute bottom-4 right-4 p-2 text-gray-500 hover:text-red-600 transition-colors duration-200"
                                 onClick={() => handlePostDel(e.id)}
