@@ -45,11 +45,13 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
             const res = await fetch(`/api/${listType}?${queryString}`, {
                 method: 'GET'
             });
+            // console.log(res);
             const arr = await res.json();
             if (arr[listType].length === 0) {
                 setHasMore(false);
             } else {
                 setPosts(prev => page === 1 ? arr[listType] : [...prev, ...arr[listType]]);
+                
             }
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -57,7 +59,8 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
             setIsLoading(false);
         }
     };
-
+    console.log(posts);
+    
     const handlePostDel = async (postId) => {
         // Show confirmation dialog instead of deleting immediately
         setDeleteConfirmation({ show: true, postId });
@@ -139,6 +142,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
                                 cat={listType} 
                                 date={e.date} 
                                 location={e.location}
+                                price={e.price}
                             />
                         </Link>
                         {(userId == e.seller_id) && (
