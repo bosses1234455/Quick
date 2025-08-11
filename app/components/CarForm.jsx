@@ -12,6 +12,7 @@ import Notification from './Notification';
 export default function CarForm() {
   const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
+  const [error,setError] = useState('');
   const [formData, setFormData] = useState({
     brand: '',
     model: '',
@@ -90,10 +91,18 @@ export default function CarForm() {
         body: formDataToSend
       });
 
+      const data = await res.json();
+
       if(!res.ok) {
-        console.log("failed");  
+        setError(data.error[0] ||'check your inputs');
+         setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          // router.push('/');
+        }, 2000);
       }
       if(res.ok) {
+        setError('');
         setShowNotification(true);
         setTimeout(() => {
           setShowNotification(false);
@@ -403,7 +412,7 @@ export default function CarForm() {
             </button>
           </div>
         </form>
-        <Notification postType={'Car'} showNotification={showNotification} />
+        <Notification postType={'Car'} showNotification={showNotification} error={error} />
       </div>
     </div>
   );
