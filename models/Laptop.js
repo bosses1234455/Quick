@@ -10,6 +10,7 @@ const laptopSchema = new mongoose.Schema({
   gpu: { type: String },
   title: { type: String, required: true },
   location: { type: String, required: true },
+  new: { type: Boolean, default: false },
   description: { type: String },
   images: [{ type: String, required: true }],
   date: { type: Date, default: Date.now }

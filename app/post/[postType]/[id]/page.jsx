@@ -117,7 +117,7 @@ export default function PostDetail() {
     }
   };
 
-  if (loading) return <div className="text-center p-8">Loading...</div>;
+  if (loading) return <LoadingSpinner />
   if (error) return <div className="text-center p-8 text-red-500">Error: {error}</div>;
   if (!post) return <div className="text-center p-8">No {postType} data found</div>;
   
@@ -218,3 +218,10 @@ export default function PostDetail() {
   );
 }
 
+function LoadingSpinner() {
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    </div>
+  );
+}

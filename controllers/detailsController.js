@@ -151,6 +151,7 @@ export const getLaptopDetails = async (req, { params }) => {
       processor: laptop.processor,
       ram: laptop.ram,
       storage: laptop.storage,
+      new: laptop.new,
       gpu: laptop.gpu || 'Integrated'
     };
 

@@ -60,25 +60,25 @@ export default function Header() {
         <Image src="/Lo.png" width={50} height={50} alt="Logo" className="rounded-full relative z-10"/>
       </Link>
       {!loggedIn && 
-        <Link href={'/login'} className="px-5 py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 relative z-10 text-white font-medium shadow-sm hover:shadow-md">
+        <Link href={'/login'} className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 relative z-10 text-white font-medium shadow-sm hover:shadow-md">
           Login
         </Link>
       }
       {loggedIn && 
-        <div className="relative z-10 flex gap-3">
+        <div className="relative z-10 flex gap-1 md:gap-3 flex-nowrap">
           <Link href={'/category'}
-            className="md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+            className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
           >
             Make a post
           </Link>
           <Link 
             href={`/profile/${id}`} 
-            className="md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+            className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
           >
             Profile
           </Link>
           <button 
-            className="md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+            className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
             onClick={handleLogout}
           >
             Logout

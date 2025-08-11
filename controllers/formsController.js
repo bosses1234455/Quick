@@ -81,6 +81,7 @@ export const postLaptop = async (req) => {
             title: formData.get('title'),
             location: formData.get('location'),
             description: formData.get('description'),
+            new:formData.get('new'),
             images: imageUrls
         }
         
@@ -174,6 +175,17 @@ export const postBook = async (req) => {
     try {
         const formData = await req.formData();
         const imageUrls = await processUploads(formData);
+
+        const images = formData.getAll('images'); // Get all files under field 'images'
+        console.log("Number of images:", images.length);
+
+        if (images.length > 8) {
+            return NextResponse.json(
+                { error: "Maximum of 8 images allowed" },
+                { status: 400 }
+            );
+        }
+        
 
         const data = {
             seller_id: formData.get('seller_id'),

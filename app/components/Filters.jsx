@@ -8,7 +8,8 @@ const Filters = ({ listType, onFilterChange }) => {
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
       { name: 'rooms', label: 'Rooms', type: 'select', options: ['1', '2', '3', '4+'] },
-      { name: 'furnished', label: 'Furnished', type: 'boolean' }
+      { name: 'furnished', label: 'Furnished', type: 'boolean' },
+      { name: 'sell', label: 'for sale', type: 'boolean' }
     ],
     cars: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },

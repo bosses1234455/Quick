@@ -46,8 +46,15 @@ const buildFilterQuery = (searchParams, modelType) => {
       }
       
       const furnished = searchParams.get('furnished');
-      if (furnished === 'true') query.furnished = true;
+      const sell = searchParams.get('sell');
+      if (furnished === 'true') query.furnished = true
+      if (sell === 'true'){
+        query.sell = true
+      }else{
+        query.sell= false
+        }
       break;
+
 
     case 'laptops':
       const laptopBrand = searchParams.get('brand');
@@ -181,7 +188,8 @@ export const getApartments = async (req) => {
                 images: apt.images,
                 seller_id: apt.seller_id._id,
                 date: apt.date,
-                furnished: apt.furnished
+                furnished: apt.furnished,
+                sell:apt.sell
             }))
         });
     } catch (err) {
@@ -231,6 +239,7 @@ export const getLaptops = async (req) => {
                 title: laptop.title,
                 location: laptop.location,
                 images: laptop.images,
+                new:laptop.new,
                 seller_id: laptop.seller_id._id,
                 date: laptop.date
             }))
