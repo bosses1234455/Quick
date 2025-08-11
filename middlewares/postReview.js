@@ -3,7 +3,6 @@ export async function postReview(title, description) {
   try {
     const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
     const combinedContent = `Title: ${title}\n\nDescription: ${description}`;
-
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -15,7 +14,7 @@ export async function postReview(title, description) {
         messages: [
           {
             role: "system",
-            content: `You are a content moderation assistant. Analyze the following post (ps:you are reviewing only the title and a brief description the photos and model and milage ...etc are specified) content and respond with a JSON object containing:
+            content: `You are a content moderation assistant. Analyze the following ad title and description for any language racism things like that and respond with a JSON object containing:
             - 'approval_status' (boolean): whether the content is appropriate
             - 'issues_found' (array of strings): specific problems identified
             - 'suggested_improvements' (array of strings): recommendations for improvement

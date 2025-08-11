@@ -100,7 +100,7 @@ export default function PostDetail() {
 
     fetchPost();
   }, [id, postType]);
-  console.log(post);
+  // console.log(post);
   
   const renderDetails = () => {
     switch(postType) {

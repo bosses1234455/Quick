@@ -59,7 +59,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
             setIsLoading(false);
         }
     };
-    console.log(posts);
+    // console.log(posts);
     
     const handlePostDel = async (postId) => {
         // Show confirmation dialog instead of deleting immediately

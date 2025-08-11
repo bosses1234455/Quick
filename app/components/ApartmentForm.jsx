@@ -92,11 +92,18 @@ export default function ApartmentForm() {
         body: formDataToSend
       });      
 
+      const data = await res.json();
+
       if(!res.ok) {
-        setError('check your inputs');
-        console.log(res);
+        setError(data.error[0] ||'check your inputs');
+         setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          // router.push('/');
+        }, 2000);
       }
       if(res.ok) {
+        setError('');
         setShowNotification(true);
         setTimeout(() => {
           setShowNotification(false);
