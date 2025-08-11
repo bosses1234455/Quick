@@ -12,6 +12,7 @@ import Select from 'react-select';
 export default function LaptopForm() {
     const [showNotification, setShowNotification] = useState(false);
     const router = useRouter();
+    const [error,setError] = useState('');
     const [formData, setFormData] = useState({
         title: '',
         brand: '',
@@ -66,17 +67,24 @@ export default function LaptopForm() {
                 body: formDataToSend
             });
 
-            if(!res.ok) {
-                // setError('check your inputs');
-                console.log(res.error);
-            }
-            if (res.ok) {
-                setShowNotification(true);
-                setTimeout(() => {
-                    setShowNotification(false);
-                    router.push('/');
-                }, 2000);
-            }
+            const data = await res.json();
+
+        if(!res.ok) {
+            setError(data.error[0] ||'check your inputs');
+            setShowNotification(true);
+            setTimeout(() => {
+            setShowNotification(false);
+            // router.push('/');
+            }, 2000);
+        }
+        if(res.ok) {
+            setError('');
+            setShowNotification(true);
+            setTimeout(() => {
+            setShowNotification(false);
+            router.push('/');
+            }, 2000);
+        }
         } catch (error) {
             console.log(error);
         }

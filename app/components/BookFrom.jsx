@@ -12,6 +12,7 @@ import Select from 'react-select';
 export default function BookForm() {
   const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
+  const [error,setError] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     book_title:'',
@@ -71,10 +72,18 @@ export default function BookForm() {
         body: formDataToSend
       });      
 
+      const data = await res.json();
+
       if(!res.ok) {
-        console.log("failed");  
+        setError(data.error[0] ||'check your inputs');
+         setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+          // router.push('/');
+        }, 2000);
       }
-            if(res.ok) {
+      if(res.ok) {
+        setError('');
         setShowNotification(true);
         setTimeout(() => {
           setShowNotification(false);
@@ -262,7 +271,7 @@ export default function BookForm() {
             </button>
           </div>
         </form>
-        <Notification showNotification={showNotification} postType={'Book'} />
+        <Notification showNotification={showNotification} postType={'Book'} error={error} />
       </div>
     </div>
   );
