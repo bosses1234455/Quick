@@ -26,10 +26,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send message', (message) => {
-    const { post_id, receiver_id } = message;
-    const conversationRoom = `${post_id}_${receiver_id}`;
-    io.to(conversationRoom).emit('receiveMessage', message);
-    console.log('📩 Message sent to:', conversationRoom);
+    const { chatRoom } = message;
+    // const conversationRoom = `${post_id}_${receiver_id}`;
+    io.to(chatRoom).emit('receiveMessage', message);
+    console.log('📩 Message sent to:', chatRoom);
   });
 
   socket.on('typing', (conversationId) => {

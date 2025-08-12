@@ -275,7 +275,7 @@ export default function LaptopForm() {
                         </button>
                     </div>
                 </form>
-                <Notification showNotification={showNotification} postType={'Laptop'} />
+                <Notification showNotification={showNotification} postType={'Laptop'} error={error} />
             </div>
         </div>
     );

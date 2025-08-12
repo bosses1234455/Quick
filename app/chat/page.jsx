@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 // import { useConversation, useAuth } from '@/context';
 import { useConversation } from '../context/ConversationContext';
 import { useAuth } from '../context/AuthContext';
@@ -13,10 +13,11 @@ export default function ChatPage() {
   const postId = searchParams.get('postId');
   const otherUserId = searchParams.get('userId');
   const postType = searchParams.get('type');
+  const router = useRouter();
   
   const { socket,isConnected, joinConversation, sendMessage,messages,setMessages } = useConversation();
   // const {socket} = useSocket();
-  const { id: userId } = useAuth();
+  const { id: userId,loggedIn } = useAuth();
   const [message, setMessage] = useState('');
   // const [messages, setMessages] = useState(m2);
   const [loading, setLoading] = useState(true);
@@ -57,7 +58,7 @@ export default function ChatPage() {
       onModel: postType.charAt(0).toUpperCase() + postType.slice(1,-1),
       chatRoom: chatRoomId()
     };
-
+    // console.log(messageData)
     try {
       await sendMessage(messageData);
       setMessage('');
@@ -70,6 +71,7 @@ export default function ChatPage() {
 
   // Scroll to bottom when messages change
   useEffect(() => {
+    if(!loggedIn) router.push('/login');
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -87,7 +89,7 @@ export default function ChatPage() {
       }
     };
 
-    socket?.on('receiveMessage', handleNewMessage);
+    socket.on('receiveMessage', handleNewMessage);
     
     return () => {
       socket?.off('receiveMessage', handleNewMessage);

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import { RxAvatar } from "react-icons/rx";
+import { useAuth } from '@/app/context/AuthContext';
 
 // Updated all details components with grid layout and lighter labels
 
@@ -73,6 +74,7 @@ export default function PostDetail() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {id:userId} = useAuth();
 
   const postType = pathname.split('/')[2];
 
@@ -207,12 +209,14 @@ export default function PostDetail() {
             <p className="text-sm text-gray-500">{post.seller.name || 'View seller details'}</p>
           </div>
         </Link>
+       { !(userId == post.seller._id) &&
         <Link 
           href={`/chat?postId=${post.id}&userId=${post.seller._id}&type=${postType}`}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium hover:scale-105"
         >
           Chat with Seller
         </Link>
+}
       </div>
     </div>
   );

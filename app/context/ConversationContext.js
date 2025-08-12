@@ -54,16 +54,19 @@ export function ConversationProvider({children}) {
     }
   };
 
-  const sendMessage = async (text) => {
+  const sendMessage = async (messageData) => {
     if (!socket || !activeConversation) return;
 
     const res = await fetch('/api/messages',{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(text)
+      body: JSON.stringify(messageData)
     });
     const saved = await res.json();
-    socket.emit('send message',saved);
+     socket.emit('send message', {
+    ...saved,
+    chatRoom: messageData.chatRoom
+  });
     // return new Promise((resolve, reject) => {
     //   socket.emit('sendMessage', {
     //     conversationId: activeConversation,
