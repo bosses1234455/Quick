@@ -304,3 +304,123 @@ export const models = {
     { value: 'Literature', label: 'Literature' },
     { value: 'Other', label: 'Other' }
   ];
+
+
+  const gpus = [
+    "RTX 4090", "RTX 4080", "RTX 4070",
+    "RTX 3090", "RTX 3080", "RTX 3060",
+    "RTX 2080 Ti", "RTX 2070",
+    "GTX 1080 Ti", "GTX 1070", "GTX 1660 Ti",
+  
+    "RX 7900 XTX", "RX 7800 XT",
+    "RX 6900 XT", "RX 6800 XT",
+    "RX 5700 XT", "RX 5600 XT",
+    "RX Vega 64", "RX 580",
+  
+    "Arc A770", "Arc A750", 
+  
+    "Apple M2 Max GPU",
+    "AMD Radeon Pro 5700 XT (Mac)",
+
+    "Integrated GPU", "other"
+  ];
+
+  export const gpuOptions = gpus.map(gpu => ({
+    value: gpu,
+    label: gpu
+  }));
+
+
+  const processors = [
+    "Core i9-13980HX", "Core i7-13700H", "Core i5-13500H",
+    "Core i9-12900H", "Core i7-12700H", "Core i5-12500H",
+    "Core i9-11980HK", "Core i7-11800H", "Core i5-11400H",
+    "Core i7-10875H", "Core i7-10710U", "Core i5-1035G7",
+    "Core i7-9750H", "Core i5-9300H", "Core i7-8750H",
+    "Core i7-7700HQ", "Core i5-7300HQ", "Core i7-6700HQ",
+  
+    "Ryzen 9 7945HX", "Ryzen 7 7840HS", "Ryzen 5 7640HS",
+    "Ryzen 9 6980HX", "Ryzen 7 6800H", "Ryzen 5 6600H",
+    "Ryzen 9 5980HX", "Ryzen 7 5800H", "Ryzen 5 5600H",
+    "Ryzen 7 4800H", "Ryzen 5 4600H", "Ryzen 7 3750H",
+  
+    "M3 Max", "M3 Pro", "M3",
+    "M2 Max", "M2 Pro", "M2",
+    "M1 Max", "M1 Pro", "M1",
+
+    "Core i3-1115G4", "Ryzen 3 5425U",
+    "Pentium Gold 7505", "Athlon Gold 3150U",
+
+    "other"
+  ];
+
+  export const processorOptions = processors.map(processor => ({
+    value: processor,
+    label: processor
+  }));
+
+  const storages = [
+    "500GB HDD (5400RPM, SATA)",
+    "1TB HDD (5400RPM, SATA)",
+    "1TB HDD (7200RPM, SATA)",
+    "2TB HDD (5400RPM, SATA)",
+
+    "128GB SSD (SATA)",
+    "256GB SSD (SATA)",
+    "512GB SSD (SATA)", 
+    "1TB SSD (SATA)",
+    "2TB SSD (SATA)",
+
+    "256GB NVMe SSD (PCIe 3.0)",
+    "512GB NVMe SSD (PCIe 3.0/4.0)",
+    "1TB NVMe SSD (PCIe 3.0/4.0)",
+    "2TB NVMe SSD (PCIe 4.0)",
+    "4TB NVMe SSD (PCIe 4.0)",
+
+    "256GB Mac SSD (PCIe)",
+    "512GB Mac SSD (PCIe)",
+    "1TB Mac SSD (PCIe)",
+    "2TB Mac SSD (PCIe)",
+    "4TB Mac SSD (PCIe)",
+    "8TB Mac SSD (PCIe)",
+
+    "128GB SSD + 1TB HDD",
+    "256GB SSD + 1TB HDD",
+    "512GB SSD + 2TB HDD",
+    
+    "other"
+  ];
+
+  export const storageOptions = storages.map(storage => ({
+    value: storage,
+    label: storage
+  }));
+
+  const rams= [
+    "4GB DDR3 (1600MHz)",          // Older budget laptops
+  "4GB DDR4 (2133MHz)",          // Basic Chromebooks/entry-level
+  "8GB DDR4 (2400MHz)",          // Most common budget option
+  "8GB LPDDR4 (4266MHz)",        // Thin-and-lights (soldered)
+
+  "8GB DDR4 (2666MHz)",          // Typical for mid-range
+  "8GB DDR4 (3200MHz)",          // Common in 2020-2022 models
+  "16GB DDR4 (2666MHz)",         // Power users/gaming
+  "16GB DDR4 (3200MHz)",         // Modern standard (2023)
+  "16GB LPDDR4 (4266MHz)",       // Premium ultrabooks
+  "16GB LPDDR5 (6400MHz)",       // 2023+ thin-and-lights
+
+  "16GB DDR5 (4800MHz)",         // Newer gaming laptops
+  "32GB DDR4 (3200MHz)",         // Workstations/content creation
+  "32GB DDR5 (5200MHz)",         // High-end 2023+ models
+
+  "8GB Unified (M1/M2)",         // Base MacBook Air
+  "16GB Unified (M1/M2)",        // Recommended for pros
+  "24GB Unified (M2 Pro/Max)",   // Video editors
+  "32GB Unified (M1/M2 Max)",
+  "other"    // Extreme work
+  ];
+
+  export const ramOptions = rams.map(ram => ({
+    value: ram,
+    label: ram
+  }));

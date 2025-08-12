@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { locationOptions, laptopBrandOptions } from '../data/data';
+import { locationOptions, laptopBrandOptions, gpuOptions, processorOptions, storageOptions, ramOptions } from '../data/data';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
@@ -23,18 +23,27 @@ export default function LaptopForm() {
         gpu: '',
         location: '',
         description: '',
+        new: false,
         images: null
     });
 
     const [imageFiles, setImageFiles] = useState([]);
 
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData(prev => ({
+    //         ...prev,
+    //         [name]: value
+    //     }));
+    // };
+
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData(prev => ({
-            ...prev,
-            [name]: value
+          ...prev,
+          [name]: type === 'checkbox' ? checked : value
         }));
-    };
+      };
 
     const handleFileChange = (e) => {
         setFormData({ ...formData, images: e.target.files });
@@ -105,7 +114,7 @@ export default function LaptopForm() {
                                     name="title"
                                     value={formData.title}
                                     onChange={handleInputChange}
-                                    placeholder="Enter a title for your laptop"
+                                    placeholder="Enter a title for your ad"
                                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
@@ -129,7 +138,7 @@ export default function LaptopForm() {
                                 />
                             </div>
 
-                            <div>
+                            {/* <div>
                                 <label htmlFor="processor" className="block text-sm font-medium text-gray-700 mb-1">Processor</label>
                                 <input
                                     id="processor"
@@ -141,9 +150,9 @@ export default function LaptopForm() {
                                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
-                            </div>
+                            </div> */}
 
-                            <div>
+                            {/* <div>
                                 <label htmlFor="storage" className="block text-sm font-medium text-gray-700 mb-1">Storage</label>
                                 <input
                                     id="storage"
@@ -155,9 +164,9 @@ export default function LaptopForm() {
                                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
-                            </div>
+                            </div> */}
 
-                            <div>
+                            {/* <div>
                                 <label htmlFor="gpu" className="block text-sm font-medium text-gray-700 mb-1">GPU (Graphics Card)</label>
                                 <input
                                     id="gpu"
@@ -169,8 +178,104 @@ export default function LaptopForm() {
                                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
+                            </div> */}
+
+                            <div>
+                                <label htmlFor="storage" className="block text-sm font-medium text-gray-700 mb-1">
+                                storage
+                                </label>
+                                <Select
+                                inputId="storage"
+                                name="storage"
+                                value={storageOptions.find(option => option.value === formData.gpu) || null}
+                                onChange={selected =>
+                                    handleInputChange({ target: { name: 'storage', value: selected?.value } })
+                                }
+                                options={storageOptions}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                placeholder="Select Storage"
+                                menuPortalTarget={document.body}
+                                styles={{
+                                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                                }}
+                                required
+                                />
                             </div>
 
+                            <div>
+                                <label htmlFor="gpu" className="block text-sm font-medium text-gray-700 mb-1">
+                                GPU
+                                </label>
+                                <Select
+                                inputId="gpu"
+                                name="gpu"
+                                value={gpuOptions.find(option => option.value === formData.gpu) || null}
+                                onChange={selected =>
+                                    handleInputChange({ target: { name: 'gpu', value: selected?.value } })
+                                }
+                                options={gpuOptions}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                placeholder="Select GPU"
+                                menuPortalTarget={document.body}
+                                styles={{
+                                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                                }}
+                                required
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="processor" className="block text-sm font-medium text-gray-700 mb-1">
+                                Processor
+                                </label>
+                                <Select
+                                inputId="processor"
+                                name="prosessor"
+                                value={gpuOptions.find(option => option.value === formData.processor) || null}
+                                onChange={selected =>
+                                    handleInputChange({ target: { name: 'processor', value: selected?.value } })
+                                }
+                                options={processorOptions}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                placeholder="Select Processor"
+                                menuPortalTarget={document.body}
+                                styles={{
+                                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                                }}
+                                required
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="ram" className="block text-sm font-medium text-gray-700 mb-1">
+                                ram
+                                </label>
+                                <Select
+                                inputId="ram"
+                                name="ram"
+                                value={ramOptions.find(option => option.value === formData.ram) || null}
+                                onChange={selected =>
+                                    handleInputChange({ target: { name: 'ram', value: selected?.value } })
+                                }
+                                options={ramOptions}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                placeholder="Select RAM"
+                                menuPortalTarget={document.body}
+                                styles={{
+                                    menuPortal: base => ({ ...base, zIndex: 9999 })
+                                }}
+                                required
+                                />
+                            </div>
+
+
+                            
+
+{/* 
                             <div>
                                 <label htmlFor="ram" className="block text-sm font-medium text-gray-700 mb-1">RAM</label>
                                 <input
@@ -183,7 +288,8 @@ export default function LaptopForm() {
                                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
-                            </div>
+                            </div> */}
+                            
                         </div>
 
                         {/* Column 2 */}
@@ -262,6 +368,18 @@ export default function LaptopForm() {
                                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
+                            </div>
+
+                            <div className="flex items-center space-x-2">
+                                <input
+                                id="new"
+                                type="checkbox"
+                                name="new"
+                                checked={formData.new}
+                                onChange={handleInputChange}
+                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                />
+                                <label htmlFor="new" className="text-sm font-medium text-gray-700">New</label>
                             </div>
                         </div>
                     </div>

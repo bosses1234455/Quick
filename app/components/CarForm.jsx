@@ -119,11 +119,10 @@ export default function CarForm() {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-6xl mx-auto">
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
-        {/* <form onSubmit={handleSubmit}  className="bg-white rounded-lg shadow-md p-6 border-2 border-blue-800"> */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 space-y-8 md:space-y-0">
 
             {/* Column 1 */}
-            <div className="space-y-4 border-r border-gray-200 pr-6">
+            <div className="space-y-4 md:border-r md:border-gray-200 md:pr-6">
               <div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Car Brand</label>
@@ -236,7 +235,7 @@ export default function CarForm() {
             </div>
 
             {/* Column 2 */}
-            <div className="space-y-4 border-r border-gray-200 px-6">
+            <div className="space-y-4 md:border-r md:border-gray-200 md:px-6">
               <div>
                 <label htmlFor="seat_number" className="block text-sm font-medium text-gray-700 mb-1">
                   Number of Seats
@@ -323,7 +322,7 @@ export default function CarForm() {
             </div>
 
             {/* Column 3 */}
-            <div className="space-y-4 pl-6">
+            <div className="space-y-4 md:pl-6">
               <div>
                 <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>
                 <input
