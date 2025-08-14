@@ -11,8 +11,8 @@ import { useAuth } from '@/app/context/AuthContext';
 
 const CarDetails = ({ post }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div>
-    <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div>
+    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
+    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
     <div><span className="text-gray-600 font-medium">Model:</span> {post.model}</div>
     <div><span className="text-gray-600 font-medium">Year:</span> {post.year}</div>
@@ -22,15 +22,14 @@ const CarDetails = ({ post }) => (
     <div><span className="text-gray-600 font-medium">Seat Number:</span> {post.seat_number}</div>
     <div><span className="text-gray-600 font-medium">Inner Condition:</span> {post.inner_condition}</div>
     <div><span className="text-gray-600 font-medium">Outer Condition:</span> {post.outer_condition}</div>
-    <div><span className="text-gray-600 font-medium">Date:</span> {post.date}</div>
+    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
   </div>
 );
 
 const ApartmentDetails = ({ post }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div>
-    <div><span className="text-gray-600 font-medium">Ad Date:</span> {post.date}</div>
-    <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div>
+    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
+    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Room Count:</span> {post.roomCount}</div>
     <div><span className="text-gray-600 font-medium">Bath Count:</span> {post.bathroomCount}</div>
     <div><span className="text-gray-600 font-medium">Condition:</span> {post.innerCondition}</div>
@@ -38,32 +37,32 @@ const ApartmentDetails = ({ post }) => (
     <div><span className="text-gray-600 font-medium">Size:</span> {post.space} m²</div>
     <div><span className="text-gray-600 font-medium">For Sale:</span> {post.forSale ? 'Yes' : 'No'}</div>
     <div><span className="text-gray-600 font-medium">Floor:</span> {post.floor}</div>
+    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
   </div>
 );
 
 const LaptopDetails = ({ post }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div>
-    <div><span className="text-gray-600 font-medium">Date:</span> {post.date}</div>
-    <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div>
-    <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
+    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
+    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Storage:</span> {post.storage}</div>
+    <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
     <div><span className="text-gray-600 font-medium">GPU:</span> {post.gpu}</div>
+    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
     <div><span className="text-gray-600 font-medium">RAM:</span> {post.ram}GB</div>
     <div><span className="text-gray-600 font-medium">Processor:</span> {post.processor}</div>
   </div>
 );
 
 const BookDetails = ({ post }) => (
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div>
-
-    <div><span className="text-gray-600 font-medium">Date:</span> {post.date}</div>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
     <div><span className="text-gray-600 font-medium">Author Name:</span> {post.name}</div>
-    <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div>
+    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Book Title:</span> {post.bookTitle}</div>
     <div><span className="text-gray-600 font-medium">Type:</span> {post.type}</div>
     <div><span className="text-gray-600 font-medium">Condition:</span> {post.state}</div>
+    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
   </div>
 );
 
@@ -185,14 +184,27 @@ export default function PostDetail() {
         </button>
       </div>
 
-      {/* New Description Block */}
+
+      <div className="bg-gray-100 rounded-lg p-4 mt-6 flex flex-col sm:flex-row justify-around items-center text-center gap-4 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-600 font-bold">Price:</span> ${post.price?.toLocaleString()}
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-600 font-bold">Location:</span> {post.location}
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-600 font-bold">Date:</span> {new Date(post.date).toLocaleDateString()}
+        </div>
+      </div>
+
+
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h2 className="text-xl font-semibold mb-4">Description</h2>
         <p className="text-gray-700">{post.description}</p>
       </div>
 
       {/* Details Section with improved spacing */}
-      <div className="bg-white rounded-xl shadow-sm p-6 space-y-4">
+      <div className="bg-white rounded-xl items-center text-center shadow-sm p-6 space-y-4">
         <h2 className="text-xl font-semibold mb-4">Product Details</h2>
         {renderDetails()}
       </div>
