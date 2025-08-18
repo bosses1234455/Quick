@@ -1,13 +1,13 @@
 'use client'
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
-  const [isCookie,setIsCookie] = useState(false);
+  // const [isCookie,setIsCookie] = useState(false);
   // const [id,setId] = useState('');
   const {loggedIn,id} = useAuth();
   
@@ -66,10 +66,13 @@ export default function Header() {
       }
       {loggedIn && 
         <div className="relative z-10 flex gap-1 md:gap-3 flex-nowrap">
+          <Link href={'/myChats'}
+          className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
+          >Your chats</Link>
           <Link href={'/category'}
             className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
           >
-            Make a post
+            Post an add
           </Link>
           <Link 
             href={`/profile/${id}`} 

@@ -1,35 +1,57 @@
+'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const ConversationItem = ({ conversation }) => {
-  const otherParticipant = conversation.participants.find(
-    (p) => p._id !== conversation.currentUserId
-  );
+  // Safely access user data with fallbacks
+  const user = conversation?.user || {};
+  const otherParticipantId = user?._id;
+  const username = user?.username || 'Unknown User';
+  const initial = username.charAt(0).toUpperCase();
+  const type = conversation.onModel.charAt(0).toLowerCase() + conversation.onModel.slice(1) + 's'
+  const router = useRouter();
 
-  if (!otherParticipant) {
-    return null; // Or handle this case appropriately
+  // Safely format date
+  const formattedDate = conversation?.lastDate 
+    ? new Date(conversation.lastDate).toLocaleDateString() 
+    : '';
+
+  if (!otherParticipantId) {
+    return null;
   }
 
   return (
-    <Link href={`/chat/${conversation._id}`} className="block p-4 border-b border-gray-200 hover:bg-gray-50">
+    <Link 
+      href={`/chat?postId=${conversation.post_id}&userId=${otherParticipantId}&type=${type}`}
+      className="block p-4 border-b border-gray-200 hover:bg-gray-50"
+    >
       <div className="flex items-center space-x-4">
         <div className="flex-shrink-0">
-          {/* You can add an avatar here if available */}
           <div className="h-10 w-10 rounded-full bg-blue-400 flex items-center justify-center text-white font-bold">
-            {otherParticipant.username.charAt(0).toUpperCase()}
+            {initial}
           </div>
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-gray-900 truncate">
-            {otherParticipant.username}
+            {username}
           </p>
           <p className="text-sm text-gray-500 truncate">
-            {conversation.lastMessage ? conversation.lastMessage.content : 'No messages yet.'}
+            {conversation.lastMessage || 'No messages yet'}
           </p>
         </div>
-        <div className="text-right text-sm text-gray-500">
-          {conversation.lastMessage && new Date(conversation.lastMessage.createdAt).toLocaleDateString()}
-        </div>
+        {formattedDate && (
+          <div className="text-right text-sm text-gray-500">
+            {formattedDate}
+          </div>
+        )}
       </div>
+      <button 
+        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors my-6"
+        onClick={(e) => {
+          e.preventDefault();
+          router.push(`/post/${type}/${conversation.post_id}`)
+      }}
+      >see the ad</button>
     </Link>
   );
 };

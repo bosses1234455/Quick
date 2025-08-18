@@ -5,7 +5,10 @@ import ConversationItem from '../components/ConversationItem';
 
 export default function MyChatsPage() {
   const { id: currentUserId } = useAuth();
-  const [conversations, setConversations] = useState([]);
+  const [conversations, setConversations] = useState({
+    data: [],
+    success: false
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,8 +16,9 @@ export default function MyChatsPage() {
       try {
         const res = await fetch('/api/messages/conversations');
         if (res.ok) {
-          const data = await res.json();
-          setConversations(data);
+          const { data, success } = await res.json();
+          // console.log(data)
+          if(success) setConversations(data);
         }
       } catch (error) {
         console.error('Error fetching conversations:', error);
@@ -24,6 +28,7 @@ export default function MyChatsPage() {
     };
 
     if (currentUserId) fetchConversations();
+    // console.log(conversations)
   }, [currentUserId]);
 
   if (loading) return <div>Loading conversations...</div>;
@@ -32,10 +37,10 @@ export default function MyChatsPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">My Conversations</h1>
       <div className="space-y-4">
-        {conversations.length > 0 ? (
+        {conversations.length ? (
           conversations.map(conversation => (
             <ConversationItem 
-              key={conversation._id} 
+              key={conversation.user._id} 
               conversation={conversation} 
               currentUserId={currentUserId} 
             />
