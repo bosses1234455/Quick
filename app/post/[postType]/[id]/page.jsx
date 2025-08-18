@@ -49,8 +49,9 @@ const LaptopDetails = ({ post }) => (
     <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
     <div><span className="text-gray-600 font-medium">GPU:</span> {post.gpu}</div>
     {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
-    <div><span className="text-gray-600 font-medium">RAM:</span> {post.ram}GB</div>
+    <div><span className="text-gray-600 font-medium">RAM:</span> {post.ram} GB</div>
     <div><span className="text-gray-600 font-medium">Processor:</span> {post.processor}</div>
+    <div><span className="text-gray-600 font-medium">new:</span> {post.new}</div>
   </div>
 );
 

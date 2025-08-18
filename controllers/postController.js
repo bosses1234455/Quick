@@ -19,12 +19,15 @@ const buildFilterQuery = (searchParams, modelType) => {
     if (!isNaN(maxPrice)) query.price.$lte = maxPrice;
   }
 
+  const location = searchParams.get('location'); // Declared once here
+
   // Model-specific filters
   switch(modelType) {
     case 'cars':
       const brand = searchParams.get('brand');
-      if (brand && brand !== 'Other') query.brand = brand;
-      
+      if (brand) {
+        query.brand = { $regex: `^${brand}$`, $options: 'i' };
+      }
       const year = searchParams.get('year');
       if (year) {
         if (year === 'Older') {
@@ -32,6 +35,10 @@ const buildFilterQuery = (searchParams, modelType) => {
         } else {
           query.year = parseInt(year);
         }
+      }
+
+      if (location) {
+        query.location = { $regex: `^${location}`, $options: 'i' };
       }
       break;
 
@@ -52,13 +59,14 @@ const buildFilterQuery = (searchParams, modelType) => {
         query.sell = true
       }else{
         query.sell= false
-        }
+      }
+      if (location) query.location = location;
       break;
 
 
     case 'laptops':
       const laptopBrand = searchParams.get('brand');
-      if (laptopBrand && laptopBrand !== 'Other') query.brand = laptopBrand;
+      if (laptopBrand) query.brand = laptopBrand;
       
       const ram = searchParams.get('ram');
       if (ram) {
@@ -68,6 +76,13 @@ const buildFilterQuery = (searchParams, modelType) => {
           query.ram = parseInt(ram);
         }
       }
+      if (location) {
+        query.location = { $regex: `^${location}`, $options: 'i' };
+      }
+      const isNew = searchParams.get('new');
+      if (isNew === 'true') {
+        query.new = true; // Added filter for new property
+      }
       break;
 
     case 'books':
@@ -76,6 +91,9 @@ const buildFilterQuery = (searchParams, modelType) => {
       
       const condition = searchParams.get('condition');
       if (condition) query.state = condition;
+      if (location) {
+        query.location = { $regex: `^${location}`, $options: 'i' }; // Added for books
+      }
       break;
   }
 

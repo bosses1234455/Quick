@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { locations, muhafazat, brand, laptop } from '../data/data'; // Updated import
 
 const Filters = ({ listType, onFilterChange }) => {
   const [filters, setFilters] = useState({});
@@ -9,25 +10,30 @@ const Filters = ({ listType, onFilterChange }) => {
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
       { name: 'rooms', label: 'Rooms', type: 'select', options: ['1', '2', '3', '4+'] },
       { name: 'furnished', label: 'Furnished', type: 'boolean' },
-      { name: 'sell', label: 'for sale', type: 'boolean' }
+      { name: 'sell', label: 'for sale', type: 'boolean' },
+      { name: 'location', label: 'Location', type: 'select', options: locations },
     ],
     cars: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
-      { name: 'brand', label: 'Brand', type: 'select', options: ['Toyota', 'Honda', 'BMW', 'Mercedes', 'Other'] },
-      { name: 'year', label: 'Year', type: 'select', options: ['2024', '2023', '2022', '2021', '2020', 'Older'] }
+      { name: 'brand', label: 'Brand', type: 'select', options: brand},
+      { name: 'year', label: 'Year', type: 'select', options: ['2024', '2023', '2022', '2021', '2020', 'Older'] },
+      { name: 'location', label: 'Location', type: 'select', options: muhafazat  }
     ],
     laptops: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
-      { name: 'brand', label: 'Brand', type: 'select', options: ['Apple', 'Dell', 'HP', 'Lenovo', 'Other'] },
-      { name: 'ram', label: 'RAM', type: 'select', options: ['4GB', '8GB', '16GB', '32GB+'] }
+      { name: 'brand', label: 'Brand', type: 'select', options: laptop },
+      { name: 'ram', label: 'RAM', type: 'select', options: ['4GB', '8GB', '16GB', '32GB+'] },
+      { name: 'location', label: 'Location', type: 'select', options: muhafazat },
+      { name: 'new', label: 'New', type: 'boolean' } // Added for new property
     ],
     books: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
       { name: 'type', label: 'Type', type: 'select', options: ['Textbook', 'Fiction', 'Non-Fiction', 'Other'] },
-      { name: 'condition', label: 'Condition', type: 'select', options: ['New', 'Like New', 'Good', 'Fair'] }
+      { name: 'condition', label: 'Condition', type: 'select', options: ['New', 'Like New', 'Good', 'Fair'] },
+      { name: 'location', label: 'Location', type: 'select', options: muhafazat } // Added for books
     ]
   };
 

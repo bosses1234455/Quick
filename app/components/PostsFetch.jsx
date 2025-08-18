@@ -118,14 +118,14 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
         return <LoadingSkeleton />;
     }
 
-    // if (!isLoading && posts.length === 0) {
-    //     return (
-    //         <div className="flex flex-col items-center justify-center min-h-[400px] bg-gray-50 rounded-lg shadow-sm">
-    //             <p className="text-xl text-gray-600 font-medium mb-4">No {listType} found</p>
-    //             <p className="text-gray-400">Be the first to post in this category</p>
-    //         </div>
-    //     );
-    // }
+    if (!isLoading && posts.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[400px] bg-gray-50 rounded-lg shadow-sm">
+                <p className="text-xl text-gray-600 font-medium mb-4">No {listType} found</p>
+                <p className="text-gray-400">Be the first to post in this category</p>
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto px-4 py-6 max-w-2xl h-[100vh] overflow-y-scroll" data-testid="car-list">

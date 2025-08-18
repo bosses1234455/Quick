@@ -72,7 +72,7 @@ export default function Header() {
           <Link href={'/category'}
             className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
           >
-            Post an add
+            Post an ad
           </Link>
           <Link 
             href={`/profile/${id}`} 

@@ -82,6 +82,23 @@ export const locations = [
     'Quneitra - Fiq'
   ];
 
+  export const muhafazat = [
+    'Damascus',
+    'Rif Dimashq',
+    'Aleppo',
+    'Homs',
+    'Hama',
+    'Latakia',
+    'Tartus',
+    'Idlib',
+    'Deir ez-Zor',
+    'Raqqa',
+    'Al-Hasakah',
+    'Daraa',
+    'As-Suwayda',
+    'Quneitra'
+  ];
+
   export const locationOptions = locations.map(loc => ({
     value: loc,
     label: loc
@@ -105,6 +122,20 @@ export const brands = [
   value: brand.toLowerCase().replace(/\s+/g, '-'),
   label: brand
 }));;
+
+export const brand = [
+  'Abarth', 'Acura', 'Afeela', 'AlfaRomeo', 'AstonMartin', 'Audi', 'Aurus',
+  'Bentley', 'BMW', 'Bugatti', 'Buick', 'BYD', 'Cadillac', 'Changan',
+  'Chevrolet', 'Chery', 'Citroën', 'Dacia', 'Daihatsu', 'Dodge', 'Dongfeng', 'FAW',
+  'Ferrari', 'Fiat', 'Ford', 'Geely', 'Genesis', 'GMC', 'GreatWall', 'Honda',
+  'Hummer', 'Hongqi', 'Hyundai', 'IMMotors', 'Infiniti', 'IranKhodro', 'Isuzu', 'Iveco', 'Jaguar', 'Jeep', 'Kia',
+  'Lamborghini', 'Lancia', 'LandRover', 'Lexus', 'LiAuto', 'Lincoln',
+  'Lotus', 'Lucid', 'Maserati', 'Mazda', 'McLaren', 'MercedesBenz', 'Mercury',
+  'MG', 'Mini', 'Mitsubishi', 'NIO', 'Nissan', 'Opel', 'Peugeot', 'Porsche',
+  'Polestar', 'Proton', 'Ram', 'Renault', 'Rivian', 'Roewe', 'RollsRoyce', 'Saab',
+  'Saipa', 'Sapa', 'Saturn', 'Scion', 'SEAT', 'Seres', 'Skoda', 'Smart', 'Subaru', 'Suzuki',
+  'Tata', 'Tesla', 'Toyota', 'Vauxhall', 'Volkswagen', 'Volvo', 'Wey', 'Xpeng', 'Zenvo', 'Other'
+];
 
 
 export const models = {
@@ -289,6 +320,11 @@ export const models = {
       { value: 'Other', label: 'Other' }
     ];
   
+    export const laptop = [
+      'Acer', 'ASUS', 'Apple', 'Dell',
+      'Huawei', 'HP', 'Lenovo', 'LG', 'Microsoft', 'MSI',
+      'Razer', 'Samsung', 'Toshiba', 'Xiaomi', 'Other'
+    ];
   
   export const bookTypeOptions = [
     { value: 'Fiction', label: 'Fiction' },

@@ -4,7 +4,7 @@ import Car from './Car';
 import Laptop from './Laptop';
 import Book from './Book';
 import Apartment from './Apartment';
-import Like from './Like';
+// import Like from './Like';
 import Message from './Message';
 
 const models = {
@@ -13,7 +13,7 @@ const models = {
   Laptop: Laptop,
   Book: Book,
   Apartment: Apartment,
-  Like: Like,
+  // Like: Like,
   Message: Message
 }
 
