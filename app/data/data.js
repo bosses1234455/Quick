@@ -300,6 +300,10 @@ export const models = {
       { value: 'Fair', label: 'Fair' },
       { value: 'Poor', label: 'Poor' }
     ];
+
+    export const condition = [
+      'Excellent', 'Very Good', 'Good', 'Fair', 'poor'
+    ];
     
 
     export const laptopBrandOptions = [
@@ -340,6 +344,12 @@ export const models = {
     { value: 'Literature', label: 'Literature' },
     { value: 'Other', label: 'Other' }
   ];
+
+  export const bookTypes = [
+    'Fiction', 'Non-Fiction', 'Educational', 'Academic',
+    'Children', 'Science', 'History', 'Biography',
+    'Self-Help', 'Business', 'Literature', 'Other'
+  ]
 
 
   const gpus = [
@@ -432,8 +442,8 @@ export const models = {
     label: storage
   }));
 
-  const rams= [
-    "4GB DDR3 (1600MHz)",          // Older budget laptops
+  export const rams= [
+  "4GB DDR3 (1600MHz)",          // Older budget laptops
   "4GB DDR4 (2133MHz)",          // Basic Chromebooks/entry-level
   "8GB DDR4 (2400MHz)",          // Most common budget option
   "8GB LPDDR4 (4266MHz)",        // Thin-and-lights (soldered)

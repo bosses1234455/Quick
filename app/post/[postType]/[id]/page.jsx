@@ -16,7 +16,7 @@ const CarDetails = ({ post }) => (
     <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
     <div><span className="text-gray-600 font-medium">Model:</span> {post.model}</div>
     <div><span className="text-gray-600 font-medium">Year:</span> {post.year}</div>
-    <div><span className="text-gray-600 font-medium">Mileage:</span> {post.mileage}</div>
+    <div><span className="text-gray-600 font-medium">Mileage:</span> {post.mileage} KM</div>
     <div><span className="text-gray-600 font-medium">Type:</span> {post.type}</div>
     <div><span className="text-gray-600 font-medium">Color:</span> {post.color}</div>
     <div><span className="text-gray-600 font-medium">Seat Number:</span> {post.seat_number}</div>
@@ -49,9 +49,9 @@ const LaptopDetails = ({ post }) => (
     <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
     <div><span className="text-gray-600 font-medium">GPU:</span> {post.gpu}</div>
     {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
-    <div><span className="text-gray-600 font-medium">RAM:</span> {post.ram} GB</div>
+    <div><span className="text-gray-600 font-medium">RAM:</span> {post.ram}</div>
     <div><span className="text-gray-600 font-medium">Processor:</span> {post.processor}</div>
-    <div><span className="text-gray-600 font-medium">new:</span> {post.new}</div>
+    <div><span className="text-gray-600 font-medium">New:</span> {post.new ? 'Yes' : 'No'}</div>
   </div>
 );
 
@@ -186,7 +186,7 @@ export default function PostDetail() {
       </div>
 
 
-      <div className="bg-gray-100 rounded-lg p-4 mt-6 flex flex-col sm:flex-row justify-around items-center text-center gap-4 shadow-sm">
+      <div className="bg-gray-50 rounded-lg p-4 mt-6 flex flex-col sm:flex-row justify-around items-center text-center gap-4 shadow-lg">
         <div className="flex items-center gap-2">
           <span className="text-gray-600 font-bold">Price:</span> ${post.price?.toLocaleString()}
         </div>
@@ -199,19 +199,19 @@ export default function PostDetail() {
       </div>
 
 
-      <div className="bg-white rounded-xl shadow-sm p-6">
+      <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-semibold mb-4">Description</h2>
         <p className="text-gray-700">{post.description}</p>
       </div>
 
       {/* Details Section with improved spacing */}
-      <div className="bg-white rounded-xl items-center text-center shadow-sm p-6 space-y-4">
+      <div className="bg-gray-50 rounded-xl items-center text-center shadow-lg p-6 space-y-4">
         <h2 className="text-xl font-semibold mb-4">Product Details</h2>
         {renderDetails()}
       </div>
 
       {/* Seller Info and Chat with hover effects */}
-      <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <Link 
           href={`/profile/${post.seller._id}`}
           className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors hover:scale-105"
@@ -225,7 +225,7 @@ export default function PostDetail() {
        { !(userId == post.seller._id) &&
         <Link 
           href={`/chat?postId=${post.id}&userId=${post.seller._id}&type=${postType}`}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium hover:scale-105"
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium hover:scale-105 shadow-md"
         >
           Chat with Seller
         </Link>

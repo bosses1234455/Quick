@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { locations, muhafazat, brand, laptop } from '../data/data'; // Updated import
+import { locations, muhafazat, brand, laptop, rams, bookTypes, condition } from '../data/data'; // Updated import
 
 const Filters = ({ listType, onFilterChange }) => {
   const [filters, setFilters] = useState({});
@@ -8,7 +8,10 @@ const Filters = ({ listType, onFilterChange }) => {
     apartments: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
+      { name: 'minSpace', label: 'Min space', type: 'number' },
+      { name: 'maxSpace', label: 'Max space', type: 'number' },
       { name: 'rooms', label: 'Rooms', type: 'select', options: ['1', '2', '3', '4+'] },
+      { name: 'condetion', label: 'Condetion', type: 'select',options: condition },
       { name: 'furnished', label: 'Furnished', type: 'boolean' },
       { name: 'sell', label: 'for sale', type: 'boolean' },
       { name: 'location', label: 'Location', type: 'select', options: locations },
@@ -16,23 +19,27 @@ const Filters = ({ listType, onFilterChange }) => {
     cars: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
+      { name: 'minYear', label: 'Min Year', type: 'number' },
+      { name: 'maxYear', label: 'Max Year', type: 'number' },
+      { name: 'minMileage', label: 'Min Mileage', type: 'number' },
+      { name: 'maxMileage', label: 'Max Mileage', type: 'number' },
       { name: 'brand', label: 'Brand', type: 'select', options: brand},
-      { name: 'year', label: 'Year', type: 'select', options: ['2024', '2023', '2022', '2021', '2020', 'Older'] },
+      // { name: 'year', label: 'Year', type: 'select', options: ['2024', '2023', '2022', '2021', '2020', 'Older'] },
       { name: 'location', label: 'Location', type: 'select', options: muhafazat  }
     ],
     laptops: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
       { name: 'brand', label: 'Brand', type: 'select', options: laptop },
-      { name: 'ram', label: 'RAM', type: 'select', options: ['4GB', '8GB', '16GB', '32GB+'] },
+      { name: 'ram', label: 'RAM', type: 'select', options: rams},
       { name: 'location', label: 'Location', type: 'select', options: muhafazat },
       { name: 'new', label: 'New', type: 'boolean' } // Added for new property
     ],
     books: [
       { name: 'minPrice', label: 'Min Price', type: 'number' },
       { name: 'maxPrice', label: 'Max Price', type: 'number' },
-      { name: 'type', label: 'Type', type: 'select', options: ['Textbook', 'Fiction', 'Non-Fiction', 'Other'] },
-      { name: 'condition', label: 'Condition', type: 'select', options: ['New', 'Like New', 'Good', 'Fair'] },
+      { name: 'type', label: 'Type', type: 'select', options: bookTypes },
+      // { name: 'condition', label: 'Condition', type: 'select', options: ['New', 'Like New', 'Good', 'Fair'] },
       { name: 'location', label: 'Location', type: 'select', options: muhafazat } // Added for books
     ]
   };
