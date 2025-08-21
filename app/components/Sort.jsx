@@ -10,7 +10,9 @@ const Sort = ({ listType, onSortChange }) => {
       { value: 'date_desc', label: 'Newest First' },
       { value: 'date_asc', label: 'Oldest First' },
       { value: 'rooms_asc', label: 'Rooms: Low to High' },
-      { value: 'rooms_desc', label: 'Rooms: High to Low' }
+      { value: 'rooms_desc', label: 'Rooms: High to Low' },
+      { value: 'space_asc', label: 'space: Low to High' },
+      { value: 'space_desc', label: 'space: High to Low' }
     ],
     cars: [
       { value: 'price_asc', label: 'Price: Low to High' },
@@ -18,7 +20,9 @@ const Sort = ({ listType, onSortChange }) => {
       { value: 'date_desc', label: 'Newest First' },
       { value: 'date_asc', label: 'Oldest First' },
       { value: 'year_desc', label: 'Year: Newest First' },
-      { value: 'year_asc', label: 'Year: Oldest First' }
+      { value: 'year_asc', label: 'Year: Oldest First' },
+      { value: 'milage_asc', label: 'Mileage: Low to High' },
+      { value: 'milage_desc', label: 'Mileage: High to Low' },
     ],
     laptops: [
       { value: 'price_asc', label: 'Price: Low to High' },

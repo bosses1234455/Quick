@@ -19,19 +19,44 @@ const buildFilterQuery = (searchParams, modelType) => {
     if (!isNaN(maxPrice)) query.price.$lte = maxPrice;
   }
 
+  const location = searchParams.get('location'); // Declared once here
+
   // Model-specific filters
   switch(modelType) {
     case 'cars':
       const brand = searchParams.get('brand');
-      if (brand && brand !== 'Other') query.brand = brand;
-      
-      const year = searchParams.get('year');
-      if (year) {
-        if (year === 'Older') {
-          query.year = { $lt: 2020 };
-        } else {
-          query.year = parseInt(year);
-        }
+      if (brand) {
+        query.brand = { $regex: `^${brand}$`, $options: 'i' };
+      }
+      // const year = searchParams.get('year');
+      // if (year) {
+      //   if (year === 'Older') {
+      //     query.year = { $lt: 2020 };
+      //   } else {
+      //     query.year = parseInt(year);
+      //   }
+      // }
+
+      const minYear = searchParams.get('minYear')
+      const maxYear = searchParams.get('maxYear')
+      if(minYear){
+        query.year = {$gte: minYear}
+      }
+      if(maxYear){
+        query.year = {$lte: maxYear}
+      }
+
+      const minMilage = searchParams.get('minMileage')
+      const maxMilage = searchParams.get('maxMileage')
+      if(minMilage){
+        query.milage = {$gte: minMilage}
+      }
+      if(maxMilage){
+        query.milage = {$lte: maxMilage}
+      }
+
+      if (location) {
+        query.location = { $regex: `^${location}`, $options: 'i' };
       }
       break;
 
@@ -44,7 +69,24 @@ const buildFilterQuery = (searchParams, modelType) => {
           query.room_count = parseInt(rooms);
         }
       }
+      const minSpace = searchParams.get('minSpace')
+      const maxSpace = searchParams.get('maxSpace')
+      if(minSpace){
+        query.space = {$gte: minSpace}
+      }
+      if(maxSpace){
+        query.space = {$lte: maxSpace}
+      }
+
+      const condition = searchParams.get('condetion')
+      if(condition) query.inner_condition = condition
       
+      // if (!isNaN(minSpace) || !isNaN(maxSpace)) {
+      //   query.price = {};
+      //   if (!isNaN(minSpace)) query.price.$gte = minSpace;
+      //   if (!isNaN(maxSpace)) query.price.$lte = maxSpace;
+      // }
+
       const furnished = searchParams.get('furnished');
       const sell = searchParams.get('sell');
       if (furnished === 'true') query.furnished = true
@@ -52,30 +94,36 @@ const buildFilterQuery = (searchParams, modelType) => {
         query.sell = true
       }else{
         query.sell= false
-        }
+      }
+      if (location) query.location = location;
       break;
 
 
     case 'laptops':
       const laptopBrand = searchParams.get('brand');
-      if (laptopBrand && laptopBrand !== 'Other') query.brand = laptopBrand;
+      if (laptopBrand) query.brand = laptopBrand;
       
       const ram = searchParams.get('ram');
-      if (ram) {
-        if (ram === '32GB+') {
-          query.ram = { $gte: 32 };
-        } else {
-          query.ram = parseInt(ram);
-        }
+      if (ram) query.ram = ram
+
+      if (location) {
+        query.location = { $regex: `^${location}`, $options: 'i' };
+      }
+      const isNew = searchParams.get('new');
+      if (isNew === 'true') {
+        query.new = true; // Added filter for new property
       }
       break;
 
     case 'books':
       const type = searchParams.get('type');
-      if (type && type !== 'Other') query.type = type;
+      if (type) query.type = type;
       
-      const condition = searchParams.get('condition');
-      if (condition) query.state = condition;
+      // const condition = searchParams.get('condition');
+      // if (condition) query.state = condition;
+      if (location) {
+        query.location = { $regex: `^${location}`, $options: 'i' }; // Added for books
+      }
       break;
   }
 
@@ -189,7 +237,8 @@ export const getApartments = async (req) => {
                 seller_id: apt.seller_id._id,
                 date: apt.date,
                 furnished: apt.furnished,
-                sell:apt.sell
+                sell:apt.sell,
+                inner_condition: apt.inner_condition
             }))
         });
     } catch (err) {

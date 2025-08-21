@@ -187,7 +187,7 @@ export default function LaptopForm() {
                                 <Select
                                 inputId="storage"
                                 name="storage"
-                                value={storageOptions.find(option => option.value === formData.gpu) || null}
+                                value={storageOptions.find(option => option.value === formData.storage) || null}
                                 onChange={selected =>
                                     handleInputChange({ target: { name: 'storage', value: selected?.value } })
                                 }
@@ -233,7 +233,7 @@ export default function LaptopForm() {
                                 <Select
                                 inputId="processor"
                                 name="prosessor"
-                                value={gpuOptions.find(option => option.value === formData.processor) || null}
+                                value={processorOptions.find(option => option.value === formData.processor) || null}
                                 onChange={selected =>
                                     handleInputChange({ target: { name: 'processor', value: selected?.value } })
                                 }
