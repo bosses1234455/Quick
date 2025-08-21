@@ -1,5 +1,15 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap');
 
 .clip-diagonal {
     clip-path: polygon(100% 0, 100% 100%, 0 0);
+  }
+
+  :root {
+  --font-inter: 'Inter', sans-serif;
+  --font-roboto-mono: 'Roboto Mono', monospace;
+  }
+
+  body {
+  font-family: var(--font-inter);
   }
