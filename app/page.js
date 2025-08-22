@@ -18,8 +18,18 @@ function Home() {
     setSortOption(newSortOption);
   };
 
+  const openForm = () => {
+    window.open("https://forms.gle/T7MHkuvxz8xDCH2X7", "_blank")
+  } 
+
   return (
     <div>
+    <button 
+      className="fixed bottom-6 right-6 bg-blue-800 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition"
+      onClick={openForm}
+    >
+      Feedback
+    </button>
      <Tabs setListType={setListType} />
 
       <div className="flex flex-col lg:flex-row gap-4">

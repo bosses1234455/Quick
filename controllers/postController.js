@@ -46,6 +46,26 @@ const buildFilterQuery = (searchParams, modelType) => {
         query.year = {$lte: maxYear}
       }
 
+      const model = searchParams.get('model')
+      // if (model) {
+      //   query.model = { $regex: new RegExp(`^${model}$`, 'i') }; // 'i' → case-insensitive
+      // }
+
+      // if (model) {
+      //   const decodedModel = decodeURIComponent(model).replace(/\+/g, " ").trim().replace(/\s+/g, " ");
+      //   query.model = { $regex: new RegExp(`^${decodedModel}$`, 'i') };
+      // }
+
+      if (model) {
+        let decodedModel = decodeURIComponent(model).replace(/\+/g, " ").trim();
+        // Replace spaces with regex that allows space OR dash
+        const flexibleModel = decodedModel.replace(/\s+/g, "[- ]");
+        query.model = { $regex: new RegExp(`^${flexibleModel}$`, "i") };
+      }
+      
+      
+
+
       const minMilage = searchParams.get('minMileage')
       const maxMilage = searchParams.get('maxMileage')
       if(minMilage){
