@@ -84,7 +84,7 @@ export default function LoginPage() {
               className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
               required
               name='password'
-              placeholder='e.g: 12@jawad*yegbdjash'
+              placeholder='e.g: A1b2c3d4'
             />
             {errors.password && touched.password && <span className='text-red-600'>{errors.password}</span>}
           </div>

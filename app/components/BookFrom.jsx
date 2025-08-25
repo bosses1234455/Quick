@@ -109,6 +109,7 @@ export default function BookForm() {
                   id="title"
                   type="text"
                   name="title"
+                  maxLength={100}
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="Enter a title for your post"
@@ -122,6 +123,7 @@ export default function BookForm() {
                   id="book_title"
                   type="text"
                   name="book_title"
+                  maxLength={100}
                   value={formData.book_title}
                   onChange={handleInputChange}
                   placeholder="Enter the title of the book"
@@ -136,6 +138,7 @@ export default function BookForm() {
                   id="name"
                   type="text"
                   name="name"
+                  maxLength={50}
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Enter the author's name"
@@ -213,6 +216,7 @@ export default function BookForm() {
                 <textarea
                   id="description"
                   name="description"
+                  maxLength={200}
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Enter a detailed description of the book"
@@ -252,6 +256,7 @@ export default function BookForm() {
                   id="price"
                   type="number"
                   name="price"
+                  max={99999}
                   value={formData.price}
                   onChange={handleInputChange}
                   placeholder="Enter price in USD"

@@ -89,6 +89,7 @@ export default function UserProfile() {
   return (
     <div className="min-h-screen bg-[#eeeeee] p-4">
       <div className="max-w-4xl mx-auto">
+      <div className={`bg-white rounded-lg shadow-md p-6 relative transition-all duration-500 ${isEditing ? 'blur-sm' : ''}`}>
         <div className="bg-white rounded-lg shadow-md p-6 relative">
           {/* Edit Button (Top Right) */}
           {tokenId == userData.id && 
@@ -143,8 +144,14 @@ export default function UserProfile() {
             </div>
           </div>
 
-          {/* Edit Modal */}
-          <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
+         
+        </div>
+      <Tabs setListType={setListType} />
+      <PostsFetch listType={listType} id={id} />
+      </div>
+    </div>
+     {/* Edit Modal */}
+     <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
             <form onSubmit={handleSubmit} className="space-y-4">
               <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
               
@@ -171,12 +178,12 @@ export default function UserProfile() {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
-                />
+                  />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  phone_num Number
+                  Phone Number
                 </label>
                 <input
                   type="tel"
@@ -197,7 +204,7 @@ export default function UserProfile() {
                   value={formData.password}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
-                />
+                  />
               </div>
 
               <div className="flex justify-end space-x-2 pt-4">
@@ -217,10 +224,6 @@ export default function UserProfile() {
               </div>
             </form>
           </Modal>
-        </div>
-      </div>
-      <Tabs setListType={setListType} />
-      <PostsFetch listType={listType} id={id} />
     </div>
   );
 }

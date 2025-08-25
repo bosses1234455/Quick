@@ -112,6 +112,7 @@ export default function LaptopForm() {
                                     id="title"
                                     type="text"
                                     name="title"
+                                    maxLength={100}
                                     value={formData.title}
                                     onChange={handleInputChange}
                                     placeholder="Enter a title for your ad"
@@ -319,10 +320,11 @@ export default function LaptopForm() {
                             </div>
 
                             <div>
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Laptop Description</label>
                                 <textarea
                                     id="description"
                                     name="description"
+                                    maxLength={200}
                                     value={formData.description}
                                     onChange={handleInputChange}
                                     placeholder="Enter a detailed description of the laptop"
@@ -362,6 +364,7 @@ export default function LaptopForm() {
                                     id="price"
                                     type="number"
                                     name="price"
+                                    max={9999}
                                     value={formData.price}
                                     onChange={handleInputChange}
                                     placeholder="Enter price in USD"

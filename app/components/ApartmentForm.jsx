@@ -130,6 +130,7 @@ export default function ApartmentForm() {
                   id="title"
                   type="text"
                   name="title"
+                  maxLength={100}
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="Enter a descriptive title"
@@ -246,6 +247,7 @@ export default function ApartmentForm() {
                 <input
                   id="space"
                   type="number"
+                  max={99999}
                   name="space"
                   value={formData.space}
                   onChange={handleInputChange}
@@ -261,6 +263,7 @@ export default function ApartmentForm() {
                   id="description"
                   name="description"
                   value={formData.description}
+                  maxLength={200}
                   onChange={handleInputChange}
                   placeholder="Enter detailed description of the apartment"
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 h-26 resize-none"
@@ -299,6 +302,7 @@ export default function ApartmentForm() {
                   id="price"
                   type="number"
                   name="price"
+                  max={9999999}
                   value={formData.price}
                   onChange={handleInputChange}
                   placeholder="Enter price in USD"

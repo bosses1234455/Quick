@@ -300,6 +300,7 @@ export default function CarForm() {
                   id="milage"
                   type="number"
                   name="milage"
+                  max={999999}
                   value={formData.milage}
                   onChange={handleInputChange}
                   placeholder="Enter mileage in kilometers"
@@ -313,6 +314,7 @@ export default function CarForm() {
                 <textarea
                   id="description"
                   name="description"
+                  maxLength={200}
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Enter detailed description of the car"
@@ -378,6 +380,7 @@ export default function CarForm() {
                   id="price"
                   type="number"
                   name="price"
+                  max={9999999}
                   value={formData.price}
                   onChange={handleInputChange}
                   placeholder="Enter price in USD"
@@ -392,6 +395,7 @@ export default function CarForm() {
                   id="title"
                   type="text"
                   name="title"
+                  maxLength={100}
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="Title"
