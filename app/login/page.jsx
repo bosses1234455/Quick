@@ -41,7 +41,8 @@ export default function LoginPage() {
         router.push('/');
       }
       else {
-        console.log(res);
+        const data = await res.json()
+        console.log(data);
       }
     },
   });

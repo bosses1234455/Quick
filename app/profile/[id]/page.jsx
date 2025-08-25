@@ -82,6 +82,8 @@ export default function UserProfile() {
     }
   };
 
+  const handleFilterChange = () => {};
+
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorDisplay message={error} />;
   if (!userData) return <NotFoundDisplay />;
@@ -146,7 +148,7 @@ export default function UserProfile() {
 
          
         </div>
-      <Tabs setListType={setListType} />
+      <Tabs setListType={setListType} handleFilterChange={handleFilterChange}/>
       <PostsFetch listType={listType} id={id} />
       </div>
     </div>

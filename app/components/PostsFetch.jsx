@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 // import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
 
-const PostsFetch = ({ listType, id, filters, sortOption }) => {
+const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageNum, setPageNum] = useState(1);
@@ -101,7 +101,7 @@ const PostsFetch = ({ listType, id, filters, sortOption }) => {
         setPageNum(1);
         setHasMore(true);
         fetchPosts(1);
-    }, [listType, filters, sortOption]); // Add filters and sortOption to dependencies
+    }, [listType, submitFilters, sortOption]); // Add filters and sortOption to dependencies
 
     useEffect(() => {
         if (pageNum > 1) {
