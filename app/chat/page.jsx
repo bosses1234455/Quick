@@ -134,7 +134,7 @@ export default function ChatPage() {
                     : 'bg-gray-200'
                 }`}
               >
-                <p>{msg.content}</p>
+                <span className='wrap-break-word'>{msg.content}</span>
                 <p className={`text-xs mt-1 ${
                   msg.sender_id === userId 
                     ? 'text-blue-100' 

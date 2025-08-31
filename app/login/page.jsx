@@ -1,6 +1,6 @@
 
 'use client'
-import { useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -14,7 +14,16 @@ const GoogleLoginButton = dynamic(() => import('../components/GoogleLoginButton'
 
 export default function LoginPage() {
   const router = useRouter();
-  const {setTryingToLog} = useAuth();
+  const {setTryingToLog,loggedIn} = useAuth();
+
+      useEffect(() => {
+          // console.log(loggedIn)
+            if (loggedIn) {
+                router.push('/') // or a loading spinner while checking auth
+            }
+        },[router,loggedIn])
+  
+
   const schema = Yup.object().shape({
     mail: Yup.string().required().email(),
     password: Yup.string().required().min(7),

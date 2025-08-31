@@ -1,29 +1,21 @@
-import { Geist, Geist_Mono,Inter,Roboto_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { ConversationProvider } from "./context/ConversationContext";
 import { AuthProvider } from "./context/AuthContext";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
 })
 
-const robotoMono = Roboto_Mono({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-roboto-mono',
-})
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+// const robotoMono = Roboto_Mono({
+//   subsets: ['latin'],
+//   display: 'swap',
+//   variable: '--font-roboto-mono',
+// })
 
 export const metadata = {
   title: "Create Next App",
@@ -34,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${inter.variable} ${robotoMono.variable} antialiased min-h-full flex flex-col`}
+        className={`${inter.variable} antialiased min-h-full flex flex-col`}
       >
       <AuthProvider>
         <Header />

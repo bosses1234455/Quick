@@ -85,7 +85,7 @@ const Sort = ({ listType, onSortChange }) => {
     apartments: [
       { value: 'price_asc', label: 'Price ▲' },
       { value: 'price_desc', label: 'Price ▼' },
-      { value: 'date_desc', label: 'Newest ▼' },
+      { value: 'date_desc', label: 'Newest ▲' },
       { value: 'date_asc', label: 'Oldest ▲' },
       { value: 'rooms_asc', label: 'Rooms ▲' },
       { value: 'rooms_desc', label: 'Rooms ▼' },
@@ -95,7 +95,7 @@ const Sort = ({ listType, onSortChange }) => {
     cars: [
       { value: 'price_asc', label: 'Price ▲' },
       { value: 'price_desc', label: 'Price ▼' },
-      { value: 'date_desc', label: 'Newest ▼' },
+      { value: 'date_desc', label: 'Newest ▲' },
       { value: 'date_asc', label: 'Oldest ▲' },
       { value: 'year_desc', label: 'Year ▼' },
       { value: 'year_asc', label: 'Year ▲' },
@@ -105,13 +105,13 @@ const Sort = ({ listType, onSortChange }) => {
     laptops: [
       { value: 'price_asc', label: 'Price ▲' },
       { value: 'price_desc', label: 'Price ▼' },
-      { value: 'date_desc', label: 'Newest ▼' },
+      { value: 'date_desc', label: 'Newest ▲' },
       { value: 'date_asc', label: 'Oldest ▲' }
     ],
     books: [
       { value: 'price_asc', label: 'Price ▲' },
       { value: 'price_desc', label: 'Price ▼' },
-      { value: 'date_desc', label: 'Newest ▼' },
+      { value: 'date_desc', label: 'Newest ▲' },
       { value: 'date_asc', label: 'Oldest ▲' }
     ]
   }

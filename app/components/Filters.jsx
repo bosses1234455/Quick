@@ -51,20 +51,8 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
   useEffect(() => {
     setSelectedBrand('');
     setFilters({});
-    // onFilterChange({});
   }, [listType]);
 
-  // const handleFilterChange = (name, value) => {
-  //   const newFilters = { ...filters, [name]: value };
-
-  //   if (name === "brand") {
-  //     newFilters.model = "";
-  //     setSelectedBrand(value);
-  //   }
-
-  //   setFilters(newFilters);
-  //   onFilterChange(newFilters);
-  // };
 
 
   const handleFilterChange = (name, value) => {
@@ -189,7 +177,7 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
         })}
       </div>
       <button 
-      className='w-[100%] mt-4 p-1.5 rounded-md cursor-pointer opacity-70 hover:opacity-100 bg-[#bec4f9]'
+      className='w-[100%] mt-4 p-1.5 rounded-md cursor-pointer opacity-70 hover:opacity-100 bg-blue-800 text-white'
       onClick={() => setSubmitFilters(e => !e)}>apply filters</button>
     </div>
   );
