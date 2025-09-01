@@ -177,7 +177,7 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
         })}
       </div>
       <button 
-      className='w-[100%] mt-4 p-1.5 rounded-md cursor-pointer opacity-70 hover:opacity-100 bg-blue-800 text-white'
+      className='w-[100%] mt-4 p-1.5 rounded-md cursor-pointer bg-blue-800 hover:bg-blue-700 text-white'
       onClick={() => setSubmitFilters(e => !e)}>apply filters</button>
     </div>
   );

@@ -25,10 +25,25 @@ export default function RegisterPage() {
       },[router,loggedIn])
 
   const schema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    mail: Yup.string().required('Email is required').email('Invalid email format'),
-    password: Yup.string().required('Password is required').min(7, 'Password must be at least 7 characters'),
-    phone_num: Yup.string().required('Phone number is required').max(15, 'Phone number too long'),
+    name: Yup.string().required("Name is required"),
+    mail: Yup.string()
+      .required("Email is required")
+      .email("Invalid email format"),
+    // password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
+    password: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+      .matches(/\d/, "Password must contain at least one number")
+      .matches(
+        /[@$!%*?&]/,
+        "Password must contain at least one special character (@, $, !, %, *, ?, &)"
+      ),
+    phone_num: Yup.string()
+      .required("Phone number is required")
+      // .max(12, "Phone number too long")
+      .length(12, "Phone number must be exactly 12 digits")
   });
 
   const formik = useFormik({
@@ -187,7 +202,7 @@ export default function RegisterPage() {
                   onBlur={handleBlur}
                   className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
                   required
-                  placeholder='e.g: 12@jawad*yegbdjash'
+                  placeholder='e.g: 1234A%*z'
                 />
                 {errors.password && touched.password && <span className='text-red-600 text-sm'>{errors.password}</span>}
               </div>
