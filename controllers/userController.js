@@ -2,6 +2,7 @@ import User from '@/models/User';
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { processUploads } from '@/middlewares/upload';
 
 export const getUser = async (req, {params}) => {
     try {
@@ -27,7 +28,8 @@ export const getUser = async (req, {params}) => {
           id: user._id,
           email: user.mail,
           username: user.username,
-          phone_num: user.phone_num
+          phone_num: user.phone_num,
+          profile_picture: user.profile_picture ? user.profile_picture : null
         };
     
         return NextResponse.json(
@@ -124,7 +126,7 @@ export const updateUser = async (userId, updateData, user) => {
     // 9. Return response without sensitive data
     const responseData = {
       id: updatedUser._id,
-      email: updatedUser.email,
+      email: updatedUser.mail,
       username: updatedUser.username,
       phone_num: updatedUser.phone_num,
     };
@@ -147,3 +149,28 @@ export const updateUser = async (userId, updateData, user) => {
     );
   }
 };
+
+
+export const changeProfilePic = async (id,req) => {
+  const formData = await req.formData();
+  const imageUrls = await processUploads(formData);
+  console.log(id); console.log(imageUrls[0])
+try {
+  await User.findByIdAndUpdate(
+    id,
+    {profile_picture: imageUrls[0]}
+  )
+  return NextResponse.json({
+    success: true,
+    profile_picture: imageUrls[0]
+  },{status:200});
+} catch (error) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: error
+    },
+    {status: 500}
+  )
+}
+}

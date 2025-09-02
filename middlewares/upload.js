@@ -5,6 +5,7 @@ import path from 'path';
 
 export async function processUploads(formData) {
     const files = formData.getAll('images');
+    // console.log(files)
     
     // Check number of files
     if(files.length > 8) {
@@ -38,6 +39,7 @@ export async function processUploads(formData) {
         await writeFile(filepath, buffer);
         imageUrls.push(`/uploads/${filename}`);
     }
+    // console.log(imageUrls)
     return imageUrls;
 }
 

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server';
 import { OAuth2Client } from 'google-auth-library';
+import nodemailer from 'nodemailer';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -100,7 +101,7 @@ export const register = async (req) => {
         const token = jwt.sign(
             { userId: user._id },
             process.env.JWT_SECRET || "my-big-secret",
-            { expiresIn: '24h' }
+            { expiresIn: '72h' }
           );
           const response = NextResponse.json({
             user: {
@@ -125,3 +126,55 @@ export const register = async (req) => {
       );
     }
 };
+
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.MAILADD,
+    pass: process.env.MAILAPPPASS,
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+
+export const sendVerificationEmail = async (req) => {
+  const {email} = await req.json();
+  const code = generateRandomCode(6);
+  const mailOptions = {
+    from: process.env.MAILADD,
+    to: email,
+    subject: 'Verify Your Email Address',
+    text: `${code}`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+     return NextResponse.json(
+         { success: true, code:code },
+         { status: 200 }
+      );
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return NextResponse.json(
+      {msg: error},
+      {status: 500}
+    );
+  }
+};
+
+
+
+function generateRandomCode(length) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+}
