@@ -26,7 +26,7 @@ function Home() {
   return (
     <div>
     <button 
-      className="fixed bottom-6 right-6 bg-blue-800 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition"
+      className="fixed bottom-6 right-6 bg-blue-800 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition z-100"
       onClick={openForm}
     >
       Feedback

@@ -80,6 +80,12 @@ export const login = async (req) => {
   }
 };
 
+function validatePassword(password) {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return regex.test(password);
+}
+
+
 export const register = async (req) => {
     try {
         const {username,mail,password,phone_num} = await req.json(); 
@@ -91,6 +97,14 @@ export const register = async (req) => {
             { status: 400 }
         );
         }
+
+        if (!validatePassword(password)) {
+          return NextResponse.json(
+            { error: 'Password must be at least 8 characters, include uppercase, lowercase, number, and special character.' },
+            { status: 400 }
+          );
+        }
+
         const hashedPassword = await bcrypt.hash(password,10);
         const user = await User.create({
             username,
