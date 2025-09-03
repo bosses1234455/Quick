@@ -163,7 +163,7 @@ export default function UserProfile() {
             {/* Profile Header */}
             <div className="flex items-center space-x-4 mb-6">
               <div className="relative">
-                <label htmlFor="profilePic" className="cursor-pointer">
+                <label htmlFor="profilePic" className={`${tokenId == id ?"cursor-pointer" : '' }`}>
                   <div className="w-24 h-24 bg-gray-300 rounded-full overflow-hidden relative group">
                     <Image
                       src={profilePic}
@@ -172,7 +172,7 @@ export default function UserProfile() {
                       height={96}
                       className="w-full h-full object-cover"
                     />
-                    {tokenId == userData.id && (
+                    {tokenId == id && (
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <span className="text-white text-sm">Change</span>
                       </div>
@@ -184,6 +184,7 @@ export default function UserProfile() {
                   id="profilePic" 
                   name="profilePic" 
                   ref={fileInputRef}
+                  disabled={tokenId != id}
                   onChange={handleImageUpload} 
                   className="hidden" 
                   accept="image/*"
@@ -198,9 +199,9 @@ export default function UserProfile() {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {userData.username || 'User'}
                 </h1>
-                {userData.email && (
+                {/* {userData.email && (
                   <p className="text-gray-600">{userData.email}</p>
-                )}
+                )} */}
               </div>
             </div>
 

@@ -40,9 +40,10 @@ export default function MyChatsPage() {
         {conversations.length ? (
           conversations.map(conversation => (
             <ConversationItem 
-              key={conversation.user._id} 
+              key={conversation.user._id + Math.random() * 100} 
               conversation={conversation} 
               currentUserId={currentUserId} 
+              profilePic = {conversation.user.profile_picture}
             />
           ))
         ) : (

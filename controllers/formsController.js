@@ -6,13 +6,15 @@ import { NextResponse } from 'next/server'
 import { processUploads } from '@/middlewares/upload'
 import { postReview } from '@/middlewares/postReview'
 
+const pg = 'post'
+
 export const postCar = async (req) => {
     try {
 
 
         // Get other form data
-        const formData = await req.formData()
-        const imageUrls = await processUploads(formData);
+        const formData = await req.formData();
+        const imageUrls = await processUploads(formData,pg);
         const data = {
             seller_id: formData.get('seller_id'),
             brand: formData.get('brand'),
@@ -68,7 +70,7 @@ export const postCar = async (req) => {
 export const postLaptop = async (req) => {
     try {
         const formData = await req.formData();
-        const imageUrls = await processUploads(formData);
+        const imageUrls = await processUploads(formData,pg);
 
         const data = {
             seller_id: formData.get('seller_id'),
@@ -121,7 +123,7 @@ export const postApartment = async (req) => {
     try {
         const formData = await req.formData();
 
-        const imageUrls = await processUploads(formData);
+        const imageUrls = await processUploads(formData,pg);
 
         const data = {
             seller_id: formData.get('seller_id'),
@@ -149,7 +151,7 @@ export const postApartment = async (req) => {
             )
         }
          const reviewResult = await postReview(data.title,data.description);
-        // console.log(reviewResult);
+        console.log(reviewResult);
         if(!reviewResult.approval_status) {
             return NextResponse.json(
         { error: reviewResult.issues_found },
@@ -174,7 +176,7 @@ export const postApartment = async (req) => {
 export const postBook = async (req) => {
     try {
         const formData = await req.formData();
-        const imageUrls = await processUploads(formData);
+        const imageUrls = await processUploads(formData,pg);
 
         const images = formData.getAll('images'); // Get all files under field 'images'
         console.log("Number of images:", images.length);

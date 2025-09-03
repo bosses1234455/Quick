@@ -45,8 +45,8 @@ export async function getConversations(user) {
       ]
     })
     .sort({ date: -1 })
-    .populate('sender_id', 'username mail')
-    .populate('receiver_id', 'username mail');
+    .populate('sender_id', 'username mail profile_picture')
+    .populate('receiver_id', 'username mail profile_picture');
 
     // 🔹 Group by (otherUser + post)
    const conversations = {};
@@ -74,7 +74,12 @@ messages.forEach(msg => {
     conversations[key] = {
       post_id: postId,
       onModel: msg.onModel,
-      user: otherUser, // Could be full doc or just ID
+       user: {
+            _id: otherUser._id || otherUser,
+            username: otherUser.username,
+            mail: otherUser.mail,
+            profile_picture: otherUser.profile_picture // Include profile picture
+          }, // Could be full doc or just ID
       lastMessage: msg.content,
       lastDate: msg.date
     };

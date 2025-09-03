@@ -47,6 +47,7 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
             });
             // console.log(res);
             const arr = await res.json();
+            // console.log(arr)
             if (arr[listType].length === 0) {
                 setHasMore(false);
             } else {

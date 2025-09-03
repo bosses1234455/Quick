@@ -153,7 +153,8 @@ export const updateUser = async (userId, updateData, user) => {
 
 export const changeProfilePic = async (id,req) => {
   const formData = await req.formData();
-  const imageUrls = await processUploads(formData);
+  const pg = 'user';
+  const imageUrls = await processUploads(formData,pg);
   console.log(id); console.log(imageUrls[0])
 try {
   await User.findByIdAndUpdate(

@@ -35,7 +35,7 @@ export async function postReview(title, description) {
 
     const data = await response.json();
     const moderationResult = JSON.parse(data.choices[0].message.content);
-    console.log(moderationResult)
+    // console.log(moderationResult)
     return moderationResult;
     
   } catch (error) {

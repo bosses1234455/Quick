@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { locationOptions, laptopBrandOptions, gpuOptions, processorOptions, storageOptions, ramOptions } from '../data/data';
 import Cookies from 'js-cookie';
@@ -11,6 +11,7 @@ import Select from 'react-select';
 
 export default function LaptopForm() {
     const [showNotification, setShowNotification] = useState(false);
+    const [isClient, setIsClient] = useState(false);
     const router = useRouter();
     const [error,setError] = useState('');
     const [formData, setFormData] = useState({
@@ -29,13 +30,9 @@ export default function LaptopForm() {
 
     const [imageFiles, setImageFiles] = useState([]);
 
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData(prev => ({
-    //         ...prev,
-    //         [name]: value
-    //     }));
-    // };
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -79,11 +76,10 @@ export default function LaptopForm() {
             const data = await res.json();
 
         if(!res.ok) {
-            setError(data.error[0] ||'check your inputs');
+            setError(data.error ||'check your inputs');
             setShowNotification(true);
             setTimeout(() => {
             setShowNotification(false);
-            // router.push('/');
             }, 2000);
         }
         if(res.ok) {
@@ -139,48 +135,6 @@ export default function LaptopForm() {
                                 />
                             </div>
 
-                            {/* <div>
-                                <label htmlFor="processor" className="block text-sm font-medium text-gray-700 mb-1">Processor</label>
-                                <input
-                                    id="processor"
-                                    type="text"
-                                    name="processor"
-                                    value={formData.processor}
-                                    onChange={handleInputChange}
-                                    placeholder="Processor (e.g., Intel Core i7)"
-                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div> */}
-
-                            {/* <div>
-                                <label htmlFor="storage" className="block text-sm font-medium text-gray-700 mb-1">Storage</label>
-                                <input
-                                    id="storage"
-                                    type="text"
-                                    name="storage"
-                                    value={formData.storage}
-                                    onChange={handleInputChange}
-                                    placeholder="Storage (e.g., 512GB SSD)"
-                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div> */}
-
-                            {/* <div>
-                                <label htmlFor="gpu" className="block text-sm font-medium text-gray-700 mb-1">GPU (Graphics Card)</label>
-                                <input
-                                    id="gpu"
-                                    type="text"
-                                    name="gpu"
-                                    value={formData.gpu}
-                                    onChange={handleInputChange}
-                                    placeholder="GPU (e.g., NVIDIA RTX 3060)"
-                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div> */}
-
                             <div>
                                 <label htmlFor="storage" className="block text-sm font-medium text-gray-700 mb-1">
                                 storage
@@ -196,7 +150,7 @@ export default function LaptopForm() {
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 placeholder="Select Storage"
-                                menuPortalTarget={document.body}
+                                menuPortalTarget={isClient ? document.body : null}
                                 styles={{
                                     menuPortal: base => ({ ...base, zIndex: 9999 })
                                 }}
@@ -219,7 +173,7 @@ export default function LaptopForm() {
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 placeholder="Select GPU"
-                                menuPortalTarget={document.body}
+                                menuPortalTarget={isClient ? document.body : null}
                                 styles={{
                                     menuPortal: base => ({ ...base, zIndex: 9999 })
                                 }}
@@ -233,7 +187,7 @@ export default function LaptopForm() {
                                 </label>
                                 <Select
                                 inputId="processor"
-                                name="prosessor"
+                                name="processor"
                                 value={processorOptions.find(option => option.value === formData.processor) || null}
                                 onChange={selected =>
                                     handleInputChange({ target: { name: 'processor', value: selected?.value } })
@@ -242,7 +196,7 @@ export default function LaptopForm() {
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 placeholder="Select Processor"
-                                menuPortalTarget={document.body}
+                                menuPortalTarget={isClient ? document.body : null}
                                 styles={{
                                     menuPortal: base => ({ ...base, zIndex: 9999 })
                                 }}
@@ -265,32 +219,13 @@ export default function LaptopForm() {
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 placeholder="Select RAM"
-                                menuPortalTarget={document.body}
+                                menuPortalTarget={isClient ? document.body : null}
                                 styles={{
                                     menuPortal: base => ({ ...base, zIndex: 9999 })
                                 }}
                                 required
                                 />
                             </div>
-
-
-                            
-
-{/* 
-                            <div>
-                                <label htmlFor="ram" className="block text-sm font-medium text-gray-700 mb-1">RAM</label>
-                                <input
-                                    id="ram"
-                                    type="text"
-                                    name="ram"
-                                    value={formData.ram}
-                                    onChange={handleInputChange}
-                                    placeholder="RAM (e.g., 16GB)"
-                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div> */}
-                            
                         </div>
 
                         {/* Column 2 */}
@@ -311,7 +246,7 @@ export default function LaptopForm() {
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 placeholder="Select Location"
-                                menuPortalTarget={document.body}
+                                menuPortalTarget={isClient ? document.body : null}
                                 styles={{
                                     menuPortal: base => ({ ...base, zIndex: 9999 })
                                 }}

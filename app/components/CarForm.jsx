@@ -94,7 +94,7 @@ export default function CarForm() {
       const data = await res.json();
 
       if(!res.ok) {
-        setError(data.error[0] ||'check your inputs');
+        setError(data.error ||'check your inputs');
          setShowNotification(true);
         setTimeout(() => {
           setShowNotification(false);

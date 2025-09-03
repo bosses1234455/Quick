@@ -32,12 +32,12 @@ io.on('connection', (socket) => {
     console.log('📩 Message sent to:', chatRoom);
   });
 
-  socket.on('typing', (conversationId) => {
-    socket.to(conversationId).emit('userTyping', {
-      userId: socket.userId,
-      conversationId,
-    });
-  });
+  // socket.on('typing', (conversationId) => {
+  //   socket.to(conversationId).emit('userTyping', {
+  //     userId: socket.userId,
+  //     conversationId,
+  //   });
+  // });
 
   socket.on('disconnect', () => {
     console.log(`❌ Socket disconnected: ${socket.id}`);

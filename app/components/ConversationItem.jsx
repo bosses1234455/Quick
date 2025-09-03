@@ -1,8 +1,9 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-const ConversationItem = ({ conversation }) => {
+const ConversationItem = ({ conversation,profilePic }) => {
   // Safely access user data with fallbacks
   const user = conversation?.user || {};
   const otherParticipantId = user?._id;
@@ -28,7 +29,7 @@ const ConversationItem = ({ conversation }) => {
       <div className="flex items-center space-x-4">
         <div className="flex-shrink-0">
           <div className="h-10 w-10 rounded-full bg-blue-400 flex items-center justify-center text-white font-bold">
-            {initial}
+            {profilePic ? <Image src={profilePic} alt='profile pic' width={10} height={10} className='h-10 w-10 rounded-full' /> : {initial} }
           </div>
         </div>
         <div className="flex-1 min-w-0">

@@ -3,12 +3,12 @@ import { writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
 
-export async function processUploads(formData) {
+export async function processUploads(formData,pg) {
     const files = formData.getAll('images');
     // console.log(files)
-    
+    const length = pg == 'user' ? 1 : 8;
     // Check number of files
-    if(files.length > 8) {
+    if(files.length > length) {
         return NextResponse.json({
             error: 'thats a lot of images'
         }, {status: 401});
