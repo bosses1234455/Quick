@@ -7,6 +7,7 @@ import { useConversation } from '../context/ConversationContext';
 import { useAuth } from '../context/AuthContext';
 import moment from 'moment';
 import useSocket from '../hooks/useSocket';
+import ChatHeader from '../components/ChatHeader';
 
 export default function ChatPage() {
   const searchParams = useSearchParams();
@@ -22,7 +23,7 @@ export default function ChatPage() {
   // const [messages, setMessages] = useState(m2);
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
-  const [fetch,setFetch] = useState(false);
+  const [fetchM,setFetchM] = useState(false);
 
   // Generate consistent chat room ID
   const chatRoomId = useCallback(() => {
@@ -62,7 +63,7 @@ export default function ChatPage() {
     try {
       await sendMessage(messageData);
       setMessage('');
-      setFetch(!fetch);
+      setFetchM(!fetchM);
       // fetchMessages();
     } catch (error) {
       console.error('Error sending message:', error);
@@ -94,7 +95,7 @@ export default function ChatPage() {
     return () => {
       socket?.off('receiveMessage', handleNewMessage);
     };
-  }, [socket, isConnected, postId, otherUserId, chatRoomId,fetch]);
+  }, [socket, isConnected, postId, otherUserId, chatRoomId,fetchM]);
 
   // Fetch messages on mount
   useEffect(() => {
@@ -120,6 +121,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] bg-gray-50">
+      <ChatHeader otherUserId={otherUserId} postId={postId} postType={postType} />
       <div className="flex-1 overflow-y-auto p-4">
         <div className="max-w-3xl mx-auto space-y-4">
           {messages.map((msg) => (

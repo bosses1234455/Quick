@@ -109,8 +109,9 @@ const buildFilterQuery = (searchParams, modelType) => {
 
       const furnished = searchParams.get('furnished');
       const sell = searchParams.get('sell');
-      if (furnished) query.furnished = true
-      if (sell){
+      if (furnished == true) query.furnished = true
+      // else query.furnished = null
+      if (sell == true){
         query.sell = true
       }else{
         query.sell= false
@@ -130,7 +131,7 @@ const buildFilterQuery = (searchParams, modelType) => {
         query.location = { $regex: `^${location}`, $options: 'i' };
       }
       const isNew = searchParams.get('new');
-      if (isNew) {
+      if (isNew == true) {
         query.new = true; // Added filter for new property
       }
       break;
