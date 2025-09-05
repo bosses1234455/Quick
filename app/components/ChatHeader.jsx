@@ -23,7 +23,6 @@ const ChatHeader = ({
         const res = await fetch(`/api/user/${otherUserId}`);
         if (res.ok) {
           const userData = await res.json();
-          // console.log(userData)
           setOtherUser(userData.data);
         }
       } catch (error) {
@@ -34,12 +33,12 @@ const ChatHeader = ({
     // Fetch post details
     const fetchPostDetails = async () => {
       try {
-        const endpoint = `/api/${postType}`
+        const endpoint = `/api/${postType}/${postId}`
         
         const res = await fetch(endpoint);
         if (res.ok) {
           const postData = await res.json();
-          setPostDetails(postData);
+          setPostDetails(postData.data);
         }
       } catch (error) {
         console.error('Error fetching post details:', error);
@@ -88,7 +87,7 @@ const ChatHeader = ({
   }
 
   return (
-    <div className="bg-white border-b border-gray-200 p-4 sticky top-0">
+    <div className="bg-white border-b border-gray-200 p-4 sticky top-0 z-10 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <button 
@@ -103,36 +102,41 @@ const ChatHeader = ({
           
           {otherUser && (
             <div 
-              className="flex items-center space-x-3 cursor-pointer"
+              className="flex items-center space-x-3 cursor-pointer group"
               onClick={handleViewProfile}
             >
               <div className="relative">
                 <img 
                   src={otherUser.profile_picture || '/Logo.png'} 
                   alt={otherUser.username}
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-10 h-10 rounded-full object-cover border border-gray-200 group-hover:ring-2 group-hover:ring-blue-100 transition-all"
                 />
               </div>
               <div>
-                <h2 className="font-semibold text-gray-900">{otherUser.username}</h2>
+                <h2 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">{otherUser.username}</h2>
+                {postDetails && (
+                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
+                    Regarding: <span className="font-medium text-gray-700">{postDetails.title}</span>
+                  </p>
+                )}
               </div>
             </div>
           )}
         </div>
 
-        <div className="flex items-center space-x-2">
-          {postDetails && (
+        {postDetails && (
+          <div className="flex items-center space-x-2">
             <button
               onClick={handleViewPost}
-              className="flex items-center space-x-1 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+              className="flex items-center space-x-1 text-sm text-gray-600 hover:text-blue-600 transition-colors px-3 py-1.5 rounded-lg bg-gray-50 hover:bg-blue-50 border border-gray-200"
             >
-              <span>View ad</span>
+              <span>View Ad</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

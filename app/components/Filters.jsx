@@ -177,8 +177,15 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
         })}
       </div>
       <button 
-      className='w-[100%] mt-4 p-1.5 rounded-md cursor-pointer bg-blue-800 hover:bg-blue-700 text-white'
+      className='w-[45%] mr-5 mt-4 p-1.5 rounded-md cursor-pointer bg-blue-800 hover:bg-blue-700 text-white'
       onClick={() => setSubmitFilters(e => !e)}>apply filters</button>
+      <button 
+      className='w-[45%] mt-4 p-1.5 rounded-md cursor-pointer bg-blue-800 hover:bg-blue-700 text-white'
+      onClick={() => {
+      setFilters({});
+      onFilterChange({}); 
+      setSubmitFilters(e => !e)
+      }}>clear filters</button>
     </div>
   );
 };
