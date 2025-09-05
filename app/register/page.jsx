@@ -37,8 +37,8 @@ export default function RegisterPage() {
       .matches(/[a-z]/, "Password must contain at least one lowercase letter")
       .matches(/\d/, "Password must contain at least one number")
       .matches(
-        /[@$!%*?&]/,
-        "Password must contain at least one special character (@, $, !, %, *, ?, &)"
+        /[@$!%*?&#]/,
+        "Password must contain at least one special character (@, $, !, %, *, ?, &, #)"
       ),
     phone_num: Yup.string()
       .required("Phone number is required")
@@ -166,7 +166,7 @@ export default function RegisterPage() {
                   className="w-full px-3 py-2 rounded-lg bg-[#F9FAFB] focus:outline-none"
                   required
                   name='name'
-                  placeholder='John Doe'
+                  placeholder='Enter your full name'
                 />
                 {errors.name && touched.name && <span className='text-red-600 text-sm'>{errors.name}</span>}
               </div>

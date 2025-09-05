@@ -2,11 +2,9 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-// import { useConversation, useAuth } from '@/context';
 import { useConversation } from '../context/ConversationContext';
 import { useAuth } from '../context/AuthContext';
 import moment from 'moment';
-import useSocket from '../hooks/useSocket';
 import ChatHeader from '../components/ChatHeader';
 
 export default function ChatPage() {
@@ -16,14 +14,12 @@ export default function ChatPage() {
   const postType = searchParams.get('type');
   const router = useRouter();
   
-  const { socket,isConnected, joinConversation, sendMessage,messages,setMessages } = useConversation();
-  // const {socket} = useSocket();
-  const { id: userId,loggedIn } = useAuth();
+  const { socket, isConnected, joinConversation, sendMessage, messages, setMessages,activeConversation } = useConversation();
+  const { id: userId, loggedIn, isLoading: authLoading } = useAuth();
   const [message, setMessage] = useState('');
-  // const [messages, setMessages] = useState(m2);
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
-  const [fetchM,setFetchM] = useState(false);
+  const hasFetchedInitialMessages = useRef(false);
 
   // Generate consistent chat room ID
   const chatRoomId = useCallback(() => {
@@ -31,58 +27,81 @@ export default function ChatPage() {
     return ids.join('-');
   }, [postId, userId, otherUserId]);
 
-  // Fetch initial messages
-  const fetchMessages = useCallback(async () => {
+  // Fetch initial messages - FIXED: Move the function inside useEffect
+  useEffect(() => {
+  if (
+    authLoading ||
+    !loggedIn ||
+    hasFetchedInitialMessages.current ||
+    !postId ||
+    !otherUserId
+  ) return;
+
+  const fetchMessages = async () => {
     try {
       const res = await fetch(`/api/messages?postId=${postId}&otherUserId=${otherUserId}`);
       if (res.ok) {
         const data = await res.json();
         setMessages(data);
+        hasFetchedInitialMessages.current = true; // <-- move here
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
     } finally {
       setLoading(false);
     }
-  }, [postId, otherUserId]);
+  };
+
+  fetchMessages();
+}, [authLoading, loggedIn, postId, otherUserId]);
 
   // Handle sending messages
   const handleSendMessage = useCallback(async (e) => {
     e.preventDefault();
-     console.log('Submit handler called ✅');
-    // if (!message.trim() || !socket || !isConnected) return;
+    console.log('Submit handler called ✅');
+    
+    if (!message.trim()) return;
 
     const messageData = {
       receiver_id: otherUserId,
       post_id: postId,
       content: message,
-      onModel: postType.charAt(0).toUpperCase() + postType.slice(1,-1),
+      onModel: postType.charAt(0).toUpperCase() + postType.slice(1, -1),
       chatRoom: chatRoomId()
     };
-    // console.log(messageData)
+    
     try {
       await sendMessage(messageData);
       setMessage('');
-      setFetchM(!fetchM);
-      // fetchMessages();
+      // Instead of using fetchM state, we can just add the message optimistically
+      // or let the socket event handle adding the new message
     } catch (error) {
       console.error('Error sending message:', error);
     }
-  }, [message, socket, isConnected, otherUserId, postId, postType, chatRoomId, sendMessage]);
+  }, [message, otherUserId, postId, postType, chatRoomId, sendMessage]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
-    if(!loggedIn) router.push('/login');
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Check authentication and redirect if needed
+  useEffect(() => {
+    if (authLoading) return;
+    
+    if (!loggedIn) {
+      router.push('/login');
+    }
+  }, [loggedIn, router, authLoading]);
+
   // Initialize chat room
   useEffect(() => {
-    // console.log(socket + '\n' + isConnected + '\n' + postId + '\n' + otherUserId)
+    if (authLoading || !loggedIn) return;
+    
     if (!socket || !isConnected || !postId || !otherUserId) return;
 
     const roomId = chatRoomId();
-    joinConversation(roomId,postId,otherUserId);
+    if(roomId != activeConversation) joinConversation(roomId, postId, otherUserId);
 
     const handleNewMessage = (newMessage) => {
       if (newMessage.chatRoom === roomId) {
@@ -95,13 +114,27 @@ export default function ChatPage() {
     return () => {
       socket?.off('receiveMessage', handleNewMessage);
     };
-  }, [socket, isConnected, postId, otherUserId, chatRoomId,fetchM]);
+  }, [socket, isConnected, postId, otherUserId, chatRoomId, authLoading, loggedIn, joinConversation, setMessages]);
 
-  // Fetch messages on mount
-  useEffect(() => {
-    fetchMessages();
-  }, [fetchMessages]);
+  // Show loading state while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse flex space-x-4">
+          <div className="rounded-full bg-gray-200 h-12 w-12"></div>
+          <div className="flex-1 space-y-4 py-1">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
+  // Show loading state while fetching messages
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">

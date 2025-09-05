@@ -2,20 +2,29 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ConversationItem from '../components/ConversationItem';
+import { useRouter } from 'next/navigation';
 
 export default function MyChatsPage() {
-  const { id: currentUserId } = useAuth();
+  const { id: currentUserId, isLoading: authLoading } = useAuth();
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (!isClient || !currentUserId) return;
+    
+    if (isClient && !authLoading && !currentUserId) {
+      router.push('/login');
+    }
+  }, [currentUserId, router, isClient, authLoading]);
+
+  useEffect(() => {
+    if (!isClient || authLoading || !currentUserId) return;
 
     const fetchConversations = async () => {
       try {
@@ -41,18 +50,32 @@ export default function MyChatsPage() {
     };
 
     fetchConversations();
-  }, [currentUserId, isClient]);
+  }, [currentUserId, isClient, authLoading]);
 
-  if (!isClient) {
+  // Show loading state while checking authentication
+  if (!isClient || authLoading) {
     return (
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-6">My Conversations</h1>
-        <div>Loading...</div>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        </div>
       </div>
     );
   }
 
-  if (loading) return <div className="p-4">Loading conversations...</div>;
+  // Show loading state while fetching conversations
+  if (loading) {
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-6">My Conversations</h1>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        </div>
+      </div>
+    );
+  }
+  
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
 
   return (

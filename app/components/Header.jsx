@@ -1,35 +1,13 @@
 'use client'
 import Image from "next/image"
 import Link from "next/link"
-// import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-// import { jwtDecode } from "jwt-decode";
+
 import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
-  // const [isCookie,setIsCookie] = useState(false);
-  // const [id,setId] = useState('');
-  const {loggedIn,id} = useAuth();
-  
-  // useEffect(() => {
-    // const checkCookie = () => {
-    //   const token = Cookies.get('token');
-    //   setIsCookie(!!token);
-    //   if (token) {
-    //     const decoded = jwtDecode(token);
-    //     setId(decoded.userId);
-    //   } else {
-    //     setId('');
-    //   }
-    // };
-    
-    // Initial check
-    // checkCookie();
 
-    // Optional: Polling (check every 1s) for external changes
-    // const interval = setInterval(checkCookie, 1000);
-    // return () => clearInterval(interval);
-  // }, []);
+  const {loggedIn,id} = useAuth();
 
   const handleLogout = () => {
     Cookies.remove('token');
