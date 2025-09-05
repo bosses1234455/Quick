@@ -6,7 +6,6 @@ import { useState } from 'react';
 import moment from 'moment';
 
 const ConversationItem = ({ conversation, profilePic }) => {
-  // Safely access user data with fallbacks
   const user = conversation?.user || {};
   const otherParticipantId = user?._id;
   const username = user?.username || 'Unknown User';
@@ -26,13 +25,13 @@ const ConversationItem = ({ conversation, profilePic }) => {
 
   return (
     <div className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-100 p-6 mb-4">
-      {/* Main Conversation Info */}
+
       <div className="flex items-start justify-between mb-4">
         <Link 
           href={`/chat?postId=${conversation.post_id}&userId=${otherParticipantId}&type=${type}`}
           className="flex items-start space-x-4 flex-1 min-w-0"
         >
-          {/* Avatar */}
+
           <div className="flex-shrink-0 relative">
             <div className="relative">
               {profilePic && !imgError ? (
@@ -52,7 +51,7 @@ const ConversationItem = ({ conversation, profilePic }) => {
             </div>
           </div>
 
-          {/* Content */}
+
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
@@ -69,7 +68,7 @@ const ConversationItem = ({ conversation, profilePic }) => {
               {conversation.lastMessage || 'Start a conversation...'}
             </p>
             
-            {/* Message preview with icon */}
+
             {conversation.lastMessage && (
               <div className="flex items-center space-x-1">
                 <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +81,6 @@ const ConversationItem = ({ conversation, profilePic }) => {
         </Link>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
         <button 
           className="flex items-center space-x-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors group/chat"
@@ -112,7 +110,7 @@ const ConversationItem = ({ conversation, profilePic }) => {
         </button>
       </div>
 
-      {/* Unread message indicator (optional) */}
+
       {conversation.unreadCount > 0 && (
         <div className="absolute top-4 right-4">
           <span className="inline-flex items-center justify-center w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full">

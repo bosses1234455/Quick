@@ -4,13 +4,11 @@ import Laptop from '@/models/Laptop';
 import Book from '@/models/Book';
 import { NextResponse } from 'next/server'
 
-// Helper function to build filter query
 const buildFilterQuery = (searchParams, modelType) => {
   const query = {};
   const seller_id = searchParams.get('id');
   if (seller_id) query.seller_id = seller_id;
 
-  // Price filters
   const minPrice = parseFloat(searchParams.get('minPrice'));
   const maxPrice = parseFloat(searchParams.get('maxPrice'));
   if (!isNaN(minPrice) || !isNaN(maxPrice)) {
@@ -19,23 +17,14 @@ const buildFilterQuery = (searchParams, modelType) => {
     if (!isNaN(maxPrice)) query.price.$lte = maxPrice;
   }
 
-  const location = searchParams.get('location'); // Declared once here
+  const location = searchParams.get('location'); 
 
-  // Model-specific filters
   switch(modelType) {
     case 'cars':
       const brand = searchParams.get('brand');
       if (brand) {
         query.brand = { $regex: `^${brand}$`, $options: 'i' };
       }
-      // const year = searchParams.get('year');
-      // if (year) {
-      //   if (year === 'Older') {
-      //     query.year = { $lt: 2020 };
-      //   } else {
-      //     query.year = parseInt(year);
-      //   }
-      // }
 
       const minYear = searchParams.get('minYear')
       const maxYear = searchParams.get('maxYear')
@@ -47,18 +36,10 @@ const buildFilterQuery = (searchParams, modelType) => {
       }
 
       const model = searchParams.get('model')
-      // if (model) {
-      //   query.model = { $regex: new RegExp(`^${model}$`, 'i') }; // 'i' → case-insensitive
-      // }
-
-      // if (model) {
-      //   const decodedModel = decodeURIComponent(model).replace(/\+/g, " ").trim().replace(/\s+/g, " ");
-      //   query.model = { $regex: new RegExp(`^${decodedModel}$`, 'i') };
-      // }
 
       if (model) {
         let decodedModel = decodeURIComponent(model).replace(/\+/g, " ").trim();
-        // Replace spaces with regex that allows space OR dash
+
         const flexibleModel = decodedModel.replace(/\s+/g, "[- ]");
         query.model = { $regex: new RegExp(`^${flexibleModel}$`, "i") };
       }
@@ -101,16 +82,11 @@ const buildFilterQuery = (searchParams, modelType) => {
       const condition = searchParams.get('condetion')
       if(condition) query.inner_condition = condition
       
-      // if (!isNaN(minSpace) || !isNaN(maxSpace)) {
-      //   query.price = {};
-      //   if (!isNaN(minSpace)) query.price.$gte = minSpace;
-      //   if (!isNaN(maxSpace)) query.price.$lte = maxSpace;
-      // }
 
       const furnished = searchParams.get('furnished');
       const sell = searchParams.get('sell');
       if (furnished == true) query.furnished = true
-      // else query.furnished = null
+
       if (sell == true){
         query.sell = true
       }else{
@@ -132,7 +108,7 @@ const buildFilterQuery = (searchParams, modelType) => {
       }
       const isNew = searchParams.get('new');
       if (isNew == true) {
-        query.new = true; // Added filter for new property
+        query.new = true; 
       }
       break;
 
@@ -140,10 +116,9 @@ const buildFilterQuery = (searchParams, modelType) => {
       const type = searchParams.get('type');
       if (type) query.type = type;
       
-      // const condition = searchParams.get('condition');
-      // if (condition) query.state = condition;
+
       if (location) {
-        query.location = { $regex: `^${location}`, $options: 'i' }; // Added for books
+        query.location = { $regex: `^${location}`, $options: 'i' };
       }
       break;
   }
@@ -151,7 +126,7 @@ const buildFilterQuery = (searchParams, modelType) => {
   return query;
 };
 
-// Helper function to get sort configuration
+
 const getSortConfig = (sortOption) => {
   const [field, direction] = (sortOption || 'date_desc').split('_');
   const sortConfig = {};
@@ -166,24 +141,16 @@ export const getCars = async (req) => {
         const page = parseInt(searchParams.get('page')) || 1;
         const skip = (page - 1) * limit;
 
-        // Build filter query
         const query = buildFilterQuery(searchParams, 'cars');
         
-        // Get sort configuration
         const sortConfig = getSortConfig(searchParams.get('sort'));
 
-        // Fetch cars with filters and sorting
+
         const cars = await Car.find(query)
             .limit(limit)
             .skip(skip)
             .sort(sortConfig);
 
-        // if (!cars || cars.length === 0) {
-        //     return NextResponse.json(
-        //         { error: 'No cars found' },
-        //         { status: 404 }
-        //     );
-        // }
 
         const totalCount = await Car.countDocuments(query);
         return NextResponse.json({
@@ -228,10 +195,8 @@ export const getApartments = async (req) => {
         const page = parseInt(searchParams.get('page')) || 1;
         const skip = (page - 1) * limit;
 
-        // Build filter query
         const query = buildFilterQuery(searchParams, 'apartments');
         
-        // Get sort configuration
         const sortConfig = getSortConfig(searchParams.get('sort'));
 
         const apartments = await Apartment.find(query)
@@ -278,10 +243,8 @@ export const getLaptops = async (req) => {
         const page = parseInt(searchParams.get('page')) || 1;
         const skip = (page - 1) * limit;
 
-        // Build filter query
         const query = buildFilterQuery(searchParams, 'laptops');
-        
-        // Get sort configuration
+
         const sortConfig = getSortConfig(searchParams.get('sort'));
 
         const laptops = await Laptop.find(query)
@@ -331,10 +294,8 @@ export const getBooks = async (req) => {
         const page = parseInt(searchParams.get('page')) || 1;
         const skip = (page - 1) * limit;
 
-        // Build filter query
         const query = buildFilterQuery(searchParams, 'books');
-        
-        // Get sort configuration
+
         const sortConfig = getSortConfig(searchParams.get('sort'));
 
         const books = await Book.find(query)

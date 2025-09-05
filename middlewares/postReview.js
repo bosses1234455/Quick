@@ -10,7 +10,7 @@ export async function postReview(title, description) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-r1-0528:free", // or the exact model name you're using
+        model: "deepseek/deepseek-r1-0528:free", 
         messages: [
           {
             role: "system",
@@ -35,7 +35,7 @@ export async function postReview(title, description) {
 
     const data = await response.json();
     const moderationResult = JSON.parse(data.choices[0].message.content);
-    // console.log(moderationResult)
+
     return moderationResult;
     
   } catch (error) {

@@ -28,7 +28,7 @@ export default function UserProfile() {
     password: ''
   });
   const [tokenId, setTokenId] = useState('');
-  const [profilePic, setProfilePic] = useState('/Logo.png'); // Default avatar
+  const [profilePic, setProfilePic] = useState('/Logo.png'); 
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -37,14 +37,14 @@ export default function UserProfile() {
         if (!response.ok) throw new Error('Failed to fetch user data');
         const { data } = await response.json();
         setUserData(data);
-        // console.log(userData)
+       
         setFormData({
           username: data.username || '',
           email: data.email || '',
           phone_num: data.phone_num || '',
           password: ''
         });
-        // Set profile picture if available
+      
         if (data.profile_picture) {
           setProfilePic(data.profile_picture);
         }
@@ -70,7 +70,7 @@ export default function UserProfile() {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validate file type and size
+    
     if (!file.type.startsWith('image/')) {
       setError('Please select an image file');
       return;
@@ -96,10 +96,9 @@ export default function UserProfile() {
 
       const result = await response.json();
       
-      // Update profile picture in state
+    
       setProfilePic(result.profile_picture);
       
-      // Update user data
       setUserData(prev => ({
         ...prev,
         profile_picture: result.profilePicture
@@ -150,7 +149,7 @@ export default function UserProfile() {
       <div className="max-w-4xl mx-auto">
         <div className={`bg-white rounded-lg shadow-md p-6 relative transition-all duration-500 ${isEditing ? 'blur-sm' : ''}`}>
           <div className="bg-white rounded-lg shadow-md p-6 relative">
-            {/* Edit Button (Top Right) */}
+      
             {tokenId == userData.id && 
             <button 
               onClick={() => setIsEditing(true)}
@@ -160,7 +159,7 @@ export default function UserProfile() {
             </button>
             }
             
-            {/* Profile Header */}
+            
             <div className="flex items-center space-x-4 mb-6">
               <div className="relative">
                 <label htmlFor="profilePic" className={`${tokenId == id ?"cursor-pointer" : '' }`}>
@@ -199,13 +198,11 @@ export default function UserProfile() {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {userData.username || 'User'}
                 </h1>
-                {/* {userData.email && (
-                  <p className="text-gray-600">{userData.email}</p>
-                )} */}
+              
               </div>
             </div>
 
-            {/* User Details */}
+      
             <div className="space-y-4 border-t pt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -233,7 +230,7 @@ export default function UserProfile() {
           <PostsFetch listType={listType} id={id} />
         </div>
         
-        {/* Edit Modal */}
+      
         <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
           <form onSubmit={handleSubmit} className="space-y-4">
             <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
@@ -311,5 +308,3 @@ export default function UserProfile() {
     </div>
   );
 }
-
-// Helper components remain the same

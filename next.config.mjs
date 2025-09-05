@@ -5,11 +5,11 @@ const nextConfig = {
         headers: [
           {
             key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin-allow-popups' // Less restrictive option
+            value: 'same-origin-allow-popups' 
           },
           {
             key: 'Cross-Origin-Embedder-Policy',
-            value: 'require-corp' // Optional, but may help
+            value: 'require-corp'
           }
         ],
     

@@ -1,7 +1,3 @@
-
-///////////////////////////////////////////
-
-
 import { useState, useEffect } from 'react';
 import { locations, muhafazat, brand, laptop, rams, bookTypes, condition, models } from '../data/data';
 
@@ -56,22 +52,21 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
 
 
   const handleFilterChange = (name, value) => {
-    // Convert value to number if it's numeric
+
     let newValue = value;
     if (!isNaN(value) && value !== '') {
       newValue = Number(value);
-      if (newValue < 0) return; // Don't allow negative numbers
+      if (newValue < 0) return; 
     }
   
     const newFilters = { ...filters, [name]: newValue };
   
-    // ✅ Reset model when brand changes
+
     if (name === "brand") {
       newFilters.model = "";
       setSelectedBrand(newValue);
     }
   
-    // Validate min/max
     if (name.startsWith('min')) {
       const maxName = name.replace('min', 'max');
       if (newFilters[maxName] !== undefined && newFilters[maxName] !== '' && newFilters[maxName] < newValue) {
@@ -89,9 +84,6 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
   };
   
   
-
-
-  // Helper to check if two inputs are "Min" and "Max" pair
   const isMinMaxPair = (index, array, filter) => {
     return (
       filter.name.startsWith("min") &&
@@ -105,7 +97,7 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
       <h2 className="text-xl font-semibold mb-2">Filters</h2>
       <div className="space-y-2">
         {filterConfig[listType]?.map((filter, index, arr) => {
-          // Handle Min/Max pair
+ 
           if (isMinMaxPair(index, arr, filter)) {
             const maxFilter = arr[index + 1];
             return (
@@ -126,7 +118,6 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
             );
           }
 
-          // Skip rendering max filter, it was handled in the pair
           if (filter.name.startsWith("max") && arr[index - 1].name === filter.name.replace("max", "min")) {
             return null;
           }
@@ -180,7 +171,7 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
       className='w-[45%] mr-5 mt-4 p-1.5 rounded-md cursor-pointer bg-blue-800 hover:bg-blue-700 text-white'
       onClick={() => setSubmitFilters(e => !e)}>apply filters</button>
       <button 
-      className='w-[45%] mt-4 p-1.5 rounded-md cursor-pointer bg-blue-800 hover:bg-blue-700 text-white'
+      className='w-[45%] mt-4 p-1.5 rounded-md cursor-pointer bg-gray-600 hover:bg-gray-500 text-white'
       onClick={() => {
       setFilters({});
       onFilterChange({}); 

@@ -16,7 +16,6 @@ const ChatHeader = ({
   const router = useRouter();
   const { id: userId } = useAuth();
 
-  // Fetch other user's details
   useEffect(() => {
     const fetchOtherUser = async () => {
       try {
@@ -30,7 +29,6 @@ const ChatHeader = ({
       }
     };
 
-    // Fetch post details
     const fetchPostDetails = async () => {
       try {
         const endpoint = `/api/${postType}/${postId}`

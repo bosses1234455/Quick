@@ -20,7 +20,7 @@ function Home() {
   };
 
   const openForm = () => {
-    window.open("https://forms.gle/T7MHkuvxz8xDCH2X7", "_blank")
+     window.open("https://forms.gle/NEuvM7YBUA82Y2wAA", "_blank")
   } 
 
   return (

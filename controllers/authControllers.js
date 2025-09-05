@@ -15,7 +15,7 @@ export const login = async (req) => {
     let user;
 
     if (googleToken) {
-      // ----- Google login flow -----
+
       
       const ticket = await client.verifyIdToken({
         idToken: googleToken,
@@ -69,7 +69,7 @@ export const login = async (req) => {
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60, // 24 hours
+      maxAge: 24 * 60 * 60, 
     });
 
     return response;
@@ -128,7 +128,7 @@ export const register = async (req) => {
           httpOnly: false,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
-          maxAge: 24 * 60 * 60 // 24 hours in seconds
+          maxAge: 24 * 60 * 60 
       });
 
       return response;

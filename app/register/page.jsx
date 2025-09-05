@@ -18,9 +18,9 @@ export default function RegisterPage() {
   const {setTryingToLog,loggedIn} = useAuth();
 
     useEffect(() => {
-        // console.log(loggedIn)
+       
           if (loggedIn) {
-              router.push('/') // or a loading spinner while checking auth
+              router.push('/') 
           }
       },[router,loggedIn])
 
@@ -29,7 +29,7 @@ export default function RegisterPage() {
     mail: Yup.string()
       .required("Email is required")
       .email("Invalid email format"),
-    // password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
+    
     password: Yup.string()
       .required("Password is required")
       .min(8, "Password must be at least 8 characters")
@@ -42,7 +42,7 @@ export default function RegisterPage() {
       ),
     phone_num: Yup.string()
       .required("Phone number is required")
-      // .max(12, "Phone number too long")
+    
       .length(12, "Phone number must be exactly 12 digits")
   });
 
@@ -59,7 +59,6 @@ export default function RegisterPage() {
       setResError('');
 
       if (!isEmailSent) {
-        // First step: Send verification email
         try {
           const res = await fetch('/api/auth/emailVerification', {
             method: 'POST',
@@ -81,7 +80,7 @@ export default function RegisterPage() {
           setResError('Network error. Please try again.');
         }
       } else {
-        // Second step: Verify code and complete registration
+      
         if (verificationCode !== code) {
           setResError('Invalid verification code');
           setIsLoading(false);
@@ -270,7 +269,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full cursor-pointer bg-indigo-600 text-white py-2 rounded-full hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full cursor-pointer bg-blue-800 text-white py-2 rounded-full hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Processing...' : (isEmailSent ? 'Verify & Register' : 'Send Verification Code')}
           </button>
@@ -279,7 +278,7 @@ export default function RegisterPage() {
         {isEmailSent && (
           <button
             onClick={() => setIsEmailSent(false)}
-            className="w-full mt-4 text-sm text-gray-600 hover:text-indigo-600"
+            className="w-full mt-4 text-sm text-gray-600 hover:text-blue-800"
           >
             ← Back to edit details
           </button>
@@ -287,7 +286,7 @@ export default function RegisterPage() {
 
         <Link
           href={'/login'}
-          className="block text-center mt-4 text-sm text-gray-600 hover:text-indigo-600 transition-colors"
+          className="block text-center mt-4 text-sm text-gray-600 hover:text-blue-800 transition-colors"
         >
           Already have an account? Sign in
         </Link>

@@ -43,7 +43,6 @@ export default function CarForm() {
     setFormData(prev => ({
       ...prev,
       [name]: value,
-      // Reset model when brand changes
       ...(name === 'brand' ? { model: '' } : {})
     }));
   };
@@ -52,15 +51,15 @@ export default function CarForm() {
   const handleBrandChange = (selectedOption) => {
     setFormData(prev => ({
       ...prev,
-      brand: selectedOption?.value || '', // Store URL-friendly value
-      model: '' // Reset model when brand changes
+      brand: selectedOption?.value || '', 
+      model: ''
     }));
   };
 
   const handleModelChange = (selectedOption) => {
     setFormData(prev => ({
       ...prev,
-      model: selectedOption?.value || '' // Store URL-friendly model value
+      model: selectedOption?.value || '' 
     }));
   };
 
@@ -98,7 +97,7 @@ export default function CarForm() {
          setShowNotification(true);
         setTimeout(() => {
           setShowNotification(false);
-          // router.push('/');
+
         }, 2000);
       }
       if(res.ok) {
@@ -121,7 +120,6 @@ export default function CarForm() {
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 space-y-8 md:space-y-0">
 
-            {/* Column 1 */}
             <div className="space-y-4 md:border-r md:border-gray-200 md:pr-6">
               <div>
                 <div className="mb-4">
@@ -234,7 +232,7 @@ export default function CarForm() {
               </div>
             </div>
 
-            {/* Column 2 */}
+
             <div className="space-y-4 md:border-r md:border-gray-200 md:px-6">
               <div>
                 <label htmlFor="seat_number" className="block text-sm font-medium text-gray-700 mb-1">
@@ -323,7 +321,6 @@ export default function CarForm() {
               </div>
             </div>
 
-            {/* Column 3 */}
             <div className="space-y-4 md:pl-6">
               <div>
                 <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-1">Car Images (Max 8)</label>

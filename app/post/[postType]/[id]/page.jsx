@@ -7,12 +7,9 @@ import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import { RxAvatar } from "react-icons/rx";
 import { useAuth } from '@/app/context/AuthContext';
 
-// Updated all details components with grid layout and lighter labels
 
 const CarDetails = ({ post }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
-    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
     <div><span className="text-gray-600 font-medium">Model:</span> {post.model}</div>
     <div><span className="text-gray-600 font-medium">Year:</span> {post.year}</div>
@@ -22,14 +19,11 @@ const CarDetails = ({ post }) => (
     <div><span className="text-gray-600 font-medium">Seat Number:</span> {post.seat_number}</div>
     <div><span className="text-gray-600 font-medium">Inner Condition:</span> {post.inner_condition}</div>
     <div><span className="text-gray-600 font-medium">Outer Condition:</span> {post.outer_condition}</div>
-    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
   </div>
 );
 
 const ApartmentDetails = ({ post }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
-    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Room Count:</span> {post.roomCount}</div>
     <div><span className="text-gray-600 font-medium">Bath Count:</span> {post.bathroomCount}</div>
     <div><span className="text-gray-600 font-medium">Condition:</span> {post.innerCondition}</div>
@@ -37,18 +31,15 @@ const ApartmentDetails = ({ post }) => (
     <div><span className="text-gray-600 font-medium">Size:</span> {post.space} m²</div>
     <div><span className="text-gray-600 font-medium">For Sale:</span> {post.forSale ? 'Yes' : 'No'}</div>
     <div><span className="text-gray-600 font-medium">Floor:</span> {post.floor}</div>
-    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
   </div>
 );
 
 const LaptopDetails = ({ post }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
-    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Storage:</span> {post.storage}</div>
     <div><span className="text-gray-600 font-medium">Brand:</span> {post.brand}</div>
     <div><span className="text-gray-600 font-medium">GPU:</span> {post.gpu}</div>
-    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
+
     <div><span className="text-gray-600 font-medium">RAM:</span> {post.ram}</div>
     <div><span className="text-gray-600 font-medium">Processor:</span> {post.processor}</div>
     <div><span className="text-gray-600 font-medium">New:</span> {post.new ? 'Yes' : 'No'}</div>
@@ -57,13 +48,10 @@ const LaptopDetails = ({ post }) => (
 
 const BookDetails = ({ post }) => (
   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    {/* <div><span className="text-gray-600 font-medium">Location:</span> {post.location}</div> */}
     <div><span className="text-gray-600 font-medium">Author Name:</span> {post.name}</div>
-    {/* <div><span className="text-gray-600 font-medium">Price:</span> ${post.price?.toLocaleString()}</div> */}
     <div><span className="text-gray-600 font-medium">Book Title:</span> {post.bookTitle}</div>
     <div><span className="text-gray-600 font-medium">Type:</span> {post.type}</div>
     <div><span className="text-gray-600 font-medium">Condition:</span> {post.state}</div>
-    {/* <div><span className="text-gray-600 font-medium">Ad Date:</span> {new Date(post.date).toLocaleDateString()}</div> */}
   </div>
 );
 
@@ -102,7 +90,6 @@ export default function PostDetail() {
 
     fetchPost();
   }, [id, postType]);
-  // console.log(post);
   
   const renderDetails = () => {
     switch(postType) {
@@ -129,12 +116,12 @@ export default function PostDetail() {
         ← Back to all posts
       </Link>
 
-      {/* Title Section */}
+      
       <h1 className="text-3xl font-bold text-gray-900 text-center">
         {post.title}
       </h1>
 
-      {/* Image Container with hover effect */}
+      
       <div className="flex justify-center">
         <div className="relative w-full max-w-3xl aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden transition-shadow hover:shadow-lg">
           {post.images?.[currentImage] && (
@@ -149,7 +136,7 @@ export default function PostDetail() {
         </div>
       </div>
 
-      {/* Thumbnail Previews with increased margin */}
+     
       <div className="flex justify-center gap-2 mt-8 overflow-x-auto py-2">
         {post.images?.map((img, index) => (
           <button
@@ -163,7 +150,7 @@ export default function PostDetail() {
         ))}
       </div>
 
-      {/* Image Navigation */}
+    
       <div className="flex justify-center gap-4">
         <button 
           onClick={() => {
@@ -204,13 +191,13 @@ export default function PostDetail() {
         <p className="text-gray-700">{post.description}</p>
       </div>
 
-      {/* Details Section with improved spacing */}
+      
       <div className="bg-gray-50 rounded-xl items-center text-center shadow-lg p-6 space-y-4">
         <h2 className="text-xl font-semibold mb-4">Product Details</h2>
         {renderDetails()}
       </div>
 
-      {/* Seller Info and Chat with hover effects */}
+   
       <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <Link 
           href={`/profile/${post.seller._id}`}

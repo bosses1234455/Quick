@@ -2,13 +2,12 @@ import { Server } from 'socket.io';
 import { NextResponse } from 'next/server';
 
 export async function GET(req) {
-  // Ensure the Socket.IO server is only initialized once
+
   if (!global.io) {
     console.log('Attempting to initialize Socket.io server...');
 
-    // Access the underlying Node.js HTTP server from the response object
-    // This is a common pattern for Next.js App Router to get the server instance
-    const res = new NextResponse(); // Create a dummy NextResponse to access its socket property
+
+    const res = new NextResponse(); 
     const httpServer = res.socket?.server; 
 
     if (!httpServer) {
@@ -43,7 +42,7 @@ export async function GET(req) {
       });
     });
 
-    global.io = io; // Store the Socket.IO server globally
+    global.io = io; 
     console.log('Socket.io server initialized successfully.');
   }
 

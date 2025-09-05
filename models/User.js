@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema({
    profile_picture: {
     type: String,
   },
-  // admin: { type: Boolean, default: false },
   phone_num: { type: String,required: true }
 
 });
