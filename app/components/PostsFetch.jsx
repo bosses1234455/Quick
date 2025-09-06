@@ -109,11 +109,7 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
             fetchPosts(pageNum);
         }
     }, [pageNum]);
-    // useEffect(() => {
-    //     //  const token = Cookies.get('token');
-    //     //  const c = token ? jwtDecode(token) : '';
-    //      setTokenId(userId);
-    // },[])
+
 
     if (isLoading && posts.length === 0) {
         return <LoadingSkeleton />;
