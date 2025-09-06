@@ -52,7 +52,6 @@ export default function MyChatsPage() {
     fetchConversations();
   }, [currentUserId, isClient, authLoading]);
 
-  // Show loading state while checking authentication
   if (!isClient || authLoading) {
     return (
       <div className="container mx-auto p-4">
@@ -64,7 +63,6 @@ export default function MyChatsPage() {
     );
   }
 
-  // Show loading state while fetching conversations
   if (loading) {
     return (
       <div className="container mx-auto p-4">

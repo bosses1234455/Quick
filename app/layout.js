@@ -11,11 +11,6 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-// const robotoMono = Roboto_Mono({
-//   subsets: ['latin'],
-//   display: 'swap',
-//   variable: '--font-roboto-mono',
-// })
 
 export const metadata = {
   title: "Create Next App",

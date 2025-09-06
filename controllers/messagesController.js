@@ -1,6 +1,5 @@
 import Message from '@/models/Message';
 
-// Get all messages between users for a specific post
 export async function getMessages(user, postId, otherUserId) {
   try {
     const messages = await Message.find({
@@ -16,11 +15,11 @@ export async function getMessages(user, postId, otherUserId) {
   }
 }
 
-// Create a new message
+
 export async function createMessage(user, messageData) {
   try {
     const { receiver_id, post_id, content, onModel } = messageData;
-    // console.log(user._id);
+
     
     const message = await Message.create({
       sender_id: user._id,
@@ -48,28 +47,22 @@ export async function getConversations(user) {
     .populate('sender_id', 'username mail profile_picture')
     .populate('receiver_id', 'username mail profile_picture');
 
-    // 🔹 Group by (otherUser + post)
    const conversations = {};
 messages.forEach(msg => {
-  // Safely get sender/receiver IDs (handles both populated and unpopulated cases)
+
   const senderId = msg.sender_id?._id?.toString() || msg.sender_id?.toString();
   const receiverId = msg.receiver_id?._id?.toString() || msg.receiver_id?.toString();
 
-  // Skip if message is malformed
   if (!senderId || !receiverId) return;
 
-  // Determine the other user (full document if populated, otherwise just ID)
   const isSender = senderId === user._id.toString();
   const otherUser = isSender ? msg.receiver_id : msg.sender_id;
   const postId = msg.post_id?.toString();
 
-  // Skip if missing critical data
   if (!otherUser || !postId) return;
 
-  // Create a unique key for the conversation
   const key = `${otherUser._id?.toString() || otherUser}-${postId}`;
 
-  // Initialize conversation if it doesn't exist
   if (!conversations[key]) {
     conversations[key] = {
       post_id: postId,
@@ -78,13 +71,13 @@ messages.forEach(msg => {
             _id: otherUser._id || otherUser,
             username: otherUser.username,
             mail: otherUser.mail,
-            profile_picture: otherUser.profile_picture // Include profile picture
-          }, // Could be full doc or just ID
+            profile_picture: otherUser.profile_picture 
+          }, 
       lastMessage: msg.content,
       lastDate: msg.date
     };
   } 
-  // Update if this message is newer than the stored one
+  
   else if (msg.date > conversations[key].lastDate) {
     conversations[key].lastMessage = msg.content;
     conversations[key].lastDate = msg.date;

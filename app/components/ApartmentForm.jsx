@@ -31,7 +31,7 @@ export default function ApartmentForm() {
 
   const [imageFiles, setImageFiles] = useState([]);
 
-  // const conditions = ['Excellent', 'Very Good', 'Good', 'Fair', 'Poor'];
+
   const roomOptions = [1, 2, 3, 4, 5, 6, 7, 8].map(num => ({
     value: num,
     label: `${num} Room${num !== 1 ? 's' : ''}`
@@ -99,7 +99,6 @@ export default function ApartmentForm() {
          setShowNotification(true);
         setTimeout(() => {
           setShowNotification(false);
-          // router.push('/');
         }, 2000);
       }
       if(res.ok) {
@@ -122,7 +121,6 @@ export default function ApartmentForm() {
       <div className="max-w-6xl mx-auto">
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Column 1 */}
             <div className="space-y-4">
               <div>
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Ad Title</label>
@@ -240,7 +238,7 @@ export default function ApartmentForm() {
 
             </div>
 
-            {/* Column 2 */}
+
             <div className="space-y-4">        
             <div>
                 <label htmlFor="space" className="block text-sm font-medium text-gray-700 mb-1">Apartment Space</label>

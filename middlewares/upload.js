@@ -5,16 +5,15 @@ import path from 'path';
 
 export async function processUploads(formData,pg) {
     const files = formData.getAll('images');
-    // console.log(files)
+
     const length = pg == 'user' ? 1 : 8;
-    // Check number of files
+
     if(files.length > length) {
         return NextResponse.json({
             error: 'thats a lot of images'
         }, {status: 401});
     }
 
-    // Check file types
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     for (const file of files) {
         if (!allowedTypes.includes(file.type)) {
@@ -31,15 +30,15 @@ export async function processUploads(formData,pg) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
         
-        // Create a unique filename
+
         const filename = `${Date.now()}-${file.name}`;
         const filepath = path.join(uploadDir, filename);
         
-        // Save the file
+
         await writeFile(filepath, buffer);
         imageUrls.push(`/uploads/${filename}`);
     }
-    // console.log(imageUrls)
+
     return imageUrls;
 }
 

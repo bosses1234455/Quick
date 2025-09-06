@@ -27,17 +27,11 @@ io.on('connection', (socket) => {
 
   socket.on('send message', (message) => {
     const { chatRoom } = message;
-    // const conversationRoom = `${post_id}_${receiver_id}`;
+
     io.to(chatRoom).emit('receiveMessage', message);
     console.log('📩 Message sent to:', chatRoom);
   });
 
-  // socket.on('typing', (conversationId) => {
-  //   socket.to(conversationId).emit('userTyping', {
-  //     userId: socket.userId,
-  //     conversationId,
-  //   });
-  // });
 
   socket.on('disconnect', () => {
     console.log(`❌ Socket disconnected: ${socket.id}`);

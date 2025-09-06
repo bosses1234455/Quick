@@ -1,13 +1,11 @@
-// hooks/useSocket.js
 'use client';
 
 import Cookies from 'js-cookie';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback} from 'react';
 import { io } from 'socket.io-client';
 
 export default function useSocket(userId) {
   const [socket, setSocket] = useState(null);
-  // const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
 
   const connectSocket = useCallback(() => {
@@ -23,13 +21,12 @@ export default function useSocket(userId) {
       }
     });
 
-    // socketRef.current = socketInstance;
+
 
     socketInstance.on('connect', () => {
       setIsConnected(true);
       console.log('Socket connected');
       setSocket(socketInstance);
-      // socketRef.current = socketInstance;
     });
 
     socketInstance.on('disconnect', () => {
@@ -50,7 +47,6 @@ export default function useSocket(userId) {
     if (!userId) return;
 
     const socketInstance = connectSocket();
-    // console.log(socketRef)
     return () => {
       if (socketInstance) {
         socketInstance.disconnect();

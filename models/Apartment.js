@@ -9,7 +9,6 @@ const apartmentSchema = new mongoose.Schema({
   images: [{ type: String, required: true }],
   room_count: { type: Number, required: true },
   bathroom_count: { type: Number, required: true },
-  // level: { type: Number },
   space: { type: Number, required: true },
   inner_condition: { type: String },
   floor: { type: Number },

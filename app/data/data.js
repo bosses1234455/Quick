@@ -16,9 +16,8 @@ export const locations = [
     'Damascus - Sarouja',
     'Damascus - Al-Shghour',
     'Damascus - Yarmouk',
-    'Rif Dimashq - Markaz Rif Dimashq',
+    'Rif Dimashq - AL-Markaz',
     'Rif Dimashq - Qudsiya',
-    'Rif Dimashq - Al-kiswah',
     'Rif Dimashq - Yabroud',
     'Rif Dimashq - Douma',
     'Rif Dimashq - Al-qtaifa',
@@ -366,7 +365,7 @@ export const models = {
     "Arc A770", "Arc A750", 
   
     "Apple M2 Max GPU",
-    "AMD Radeon Pro 5700 XT (Mac)",
+    "AMD Radeon Pro 5700 XT",
 
     "Integrated GPU", "other"
   ];
@@ -406,10 +405,10 @@ export const models = {
   }));
 
   const storages = [
-    "500GB HDD (5400RPM, SATA)",
-    "1TB HDD (5400RPM, SATA)",
-    "1TB HDD (7200RPM, SATA)",
-    "2TB HDD (5400RPM, SATA)",
+    "500GB HDD (SATA)",
+    "1TB HDD (SATA)",
+    "1TB HDD (SATA)",
+    "2TB HDD (SATA)",
 
     "128GB SSD (SATA)",
     "256GB SSD (SATA)",
@@ -417,11 +416,11 @@ export const models = {
     "1TB SSD (SATA)",
     "2TB SSD (SATA)",
 
-    "256GB NVMe SSD (PCIe 3.0)",
-    "512GB NVMe SSD (PCIe 3.0/4.0)",
-    "1TB NVMe SSD (PCIe 3.0/4.0)",
-    "2TB NVMe SSD (PCIe 4.0)",
-    "4TB NVMe SSD (PCIe 4.0)",
+    "256GB NVMe SSD (PCIe)",
+    "512GB NVMe SSD (PCIe)",
+    "1TB NVMe SSD (PCIe)",
+    "2TB NVMe SSD (PCIe)",
+    "4TB NVMe SSD (PCIe)",
 
     "256GB Mac SSD (PCIe)",
     "512GB Mac SSD (PCIe)",
@@ -443,27 +442,24 @@ export const models = {
   }));
 
   export const rams= [
-  "4GB DDR3 (1600MHz)",          // Older budget laptops
-  "4GB DDR4 (2133MHz)",          // Basic Chromebooks/entry-level
-  "8GB DDR4 (2400MHz)",          // Most common budget option
-  "8GB LPDDR4 (4266MHz)",        // Thin-and-lights (soldered)
+  "4GB DDR3",
+  "4GB DDR4",
+  "8GB DDR4",
+  "8GB LPDDR4",
 
-  "8GB DDR4 (2666MHz)",          // Typical for mid-range
-  "8GB DDR4 (3200MHz)",          // Common in 2020-2022 models
-  "16GB DDR4 (2666MHz)",         // Power users/gaming
-  "16GB DDR4 (3200MHz)",         // Modern standard (2023)
-  "16GB LPDDR4 (4266MHz)",       // Premium ultrabooks
-  "16GB LPDDR5 (6400MHz)",       // 2023+ thin-and-lights
+  "16GB DDR4",
+  "16GB LPDDR4",
+  "16GB LPDDR5",
 
-  "16GB DDR5 (4800MHz)",         // Newer gaming laptops
-  "32GB DDR4 (3200MHz)",         // Workstations/content creation
-  "32GB DDR5 (5200MHz)",         // High-end 2023+ models
+  "16GB DDR5",
+  "32GB DDR4",
+  "32GB DDR5",
 
-  "8GB Unified (M1/M2)",         // Base MacBook Air
-  "16GB Unified (M1/M2)",        // Recommended for pros
-  "24GB Unified (M2 Pro/Max)",   // Video editors
-  "32GB Unified (M1/M2 Max)",
-  "other"    // Extreme work
+  "8GB Unified",
+  "16GB Unified",
+  "24GB Unified",
+  "32GB Unified",
+  "other"   
   ];
 
   export const ramOptions = rams.map(ram => ({

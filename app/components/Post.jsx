@@ -36,7 +36,6 @@ const Post = ({
         <h2 className="text-black font-medium text-lg mb-4">{title}</h2>
 
         <div className="flex flex-wrap gap-4">
-          {/* Left Column - Location, Price, Category, Date */}
           <div className="w-full md:w-1/2 space-y-3">
             <div className="bg-slate-100 rounded-lg py-3 px-1 space-y-2">
               <span className="flex items-center gap-1 text-slate-700 text-sm font-medium">
@@ -115,7 +114,6 @@ const Post = ({
               </span>
           </div>
           
-          {/* Right Column - All other properties */}
           <div className="w-full md:w-2/5 space-y-3">
             <div className="bg-slate-100 rounded-lg py-3 px-1 space-y-2">
               {brand && (

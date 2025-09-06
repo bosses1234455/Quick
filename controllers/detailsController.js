@@ -25,7 +25,7 @@ export const getCarDetails = async (req, { params }) => {
       );
     }
 
-    // Transform data for client
+  
     const response = {
       id: car._id,
       title: car.title,
@@ -173,7 +173,7 @@ export const getLaptopDetails = async (req, { params }) => {
 export const getBookDetails = async (req, { params }) => {
   try {
     const {id:BookId} = await params;
-    console.log(BookId);
+
     
     if (!BookId) {
       return NextResponse.json(

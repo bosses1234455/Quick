@@ -1,4 +1,3 @@
-// context/ConversationContext.js
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -67,19 +66,6 @@ export function ConversationProvider({children}) {
     ...saved,
     chatRoom: messageData.chatRoom
   });
-    // return new Promise((resolve, reject) => {
-    //   socket.emit('sendMessage', {
-    //     conversationId: activeConversation,
-    //     senderId: userId,
-    //     text
-    //   }, (response) => {
-    //     if (response.status === 'ok') {
-    //       resolve(response.message);
-    //     } else {
-    //       reject(response.error);
-    //     }
-    //   });
-    // });
   };
 
   const sendTypingIndicator = () => {

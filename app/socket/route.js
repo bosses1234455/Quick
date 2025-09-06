@@ -1,8 +1,7 @@
-// app/api/socket/route.js
 import { NextResponse } from 'next/server';
 import { Server } from 'socket.io';
 
-export const dynamic = 'force-dynamic'; // Required for WebSockets
+export const dynamic = 'force-dynamic';
 
 const SocketHandler = (req) => {
   if (!global.io) {

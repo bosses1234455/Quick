@@ -3,7 +3,6 @@ import { auth } from '@/middlewares/auth';
 import { NextResponse } from 'next/server';
 import { getMessages, createMessage } from '@/controllers/messagesController';
 
-// Get all messages for a user
 export const GET = withDB(async (req) => {
   const authResult = await auth(req);
   if (authResult instanceof NextResponse) return authResult;
@@ -22,7 +21,6 @@ export const GET = withDB(async (req) => {
   return NextResponse.json(result.data);
 });
 
-// Send a new message
 export const POST = withDB(async (req) => {
   const authResult = await auth(req);
   if (authResult instanceof NextResponse) return authResult;
@@ -35,6 +33,5 @@ export const POST = withDB(async (req) => {
     return NextResponse.json({ error: result.error }, { status: 500 });
   }
 
-  // The socket.io event will handle real-time delivery
   return NextResponse.json(result.data);
 });
