@@ -100,10 +100,7 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
             fetchPosts(pageNum);
         }
     }, [pageNum]);
-<<<<<<< HEAD
 
-=======
->>>>>>> 054854eefb054cf7e3468241a2514a4b4de52c09
 
     if (isLoading && posts.length === 0) {
         return <LoadingSkeleton />;

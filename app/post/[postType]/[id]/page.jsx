@@ -112,7 +112,7 @@ export default function PostDetail() {
   
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <Link href="/" className="text-blue-500 hover:underline mb-4 inline-block">
+      <Link href="/" className="text-blue-700 hover:underline mb-4 inline-block">
         ← Back to all posts
       </Link>
 
