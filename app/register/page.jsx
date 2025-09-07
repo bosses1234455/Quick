@@ -147,8 +147,14 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 mt-12">
-      <div className="bg-gray-200 p-8 rounded-lg w-full max-w-md">
+    <div className="min-h-screen flex flex-col items-center bg-white p-4 mt-12">
+      <div className="bg-white border border-gray-100 shadow-lg w-full p-8 rounded-lg w-full max-w-md">
+
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h1>
+          <p className="text-gray-500">Sign up to get started</p>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {!isEmailSent ? (
             <>

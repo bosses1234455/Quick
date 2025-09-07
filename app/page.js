@@ -1,21 +1,35 @@
 'use client'
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Filters from "./components/Filters"
 import PostsFetch from "./components/PostsFetch"
 import Sort from "./components/Sort"
 import Tabs from "./components/Tabs"
+import { usePathname } from "next/navigation"
 
 function Home() {
   const [listType,setListType] = useState('apartments');
   const [filters, setFilters] = useState({});
   const [submitFilters,setSubmitFilters] = useState(false);
   const [sortOption, setSortOption] = useState('date_desc');
+  const pathname = usePathname();
+
+
+  useEffect(() => {
+    const savedFilters = localStorage.getItem('filters');
+    const savedListType = localStorage.getItem('listType');
+    const savedSortOption = localStorage.getItem('sortOption');
+    if (savedFilters) setFilters(JSON.parse(savedFilters));
+    if (savedListType) setListType(JSON.parse(savedListType));
+    if (savedSortOption) setSortOption(JSON.parse(savedSortOption));
+    setSubmitFilters(e => !e);
+  },[pathname]);
 
    const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
   };
 
   const handleSortChange = (newSortOption) => {
+    localStorage.setItem('sortOption', JSON.stringify(newSortOption));
     setSortOption(newSortOption);
   };
 
@@ -31,12 +45,12 @@ function Home() {
     >
       Feedback
     </button>
-     <Tabs setListType={setListType} handleFilterChange={handleFilterChange} />
+     <Tabs setListType={setListType} handleFilterChange={handleFilterChange} handleSortChange={handleSortChange} />
 
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="flex flex-col lg:w-1/5 gap-4 order-1 lg:order-1">
           <aside className="w-full bg-transparent p-4 rounded-lg h-fit shadow-sm">
-            <Filters listType={listType} setSubmitFilters={setSubmitFilters} onFilterChange={handleFilterChange}/>
+            <Filters listType={listType} savedFilters={filters} setSubmitFilters={setSubmitFilters} onFilterChange={handleFilterChange}/>
           </aside>
         </div>
 
@@ -46,7 +60,7 @@ function Home() {
 
         <div className="flex flex-col lg:w-1/5 gap-4 order-1 lg:order-3">
           <aside className="w-full bg-transparent p-4 rounded-lg h-fit shadow-sm">
-            <Sort listType={listType} onSortChange={handleSortChange}/>
+            <Sort listType={listType} savedSortOption={sortOption} onSortChange={handleSortChange}/>
           </aside>
         </div>
       </div>

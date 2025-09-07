@@ -1,10 +1,9 @@
 
 
-=======
->>>>>>> 054854eefb054cf7e3468241a2514a4b4de52c09
+
 import { useState, useEffect } from 'react'
 
-const Sort = ({ listType, onSortChange }) => {
+const Sort = ({ listType, onSortChange,savedSortOption  }) => {
   const [sortOption, setSortOption] = useState('date_desc')
 
   const sortConfig = {
@@ -42,9 +41,10 @@ const Sort = ({ listType, onSortChange }) => {
     ]
   }
 
-  useEffect(() => {
-    setSortOption('date_desc')
-  }, [listType])
+   useEffect(() => {
+    if(savedSortOption) {setSortOption(savedSortOption); return;}
+    setSortOption('date_desc');
+  }, [listType,savedSortOption])
 
   const handleSortChange = (value) => {
     setSortOption(value)
