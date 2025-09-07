@@ -2,20 +2,13 @@
 import Image from "next/image"
 import Link from "next/link"
 import Cookies from "js-cookie";
-import { usePathname } from 'next/navigation';
+
 import { useAuth } from "../context/AuthContext";
-import { useEffect, useState } from "react";
 
 export default function Header() {
 
   const {loggedIn,id} = useAuth();
-  const pathname = usePathname();
-  const [loginButton,setLoginButton] = useState(true);
 
-  useEffect(() => {
-    if(pathname == '/login') setLoginButton(false);
-    else setLoginButton(true);
-  },[pathname])
   const handleLogout = () => {
     Cookies.remove('token');
     window.location.reload();
@@ -59,14 +52,14 @@ export default function Header() {
           className="rounded-full relative z-10"
         />
       </Link>
-      {(!loggedIn & loginButton) ?  (
+      {!loggedIn && (
         <Link
           href={"/login"}
           className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 relative z-10 text-white font-medium shadow-sm hover:shadow-md"
         >
           Login
         </Link>
-      ) : null}
+      )}
       {loggedIn && (
         <div className="relative z-10 flex gap-1 md:gap-3 flex-nowrap">
 

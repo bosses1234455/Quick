@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { locations, muhafazat, brand, laptop, rams, bookTypes, condition, models } from '../data/data';
 
-const Filters = ({ listType, onFilterChange,setSubmitFilters,savedFilters }) => {
+const Filters = ({ listType, onFilterChange,setSubmitFilters }) => {
   const [filters, setFilters] = useState({});
   const [selectedBrand, setSelectedBrand] = useState('');
 
@@ -45,10 +45,9 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters,savedFilters }) => 
   };
 
   useEffect(() => {
-    if(savedFilters) {setFilters(savedFilters); return;}
     setSelectedBrand('');
     setFilters({});
-  }, [listType,savedFilters]);
+  }, [listType]);
 
 
 
@@ -170,17 +169,12 @@ const Filters = ({ listType, onFilterChange,setSubmitFilters,savedFilters }) => 
       </div>
       <button 
       className='w-[45%] mr-5 mt-4 p-1.5 rounded-md cursor-pointer bg-blue-800 hover:bg-blue-700 text-white'
-      onClick={() => {
-      localStorage.setItem('filters', JSON.stringify(filters)); 
-      setSubmitFilters(e => !e)
-      }}>apply filters</button>
+      onClick={() => setSubmitFilters(e => !e)}>apply filters</button>
       <button 
       className='w-[45%] mt-4 p-1.5 rounded-md cursor-pointer bg-gray-600 hover:bg-gray-500 text-white'
       onClick={() => {
       setFilters({});
       onFilterChange({}); 
-      localStorage.removeItem('filters');
-      // localStorage.removeItem('listType'); 
       setSubmitFilters(e => !e)
       }}>clear filters</button>
     </div>
