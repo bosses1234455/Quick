@@ -23,7 +23,7 @@ export default function Header() {
   
   return (
     <header className="flex h-16 justify-between items-center p-4 bg-[#090BA1] relative overflow-hidden">
-      {/* Brightness effect using pseudo-elements */}
+
       <style jsx>{`
         header::before {
           content: "";
@@ -69,12 +69,7 @@ export default function Header() {
       ) : null}
       {loggedIn && (
         <div className="relative z-10 flex gap-1 md:gap-3 flex-nowrap">
-          {/* <Link
-            href={"/myChats"}
-            className="text-sm px-3 py-1 md:text-base md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
-          >
-            Your chats
-          </Link> */}
+
           <Link
             href={"/myChats"}
             className="flex items-center justify-center text-xs sm:text-sm md:text-base px-3 py-1 md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
@@ -82,11 +77,7 @@ export default function Header() {
             Your chats
           </Link>
 
-          {/* <Link href={'/category'}
-            className="text-xs px-3 py-1 md:text-base lg:text-small md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"
-          >
-            Post an ad
-          </Link> */}
+
           <Link
             href={"/category"}
             className="flex items-center justify-center text-xs sm:text-sm md:text-base lg:text-base px-3 py-1 md:px-5 md:py-1.5 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all duration-300 text-white font-medium shadow-sm hover:shadow-md"

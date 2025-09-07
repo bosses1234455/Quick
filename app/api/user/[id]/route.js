@@ -6,14 +6,12 @@ import { getUser, updateUser } from "@/controllers/userController"
 export const GET = withDB(getUser);
 
 export const PATCH = async (request, context) => {
-    const { id } = await context.params;     // await params!
-    const body = await request.json();       // parse JSON body
-  
+    const { id } = await context.params;     
+    const body = await request.json();    
     const authResult = await auth(request);
-    if ('error' in authResult) return authResult;  // return error response if any
+    if ('error' in authResult) return authResult; 
   
-    const user = authResult.user;             // authenticated user info
+    const user = authResult.user;        
   
-    // Call controller with explicit args
     return withDB(() => updateUser(id, body, user))();
   };

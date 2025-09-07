@@ -6,7 +6,7 @@ import { processUploads } from '@/middlewares/upload';
 
 export const getUser = async (req, {params}) => {
     try {
-        // await Promise.resolve();
+
         const {id:UserId} = await params;
         
         if (!UserId) {
@@ -49,7 +49,7 @@ export const getUser = async (req, {params}) => {
     
 export const updateUser = async (userId, updateData, user) => {
   try {
-    // 1. Validate user ID
+
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return NextResponse.json(
         { error: 'Invalid user ID format' },
@@ -57,7 +57,6 @@ export const updateUser = async (userId, updateData, user) => {
       );
     }
 
-    // 2. Check if user is updating their own profile
     if (user._id.toString() !== userId) {
       return NextResponse.json(
         { error: 'You can only update your own profile' },
@@ -65,15 +64,13 @@ export const updateUser = async (userId, updateData, user) => {
       );
     }
 
-    // 3. Validate update data
     if (!updateData) {
       return NextResponse.json(
         { error: 'No update data provided' },
         { status: 400 }
       );
     }
- 
-    // 4. Allowed fields check
+
     const allowedUpdates = ['email', 'username', 'phone_num', 'password'];
     const updates = Object.keys(updateData).filter(key => updateData[key] ? updateData[key] : null);
     const isValidOperation = updates.every(update =>
@@ -86,8 +83,7 @@ export const updateUser = async (userId, updateData, user) => {
         { status: 400 }
       );
     }
- 
-    // 5. Email uniqueness check
+
     if (updateData.email) {
       const existingUser = await User.findOne({ mail: updateData.email });
       if (existingUser && existingUser._id.toString() !== userId) {
@@ -98,18 +94,16 @@ export const updateUser = async (userId, updateData, user) => {
       }
     }
 
-    // 6. Password hashing
     if (updateData.password) {
       updateData.password = await bcrypt.hash(updateData.password, 10);
     }
 
-    // 7. Create update object with only defined fields
     const finalUpdateData = {};
     updates.forEach(field => {
       finalUpdateData[field] = updateData[field];
     });
 
-    // 8. Perform update
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       finalUpdateData,
@@ -123,7 +117,6 @@ export const updateUser = async (userId, updateData, user) => {
       );
     }
 
-    // 9. Return response without sensitive data
     const responseData = {
       id: updatedUser._id,
       email: updatedUser.mail,

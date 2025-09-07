@@ -1,4 +1,3 @@
-// components/LoadingSkeleton.js
 export const LoadingSkeleton = ({ count = 1 }) => {
     return (
       <div className="space-y-4">

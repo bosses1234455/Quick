@@ -100,7 +100,6 @@ export default function LaptopForm() {
             <div className="max-w-6xl mx-auto">
                 <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Column 1 */}
                         <div className="space-y-4">
                             <div>
                                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Ad Title</label>
@@ -228,7 +227,6 @@ export default function LaptopForm() {
                             </div>
                         </div>
 
-                        {/* Column 2 */}
                         <div className="space-y-4">
 
                             <div>

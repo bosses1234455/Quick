@@ -21,13 +21,12 @@ export default function ChatPage() {
   const messagesEndRef = useRef(null);
   const hasFetchedInitialMessages = useRef(false);
 
-  // Generate consistent chat room ID
+
   const chatRoomId = useCallback(() => {
     const ids = [postId, userId, otherUserId].sort();
     return ids.join('-');
   }, [postId, userId, otherUserId]);
 
-  // Fetch initial messages - FIXED: Move the function inside useEffect
   useEffect(() => {
   if (
     authLoading ||
@@ -43,7 +42,7 @@ export default function ChatPage() {
       if (res.ok) {
         const data = await res.json();
         setMessages(data);
-        hasFetchedInitialMessages.current = true; // <-- move here
+        hasFetchedInitialMessages.current = true;
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -55,7 +54,6 @@ export default function ChatPage() {
   fetchMessages();
 }, [authLoading, loggedIn, postId, otherUserId]);
 
-  // Handle sending messages
   const handleSendMessage = useCallback(async (e) => {
     e.preventDefault();
     console.log('Submit handler called ✅');
@@ -73,19 +71,16 @@ export default function ChatPage() {
     try {
       await sendMessage(messageData);
       setMessage('');
-      // Instead of using fetchM state, we can just add the message optimistically
-      // or let the socket event handle adding the new message
+
     } catch (error) {
       console.error('Error sending message:', error);
     }
   }, [message, otherUserId, postId, postType, chatRoomId, sendMessage]);
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Check authentication and redirect if needed
   useEffect(() => {
     if (authLoading) return;
     
@@ -94,7 +89,6 @@ export default function ChatPage() {
     }
   }, [loggedIn, router, authLoading]);
 
-  // Initialize chat room
   useEffect(() => {
     if (authLoading || !loggedIn) return;
     
@@ -116,7 +110,7 @@ export default function ChatPage() {
     };
   }, [socket, isConnected, postId, otherUserId, chatRoomId, authLoading, loggedIn, joinConversation, setMessages]);
 
-  // Show loading state while checking authentication
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -134,7 +128,7 @@ export default function ChatPage() {
     );
   }
 
-  // Show loading state while fetching messages
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">

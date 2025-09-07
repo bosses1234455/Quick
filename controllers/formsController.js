@@ -12,7 +12,7 @@ export const postCar = async (req) => {
     try {
 
 
-        // Get other form data
+      
         const formData = await req.formData();
         const imageUrls = await processUploads(formData,pg);
         const data = {
@@ -34,7 +34,7 @@ export const postCar = async (req) => {
             images: imageUrls
         };
 
-        // Validate required fields
+       
         const requiredFields = ['seller_id', 'brand', 'model', 'year', 'milage', 'type', 'color', 'doors', 'seat_number', 'outer_condition', 'inner_condition', 'description', 'images', 'location', 'price', 'title'];
         const missingFields = requiredFields.filter(field => !data[field]);
         
@@ -45,7 +45,7 @@ export const postCar = async (req) => {
             );
         }
         const reviewResult = await postReview(data.title,data.description);
-        // console.log(reviewResult);
+       
         if(!reviewResult.approval_status) {
             return NextResponse.json(
         { error: reviewResult.issues_found },
@@ -97,7 +97,7 @@ export const postLaptop = async (req) => {
             )
         }
          const reviewResult = await postReview(data.title,data.description);
-        // console.log(reviewResult);
+     
         if(!reviewResult.approval_status) {
             return NextResponse.json(
         { error: reviewResult.issues_found },
@@ -178,8 +178,8 @@ export const postBook = async (req) => {
         const formData = await req.formData();
         const imageUrls = await processUploads(formData,pg);
 
-        const images = formData.getAll('images'); // Get all files under field 'images'
-        console.log("Number of images:", images.length);
+        const images = formData.getAll('images');
+
 
         if (images.length > 8) {
             return NextResponse.json(
@@ -212,7 +212,6 @@ export const postBook = async (req) => {
             )
         }
          const reviewResult = await postReview(data.title,data.description);
-        // console.log(reviewResult);
         if(!reviewResult.approval_status) {
             return NextResponse.json(
         { error: reviewResult.issues_found },

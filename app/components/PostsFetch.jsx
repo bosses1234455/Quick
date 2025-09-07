@@ -3,8 +3,6 @@ import Link from 'next/link';
 import { LoadingSkeleton } from './LoadingSkeleton';
 import Post from './Post';
 import { useState, useEffect } from 'react';
-// import Cookies from 'js-cookie';
-// import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
 
 const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
@@ -12,7 +10,6 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [pageNum, setPageNum] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    // const [tokenId,setTokenId] = useState('');
     const [deleteConfirmation, setDeleteConfirmation] = useState({ show: false, postId: null });
     const {id:userId} = useAuth();
 
@@ -23,10 +20,8 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
             sort: sortOption || 'date_desc'
         });
 
-        // Add ID if it exists
         if (id) queryParams.append('id', id);
 
-        // Add filters if they exist
         if (filters) {
             Object.entries(filters).forEach(([key, value]) => {
                 if (value !== '' && value !== null && value !== undefined) {
@@ -45,9 +40,8 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
             const res = await fetch(`/api/${listType}?${queryString}`, {
                 method: 'GET'
             });
-            // console.log(res);
+
             const arr = await res.json();
-            // console.log(arr)
             if (arr[listType].length === 0) {
                 setHasMore(false);
             } else {
@@ -60,10 +54,9 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
             setIsLoading(false);
         }
     };
-    // console.log(posts);
     
     const handlePostDel = async (postId) => {
-        // Show confirmation dialog instead of deleting immediately
+
         setDeleteConfirmation({ show: true, postId });
     };
 
@@ -87,12 +80,10 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
                 return;
             }
 
-            // Remove the deleted post from the state
             setPosts(posts.filter(post => post.id !== deleteConfirmation.postId));
         } catch (error) {
             console.error('Error deleting post:', error);
         } finally {
-            // Hide confirmation dialog
             setDeleteConfirmation({ show: false, postId: null });
         }
     };
@@ -102,14 +93,17 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
         setPageNum(1);
         setHasMore(true);
         fetchPosts(1);
-    }, [listType, submitFilters, sortOption]); // Add filters and sortOption to dependencies
+    }, [listType, submitFilters, sortOption]);
 
     useEffect(() => {
         if (pageNum > 1) {
             fetchPosts(pageNum);
         }
     }, [pageNum]);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 054854eefb054cf7e3468241a2514a4b4de52c09
 
     if (isLoading && posts.length === 0) {
         return <LoadingSkeleton />;
@@ -181,7 +175,6 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
           ))}
         </div>
 
-        {/* Confirmation Dialog */}
         {deleteConfirmation.show && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">

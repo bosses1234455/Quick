@@ -78,7 +78,7 @@ export default function LoginPage() {
               className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
                 errors.mail && touched.mail 
                   ? "border-red-500 focus:ring-red-500" 
-                  : "border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "border-gray-300 focus:ring-blue-800 focus:border-blue-800"
               } transition-colors`}
               placeholder="example@gmail.com"
             />
@@ -105,10 +105,10 @@ export default function LoginPage() {
               className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
                 errors.password && touched.password 
                   ? "border-red-500 focus:ring-red-500" 
-                  : "border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "border-gray-300 focus:ring-blue-800 focus:blue-blue-800"
               } transition-colors`}
               name="password"
-              placeholder="e.g: A1b2c3d4"
+              placeholder="Enter your password"
             />
             {errors.password && touched.password && (
               <div className="mt-2 flex items-center">
@@ -134,9 +134,9 @@ export default function LoginPage() {
             disabled={isSubmitting}
             className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-colors ${
               isSubmitting 
-                ? "bg-indigo-400 cursor-not-allowed" 
-                : "bg-indigo-600 hover:bg-indigo-700"
-            } focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+                ? "bg-blue-400 cursor-not-allowed" 
+                : "bg-blue-800 hover:bg-blue-700"
+            } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
           >
             {isSubmitting ? (
               <span className="flex items-center justify-center">
@@ -169,7 +169,7 @@ export default function LoginPage() {
           Don't have an account?{" "}
           <Link 
             href="/register"
-            className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
+            className="font-medium text-blue-800 hover:text-blue-600 transition-colors"
           >
             Sign up
           </Link>
