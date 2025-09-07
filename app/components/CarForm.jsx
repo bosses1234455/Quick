@@ -406,7 +406,7 @@ export default function CarForm() {
           <div className="mt-8 flex justify-center">
             <button
               type="submit"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              className="bg-blue-700 text-white px-8 py-3 rounded-lg hover:bg-blue-800 transition-colors"
             >
               Submit
             </button>

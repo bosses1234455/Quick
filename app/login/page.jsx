@@ -24,7 +24,7 @@ export default function LoginPage() {
 
   const schema = Yup.object().shape({
     mail: Yup.string().required("Email is required").email("Please enter a valid email"),
-    password: Yup.string().required("Password is required").min(7, "Password must be at least 7 characters"),
+    password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters"),
   });
 
   const formik = useFormik({
