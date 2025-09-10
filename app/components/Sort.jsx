@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react'
 
 const Sort = ({ listType, onSortChange,savedSortOption  }) => {
-  const [sortOption, setSortOption] = useState('date_desc')
+  const [sortOption, setSortOption] = useState(savedSortOption || 'date_desc');
 
   const sortConfig = {
     apartments: [

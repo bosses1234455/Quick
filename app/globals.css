@@ -14,3 +14,8 @@
   font-family: var(--font-inter);
   }
 
+.react-tel-input .flag.sy {
+      background-image: url('/ourFlag.jpg') !important;
+      background-size: cover;
+      background-position: center;
+    }

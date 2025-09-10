@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { locations, muhafazat, brand, laptop, rams, bookTypes, condition, models } from '../data/data';
 
 const Filters = ({ listType, onFilterChange,setSubmitFilters,savedFilters  }) => {
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState(savedFilters || {});
   const [selectedBrand, setSelectedBrand] = useState('');
 
   const filterConfig = {

@@ -106,6 +106,9 @@ export default function ApartmentForm() {
         setShowNotification(true);
         setTimeout(() => {
           setShowNotification(false);
+          localStorage.removeItem('filters');
+          localStorage.removeItem('listType');
+          localStorage.removeItem('sortOption');
           router.push('/');
         }, 2000);
       }

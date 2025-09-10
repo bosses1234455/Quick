@@ -10,19 +10,49 @@ function Home() {
   const [listType,setListType] = useState('apartments');
   const [filters, setFilters] = useState({});
   const [submitFilters,setSubmitFilters] = useState(false);
+  const [ready,setReady] = useState(false);
   const [sortOption, setSortOption] = useState('date_desc');
   const pathname = usePathname();
 
+  const handleBeforeUnload = () => {
+    localStorage.removeItem('filters');
+    localStorage.removeItem('listType');
+    localStorage.removeItem('sortOption');
+  }
 
   useEffect(() => {
-    const savedFilters = localStorage.getItem('filters');
-    const savedListType = localStorage.getItem('listType');
-    const savedSortOption = localStorage.getItem('sortOption');
-    if (savedFilters) setFilters(JSON.parse(savedFilters));
-    if (savedListType) setListType(JSON.parse(savedListType));
-    if (savedSortOption) setSortOption(JSON.parse(savedSortOption));
-    setSubmitFilters(e => !e);
-  },[pathname]);
+  const savedFilters = localStorage.getItem('filters');
+  const savedListType = localStorage.getItem('listType');
+  const savedSortOption = localStorage.getItem('sortOption');
+
+  try {
+    if (savedFilters && savedFilters !== 'undefined' && savedFilters !== '') {
+      setFilters(JSON.parse(savedFilters));
+    }
+  } catch (e) {
+    setFilters({});
+  }
+
+  try {
+    if (savedListType && savedListType !== 'undefined' && savedListType !== '') {
+      setListType(JSON.parse(savedListType));
+    }
+  } catch (e) {
+    setListType('apartments');
+  }
+
+  try {
+    if (savedSortOption && savedSortOption !== 'undefined' && savedSortOption !== '') {
+      setSortOption(JSON.parse(savedSortOption));
+    }
+  } catch (e) {
+    setSortOption('date_desc');
+  }
+  setReady(true);
+  setSubmitFilters(e => !e);
+  window.addEventListener('beforeunload', handleBeforeUnload);
+  return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+}, [pathname]);
 
    const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -55,7 +85,7 @@ function Home() {
         </div>
 
         <main className="flex-1 order-2 lg:order-2">
-          <PostsFetch listType={listType} filters={filters} submitFilters={submitFilters}  sortOption={sortOption}/>
+          <PostsFetch ready={ready} listType={listType} filters={filters} submitFilters={submitFilters}  sortOption={sortOption}/>
         </main>
 
         <div className="flex flex-col lg:w-1/5 gap-4 order-1 lg:order-3">

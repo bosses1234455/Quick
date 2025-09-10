@@ -5,7 +5,7 @@ import Post from './Post';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
+const PostsFetch = ({ ready,listType, id, filters,submitFilters, sortOption }) => {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageNum, setPageNum] = useState(1);
@@ -89,11 +89,12 @@ const PostsFetch = ({ listType, id, filters,submitFilters, sortOption }) => {
     };
 
     useEffect(() => {
+        if(!ready) return;
         setPosts([]);
         setPageNum(1);
         setHasMore(true);
         fetchPosts(1);
-    }, [listType, submitFilters, sortOption]);
+    }, [listType, submitFilters, sortOption,ready]);
 
     useEffect(() => {
         if (pageNum > 1) {

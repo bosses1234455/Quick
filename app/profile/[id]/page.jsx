@@ -139,6 +139,7 @@ export default function UserProfile() {
   };
 
   const handleFilterChange = () => {};
+  const handleSortChange = () => {};
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorDisplay message={error} />;
@@ -226,8 +227,8 @@ export default function UserProfile() {
             </div>
           </div>
           
-          <Tabs setListType={setListType} handleFilterChange={handleFilterChange}/>
-          <PostsFetch listType={listType} id={id} />
+          <Tabs setListType={setListType} handleSortChange={handleSortChange} handleFilterChange={handleFilterChange}/>
+          <PostsFetch listType={listType} id={id} ready={true}/>
         </div>
         
       

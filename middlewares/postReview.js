@@ -14,11 +14,14 @@ export async function postReview(title, description) {
         messages: [
           {
             role: "system",
-            content: `You are a content moderation assistant. Analyze the following ad title and description for any language racism things like that and respond with a JSON object containing:
-            - 'approval_status' (boolean): whether the content is appropriate
-            - 'issues_found' (array of strings): specific problems identified
-            - 'suggested_improvements' (array of strings): recommendations for improvement
-            - 'confidence_score' (number): your confidence in this assessment (0-1)`
+            content: `You are a content moderation assistant. Carefully review the provided ad title and description for inappropriate language, hate speech, racism, discrimination, harassment, explicit content, or any violations of community guidelines. 
+            Respond ONLY with a valid JSON object containing:
+            - 'approval_status' (boolean): true if the content is safe and appropriate for publishing, false otherwise.
+            - 'issues_found' (array of strings): list any specific problems or violations detected.
+            - 'suggested_improvements' (array of strings): clear recommendations to make the content acceptable, if needed.
+            - 'confidence_score' (number): your confidence in this assessment, between 0 and 1.
+            Do NOT repeat or include the ad title or description in your response.
+            Do NOT include any explanation or text outside the JSON object.`
           },
           {
             role: "user",
@@ -35,7 +38,7 @@ export async function postReview(title, description) {
 
     const data = await response.json();
     const moderationResult = JSON.parse(data.choices[0].message.content);
-
+    console.log('Moderation Result:', moderationResult);
     return moderationResult;
     
   } catch (error) {
